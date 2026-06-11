@@ -1,0 +1,50 @@
+% !TEX spellcheck = en-US
+
+\newcommand{\coverTitle}{Using Inertial Sensors for Position and Orientation Estimation}
+\newcommand{\coverYear}{2017}
+
+\newcommand{\coverAuthors}{Manon~Kok$^\star$, Jeroen~D.~Hol$^\dagger$ and Thomas~B.~Sch\"on$^\ddagger$ \\ \vspace{3mm}
+%\small{$^\star$Department of Engineering, University of Cambridge, Cambridge, United Kingdom} \\
+%\small{E-mail: mk930@cam.ac.uk} \\
+\small{$^\star$Delft Center for Systems and Control, Delft University of Technology, the Netherlands\footnote{At the moment of publication Manon Kok worked as a Research Associate at the University of Cambridge, UK. A major part of the work has been done while she was a PhD student at Link\"oping University, Sweden.}} \\
+\small{E-mail: m.kok-1@tudelft.nl} \\
+\small{$^\dagger$Xsens Technologies B.V., Enschede, the Netherlands} \\
+\small{E-mail: jeroen.hol@xsens.com} \\
+\small{$^\ddagger$Department of Information Technology, Uppsala University, Sweden} \\
+\small{E-mail: thomas.schon@it.uu.se} 
+}
+
+\begin{titlepage}
+\begin{center}
+%
+%% 
+%{\large \em Technical report}
+
+\vspace*{2.5cm}
+%
+%% TITLE
+{\Huge \bfseries \coverTitle  \\[0.4cm]}
+
+%
+%% AUTHORS
+{\Large \coverAuthors \\[1.5cm]}
+
+\renewcommand\labelitemi{\color{red}\large$\bullet$}
+\begin{itemize}
+\item {\Large \textbf{Please cite this version:}} \\[0.4cm]
+\normalsize
+Manon Kok, Jeroen D. Hol and Thomas B. Sch\"on (2017), "Using Inertial Sensors for Position and Orientation Estimation", Foundations and Trends in Signal Processing: Vol. 11: No. 1-2, pp 1-153. http://dx.doi.org/10.1561/2000000094 
+\end{itemize}
+
+\end{center}
+
+\vspace{1cm}
+
+\begin{abstract}
+\noindent In recent years, \gls{mems} inertial sensors (3D accelerometers and 3D gyroscopes) have become widely available due to their small size and low cost. Inertial sensor measurements are obtained at high sampling rates and can be integrated to obtain position and orientation information. These estimates are accurate on a short time scale, but suffer from integration drift over longer time scales. To overcome this issue, inertial sensors are typically combined with additional sensors and models. In this tutorial we focus on the signal processing aspects of position and orientation estimation using inertial sensors. We discuss different modeling choices and a selected number of important algorithms. The algorithms include optimization-based smoothing and filtering as well as computationally cheaper extended Kalman filter and complementary filter implementations. The quality of their estimates is illustrated using both experimental and simulated data.
+\end{abstract}
+
+
+\vfill
+
+\end{titlepage}

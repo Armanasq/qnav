@@ -1,0 +1,306 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%       Include packages     %%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{etex}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{glossaries}
+\setacronymstyle{long-short}
+\renewcommand{\glossarysection}[2][]{}
+\newglossary[nlg]{notation}{not}{ntn}{Notation}
+\newglossary[olg]{operators}{op}{ops}{Test}
+\newglossary[cflg]{coordinateFrames}{cf}{cfs}{Coordinate frames}
+
+\glsdisablehyper
+\makeglossaries
+\usepackage{color}
+\usepackage[squaren]{SIunits}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{algorithmic}
+\usepackage{algorithm}
+\usepackage{SIunits}
+\usepackage{subfigure}
+\usepackage{stackengine}
+\def\stackalignment{l}
+\usepackage{mathtools}
+\usepackage{enumitem}
+\usepackage{cases}
+
+\RequirePackage{array,arydshln}
+\RequirePackage{multirow}
+\usepackage{afterpage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%       Tikz stuff      %%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pgfplotsset{compat=newest}
+\pgfplotsset{plot coordinates/math parser=false}
+\usepgfplotslibrary{external}
+\tikzexternalize[prefix=tikzfigures/]
+
+\usepgfplotslibrary{groupplots}
+\usetikzlibrary{calc,arrows,shapes.geometric,decorations.pathmorphing,decorations.pathreplacing,fit,matrix,backgrounds,positioning,patterns,shapes}
+\pgfdeclarelayer{background}
+\pgfsetlayers{background,main}
+\definecolor{mygray}{gray}{.7}
+\usepgfplotslibrary{fillbetween}
+\usepackage[framemethod=tikz]{mdframed}
+
+\usepackage{tabularx, booktabs}
+\newcolumntype{M}{>{\centering\arraybackslash}X}
+
+
+\newcommand{\algrule}[1][.2pt]{\par\vskip.5\baselineskip\hrule height #1\par\vskip.5\baselineskip}
+
+\newcommand{\examplerule}[1][.2pt]{\par\vskip.5\baselineskip\hrule height #1\par\vskip.5\baselineskip}
+
+%\usepackage{3dplot}
+
+\usepackage{booktabs}
+
+\newlength\figureheight 
+\newlength\figurewidth 
+\newlength\lenghttemp
+
+\newtheorem{assumption}{Assumption}[chapter]
+\newtheorem{example}{Example}[chapter]
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%       New commands        %%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\ie}{\emph{i.e.}\ }
+\newcommand{\eg}{\emph{e.g.}\ }
+\newcommand{\etc}{\emph{etc} }
+\newcommand{\now}{\textsc{now}}
+\newcommand{\iid}{\emph{i.i.d.}\ }
+\newcommand{\dr}{Dr.\ }
+\newcommand{\prof}{Prof.\ }
+
+\newcommand{\Transp}{\mathsf{T}}
+%\newcommand{\diff}{\mathsf{d}}
+\newcommand{\tdiff}{\textrm{d}}
+\newcommand{\diff}{\partial}
+\newcommand{\dint}{\mathsf{d}}
+\newcommand{\conj}{\mathsf{c}}
+\newcommand{\leftMult}{\mathsf{L}}
+\newcommand{\rightMult}{\mathsf{R}}
+\newcommand{\expq}{\exp_\mathsf{q}}
+\newcommand{\expR}{\exp_\mathsf{R}}
+\newcommand{\logq}{\log_\mathsf{q}}
+\newcommand{\logR}{\log_\mathsf{R}}
+\newcommand{\SO}[1]{SO(#1)}
+
+\newcommand{\initEst}[1]{\breve{#1}}
+\newcommand{\ori}{\xi}
+\newcommand{\oriError}{\eta}
+
+\DeclareMathOperator*\argmin{arg \, min \,}
+\DeclareMathOperator*\argmax{arg \, max \,}
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\mean}{\mathbb{E}}
+\DeclareMathOperator{\cov}{cov}
+\DeclareMathOperator{\var}{var}
+\DeclareMathOperator*{\st}{subj. \ to}
+\newcommand{\givenThat}[3]{\left. {#1}_{\stackunder[1pt]{}{}} \right|_{%
+ \stackon[1pt]{$\scriptscriptstyle #2$}{$\scriptscriptstyle #3$}}}
+
+\newcommand{\chapterref}[1]{chapter~\ref{#1}}
+\newcommand{\Chapterref}[1]{Chapter~\ref{#1}}
+
+\newcommand{\sectionref}[1]{chapter~\ref{#1}}
+\newcommand{\Sectionref}[1]{\S\ref{#1}}
+
+\newcommand{\theoremref}[1]{theorem~\ref{#1}}
+\newcommand{\Theoremref}[1]{Theorem~\ref{#1}}
+
+\newcommand{\exampleref}[1]{example~\ref{#1}}
+\newcommand{\Exampleref}[1]{Example~\ref{#1}}
+
+\newcommand{\appendixref}[1]{appendix~\ref{#1}}
+\newcommand{\Appendixref}[1]{Appendix~\ref{#1}}
+
+\newcommand{\figureref}[1]{figure~\ref{#1}}
+\newcommand{\Figureref}[1]{Figure~\ref{#1}}
+
+\newcommand{\tableref}[1]{table~\ref{#1}}
+\newcommand{\Tableref}[1]{Table~\ref{#1}}
+
+\newcommand{\Algorithmref}[1]{Algorithm~\ref{#1}}
+\newcommand{\Algref}[1]{Alg.~\ref{#1}}
+\newcommand{\Stepref}[1]{Step~\ref{#1}}
+\newcommand{\Assumptionref}[1]{Assumption~\ref{#1}}
+\newcommand{\pagepageref}[1]{page~\pageref{#1}}
+
+% 3D tikz plots
+\usepackage{tikz-3dplot}
+\tdplotsetmaincoords{0}{0}
+
+\newcommand{\tdseteulerxyz}{
+\renewcommand{\tdplotcalctransformrotmain}{%
+%perform some trig for the Euler transformation
+\tdplotsinandcos{\sinalpha}{\cosalpha}{\tdplotalpha} 
+\tdplotsinandcos{\sinbeta}{\cosbeta}{\tdplotbeta}
+\tdplotsinandcos{\singamma}{\cosgamma}{\tdplotgamma}
+%
+\tdplotmult{\sasb}{\sinalpha}{\sinbeta}
+\tdplotmult{\sasg}{\sinalpha}{\singamma}
+\tdplotmult{\sasbsg}{\sasb}{\singamma}
+%
+\tdplotmult{\sacb}{\sinalpha}{\cosbeta}
+\tdplotmult{\sacg}{\sinalpha}{\cosgamma}
+\tdplotmult{\sasbcg}{\sasb}{\cosgamma}
+%
+\tdplotmult{\casb}{\cosalpha}{\sinbeta}
+\tdplotmult{\cacb}{\cosalpha}{\cosbeta}
+\tdplotmult{\cacg}{\cosalpha}{\cosgamma}
+\tdplotmult{\casg}{\cosalpha}{\singamma}
+%
+\tdplotmult{\cbsg}{\cosbeta}{\singamma}
+\tdplotmult{\cbcg}{\cosbeta}{\cosgamma}
+%
+\tdplotmult{\casbsg}{\casb}{\singamma}
+\tdplotmult{\casbcg}{\casb}{\cosgamma}
+%
+%determine rotation matrix elements for Euler transformation
+\pgfmathsetmacro{\raaeul}{\cacb}
+\pgfmathsetmacro{\rabeul}{\casbsg - \sacg}
+\pgfmathsetmacro{\raceul}{\sasg + \casbcg}
+\pgfmathsetmacro{\rbaeul}{\sacb}
+\pgfmathsetmacro{\rbbeul}{\sasbsg + \cacg}
+\pgfmathsetmacro{\rbceul}{\sasbcg - \casg}
+\pgfmathsetmacro{\rcaeul}{-\sinbeta}
+\pgfmathsetmacro{\rcbeul}{\cbsg}
+\pgfmathsetmacro{\rcceul}{\cbcg}
+}
+}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%     Define acronyms     %%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newacronym{imu}{IMU}{inertial measurement unit}
+\newacronym{gnss}{GNSS}{global navigation satellite system}
+\newacronym{uwb}{UWB}{ultrawideband}
+\newacronym{mems}{MEMS}{microelectromechanical system}
+\newacronym{map}{MAP}{maximum a posteriori}
+\newacronym{ml}{ML}{maximum likelihood}
+\newacronym{rmse}{RMSE}{root mean square error}
+\newacronym{rms}{RMS}{root mean square}
+\newacronym{kf}{KF}{Kalman filter}
+\newacronym{ekf}{EKF}{extended Kalman filter}
+\newacronym{pf}{PF}{particle filter}
+\newacronym{nlos}{NLOS}{non-line-of-sight}
+\newacronym{nls}{NLS}{nonlinear least squares}
+\newacronym{ls}{LS}{least squares}
+\newacronym{mekf}{MEKF}{multiplicative extended Kalman filter}
+\newacronym{rts}{RTS}{Rauch-Tung-Striebel}
+\newacronym{slam}{SLAM}{simultaneous localization and mapping}
+\newacronym{vr}{VR}{virtual reality}
+\newacronym{ar}{AR}{augmented reality}
+\newacronym{uav}{UAV}{unmanned aerial vehicle}
+\newacronym{bfgs}{BFGS}{Broyden-Fletcher-Goldfarb-Shanno}
+\newacronym{toa}{TOA}{time of arrival}
+\newacronym{ros}{ROS}{robot operating system}
+
+\newglossarystyle{mystyleAbbr}
+{%
+  \renewenvironment{theglossary}%
+  {
+    % Start the tabular environment
+        \begin{tabular}{l p{\glsdescwidth}}
+    \toprule
+    \textbf{Abbreviation} & \textbf{Meaning} \\
+    \midrule
+  }%
+  {% end of glossary
+     \bottomrule
+     \end{tabular}%
+  }%
+  % Header has been incorporated into \begin{theglossary}
+  \renewcommand*{\glossaryheader}{}%
+  % Don't do anything between letter groups
+  \renewcommand*{\glsgroupheading}[1]{}%
+  \renewcommand*{\glsgroupskip}{}%
+  % Set display for each the acronym entry
+  \renewcommand{\glossentry}[2]{%
+    \glstarget{##1}{\glsentryshort{##1}}% short form
+    &
+    \Glsentrylong{##1}% long form
+    \\% end of row
+  }%
+  % No sub-entries, so \subglossentry doesn't need redefining
+}
+
+\newglossarystyle{mystyleNot}
+{%
+  \renewenvironment{theglossary}%
+  {
+    % Start the tabular environment
+   \begin{tabular}{l p{\glsdescwidth}}
+    \toprule
+    {\rlap{\textbf{Notation}}\hphantom{\textbf{Abbreviation}}}
+     & \textbf{Meaning} \\
+    \midrule
+  }%
+  {% end of glossary
+     \bottomrule
+     \end{tabular}%
+  }%
+  % Header has been incorporated into \begin{theglossary}
+  \renewcommand*{\glossaryheader}{}%
+  % Don't do anything between letter groups
+  \renewcommand*{\glsgroupheading}[1]{}%
+  \renewcommand*{\glsgroupskip}{}%
+  % Set display for each the acronym entry
+  \renewcommand{\glossentry}[2]{%
+    \glstarget{##1}{\glsentrytext{##1}}% text field
+    &
+    \glsentrydesc{##1}% description field
+    \\% end of row
+  }%
+  % No sub-entries, so \subglossentry doesn't need redefining
+}
+
+\newglossarystyle{mystyleCoord}
+{%
+  \renewenvironment{theglossary}%
+  {
+    % Start the tabular environment
+   \begin{tabular}{l p{\glsdescwidth}}
+    \toprule
+    {\rlap{\textbf{Notation}}\hphantom{\textbf{Abbreviation}}}
+     & \textbf{Coordinate frame} \\
+    \midrule
+  }%
+  {% end of glossary
+     \bottomrule
+     \end{tabular}%
+  }%
+  % Header has been incorporated into \begin{theglossary}
+  \renewcommand*{\glossaryheader}{}%
+  % Don't do anything between letter groups
+  \renewcommand*{\glsgroupheading}[1]{}%
+  \renewcommand*{\glsgroupskip}{}%
+  % Set display for each the acronym entry
+  \renewcommand{\glossentry}[2]{%
+    \glstarget{##1}{\glsentrytext{##1}}% text field
+    &
+    \glsentrydesc{##1}% description field
+    \\% end of row
+  }%
+  % No sub-entries, so \subglossentry doesn't need redefining
+}
+
+\def\hrulethick{\leavevmode\leaders\hrule height 0.08em\hfill\kern\z@}
+ 
+\newenvironment{myexample}[1]
+{\vspace{2mm} \par\noindent\hrulethick
+\vspace{-2mm}
+   \begin{example}[#1]}
+   {\par\noindent\hrulethick \vspace{-2mm}
+   \end{example} \vspace{2mm}}
+

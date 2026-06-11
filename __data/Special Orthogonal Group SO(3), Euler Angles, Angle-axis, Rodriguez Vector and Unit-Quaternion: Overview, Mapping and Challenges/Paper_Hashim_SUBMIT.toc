@@ -1,0 +1,43 @@
+\babel@toc {english}{}\relax 
+\contentsline {section}{\numberline {1}Introduction}{3}{section.1}%
+\contentsline {section}{\numberline {2}Preliminaries and Math Notation }{5}{section.2}%
+\contentsline {subsection}{\numberline {2.1}$\PazoBB {SO}\left (3\right )$ Preliminaries}{6}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Angle-axis parameterization preliminaries}{7}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Rodriguez vector preliminaries}{7}{subsection.2.3}%
+\contentsline {subsection}{\numberline {2.4}Unit-quaternion preliminaries}{8}{subsection.2.4}%
+\contentsline {subsection}{\numberline {2.5}Useful math identities}{8}{subsection.2.5}%
+\contentsline {section}{\numberline {3}Special Orthogonal Group $\PazoBB {SO}\left (3\right )$ }{8}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Attitude dynamics }{9}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Normalized Euclidean distance}{10}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Normalized Euclidean distance dynamics}{11}{subsection.3.3}%
+\contentsline {subsubsection}{\numberline {3.3.1}Discrete Attitude dynamics}{11}{subsubsection.3.3.1}%
+\contentsline {subsection}{\numberline {3.4}Attitude error and attitude error dynamics}{13}{subsection.3.4}%
+\contentsline {section}{\numberline {4}Euler Parameterization }{13}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Attitude parameterization through Euler angles}{14}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Euler angles from $\PazoBB {SO}\left (3\right )$}{15}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Angular velocities transformation}{16}{subsection.4.3}%
+\contentsline {subsection}{\numberline {4.4}Detailed derivation of Euler rate}{17}{subsection.4.4}%
+\contentsline {subsection}{\numberline {4.5}Euler parameterization problem}{19}{subsection.4.5}%
+\contentsline {section}{\numberline {5}Angle-axis Parameterization}{19}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Mapping: From/To unit vector and angle of rotation to/from other representations}{19}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Problems of angle-axis parameterization: }{22}{subsection.5.2}%
+\contentsline {section}{\numberline {6}Rodriguez Vector Parameterization}{22}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Mapping: From/To Rodriguez vector to/from other representations}{22}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Attitude measurements}{27}{subsection.6.2}%
+\contentsline {subsection}{\numberline {6.3}Rodriguez vector dynamics}{29}{subsection.6.3}%
+\contentsline {subsection}{\numberline {6.4}Attitude error and attitude error dynamics in the sense of Rodriguez vector}{29}{subsection.6.4}%
+\contentsline {subsection}{\numberline {6.5}Problems of Rodriguez vector parameterization: }{30}{subsection.6.5}%
+\contentsline {section}{\numberline {7}Unit-quaternion}{30}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Quaternion multiplication}{31}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}Mapping: From/To unit-quaternion to/from other representations}{32}{subsection.7.2}%
+\contentsline {subsection}{\numberline {7.3}Attitude measurements}{35}{subsection.7.3}%
+\contentsline {subsection}{\numberline {7.4}Unit-quaternion attitude dynamics and measurements}{36}{subsection.7.4}%
+\contentsline {subsubsection}{\numberline {7.4.1}Continuous Unit-quaternion Attitude dynamics}{36}{subsubsection.7.4.1}%
+\contentsline {subsubsection}{\numberline {7.4.2}Discrete Unit-quaternion Attitude dynamics}{36}{subsubsection.7.4.2}%
+\contentsline {subsubsection}{\numberline {7.4.3}Sensor Measurements}{37}{subsubsection.7.4.3}%
+\contentsline {subsection}{\numberline {7.5}Rotational acceleration}{38}{subsection.7.5}%
+\contentsline {subsection}{\numberline {7.6}Unit-quaternion update}{38}{subsection.7.6}%
+\contentsline {subsection}{\numberline {7.7}Unit-quaternion error and error derivative}{38}{subsection.7.7}%
+\contentsline {subsection}{\numberline {7.8}Problem of unit-quaternion }{40}{subsection.7.8}%
+\contentsline {section}{\numberline {8}Simulation }{41}{section.8}%
+\contentsline {section}{\numberline {9}Conclusion }{48}{section.9}%

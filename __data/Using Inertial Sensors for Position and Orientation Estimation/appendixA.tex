@@ -1,0 +1,119 @@
+% !TEX spellcheck = en-US
+\chapter{Orientation Parametrizations}
+\label{app:rotation}
+In \Sectionref{sec:app-rotation-quatAlg} of this appendix, we will summarize some important results on quaternion algebra that we make frequent use of throughout this tutorial. In \Sectionref{sec:app-rotation-conv}, we summarize some results on how to convert between the different orientation parametrizations. 
+
+\section{Quaternion algebra}
+\label{sec:app-rotation-quatAlg}
+A quaternion is a $4$-dimensional vector $q$, 
+\begin{align}
+q = \begin{pmatrix} q_0 & q_v^\Transp \end{pmatrix}^\Transp = \begin{pmatrix} q_0 & q_1 & q_2 & q_3 \end{pmatrix}^\Transp.
+\end{align}
+A special case is the unit quaternion, for which $\| q\|_2 = 1$. We use unit quaternions as a parametrization of orientations. An example of a quaternion that is not a unit quaternion and that we frequently encounter in this tutorial is the quaternion representation of a vector. For a vector $v$, its quaternion representation is given by 
+\begin{align}
+\bar{v} = 
+\begin{pmatrix} 
+0 \\ v
+\end{pmatrix}.
+\end{align}
+The rotation of a vector $v$ by a unit quaternion $q$ can be written as
+\begin{align}
+q \odot \bar{v} \odot q^\conj.
+\end{align}
+Here, the quaternion multiplication $\odot$ of two quaternions $p$ and $q$ is defined as
+\begin{align}
+p \odot q = \begin{pmatrix} p_0 q_0 - p_v \cdot q_v \\ p_0 q_v + q_0 p_v + p_v \times q_v \end{pmatrix}.
+\end{align}
+This can alternatively be defined in terms of the left and right multiplication matrices
+\begin{align} 
+p \odot q = p^\leftMult q = q^\rightMult p,
+\end{align}
+with 
+\begin{align}
+p^\leftMult &\triangleq \begin{pmatrix} p_0 & -p_v^\Transp \\ p_v & p_0 \mathcal{I}_3 + [p_v \times] \end{pmatrix}, \qquad q^\rightMult \triangleq \begin{pmatrix} q_0 & -q_v^\Transp \\ q_v & q_0 \mathcal{I}_3 - [q_v \times] \end{pmatrix},
+\end{align}
+where $[q_v \times]$ denotes the cross product matrix
+\begin{align}
+[q_v \times] = \begin{pmatrix} 0 & -q_3 & q_2 \\ q_3 & 0 & -q_1 \\ -q_2 & q_1 & 0 \end{pmatrix}.
+\label{eq:app-matrixCross}
+\end{align}
+The quaternion conjugate is given by 
+\begin{align}
+q^\conj = \begin{pmatrix} q_0 \\ - q_v\end{pmatrix}.
+\end{align}
+Hence, the rotation of the vector $v$ is given by
+\begin{align}
+q \odot \bar{v} \odot q^\conj &= q^\leftMult \left( q^\conj \right)^\rightMult \bar{v} \nonumber \\
+&= \begin{pmatrix} q_0 & -q_v^\Transp \\ q_v & q_0 \mathcal{I}_3 + [q_v \times] \end{pmatrix} \begin{pmatrix} q_0 & -q_v^\Transp \\ q_v & q_0 \mathcal{I}_3 - [q_v \times] \end{pmatrix}  \begin{pmatrix} 0 \\ v \end{pmatrix} \nonumber \\
+&=\begin{pmatrix} 1 & 0_{1 \times 3} \\ 0_{3 \times 1} & q_v q_v^\Transp  + q_0^2 \mathcal{I}_3 + 2 q_0 [q_v \times]  + [q_v \times ]^2 \end{pmatrix}  
+\begin{pmatrix} 0 \\ v \end{pmatrix}.
+\label{eq:app-rotVectorq}
+\end{align}
+
+\section{Conversions between different parametrizations}
+\label{sec:app-rotation-conv}
+A quaternion $q$ can be converted into a rotation matrix $R$ as
+\begin{align}
+R &= q_v q_v^\Transp  + q_0^2 \mathcal{I}_3 + 2 q_0 [q_v \times]  + [q_v \times ]^2 \nonumber \\
+&= \begin{pmatrix} 2 q_0^2 + 2 q_1^2 - 1 & 2 q_1 q_2 - 2 q_0 q_3 & 2 q_1 q_3 + 2 q_0 q_2 \\ 2 q_1 q_2 + 2 q_0 q_3 & 2 q_0^2 + 2 q_2^2 - 1 & 2 q_2 q_3 - 2 q_0 q_1 \\ 2 q_1 q_3 - 2 q_0 q_2 & 2 q_2 q_3 + 2 q_0 q_1 & 2 q_0^2 + 2 q_3^2 -1 \end{pmatrix}.
+\label{eq:app-defRq}
+\end{align}
+Note the similarity with~\eqref{eq:app-rotVectorq}, where the rotation of the vector $v$ can equivalently be expressed as $Rv$. Conversely, a rotation matrix
+\begin{align}
+R = \begin{pmatrix}
+R_{11} & R_{12} & R_{13} \\
+R_{21} & R_{22} & R_{23} \\
+R_{31} & R_{32} & R_{33} 
+\end{pmatrix},
+\end{align}
+can be converted into a quaternion as
+\begin{align}
+q_0 = \tfrac{\sqrt{1 + \Tr{R}}}{2}, \qquad q_v = \tfrac{1}{4 q_0} \begin{pmatrix} 
+R_{32} - R_{23} \\
+        R_{13} - R_{31} \\
+        R_{21} - R_{12}
+\end{pmatrix}. 
+\label{eq:app-quatToRmat}
+\end{align}
+Note that a practical implementation needs to take care of the fact that the conversion~\eqref{eq:app-quatToRmat} only leads to sensible results if $1 + \Tr{R} > 0$ and $q_0 \neq 0$. To resolve this issue, the conversion is typically performed in different ways depending on the trace of the matrix $R$ and its diagonal values, see \eg\cite{euclideanSpace}. 
+
+A rotation vector $\oriError$ can be expressed in terms of a unit quaternion $q$ via the quaternion exponential as
+\begin{align}
+q = \expq \oriError = \begin{pmatrix} \cos \| \oriError \|_2 \\ \tfrac{\oriError}{\| \oriError \|_2} \sin \| \oriError \|_2 \end{pmatrix}.
+\label{eq:app-quatExp}
+\end{align}
+Note that any practical implementation needs to take care of the fact that this equation is singular at $\oriError = 0$, in which case $\expq \oriError = \begin{pmatrix} 1 & 0 & 0 & 0 \end{pmatrix}^\Transp$. The inverse operation is executed by the quaternion logarithm, 
+\begin{align}
+\oriError = \logq q = \tfrac{\arccos q_0}{\sin \arccos q_0} q_v = \tfrac{\arccos q_0}{\| q_v\|_2} q_v.
+\label{eq:app-quatLog}
+\end{align}
+Note that this equation is singular at $q_v = 0$. In this case, $\log q$ should return $0_{3 \times 1}$. 
+ 
+The rotation vector $\oriError$ can also be converted into a rotation matrix as 
+\begin{align}
+R = \expR \oriError = \exp \left( [\oriError \times] \right), \qquad \oriError = \logR R = \begin{pmatrix} (\log R)_{32} \\ (\log R)_{13} \\ (\log R)_{21} \end{pmatrix},
+\end{align}
+where $\log R$ is the matrix logarithm and $\logR$ and $\expR$ are the mappings introduced in~\eqref{eq:models-expqR-map} and~\eqref{eq:models-logqR}.
+
+A rotation in terms of Euler angles can be expressed as a rotation matrix $R$ as 
+{\footnotesize{
+\begin{align}
+\label{eq:app-rotMatrix}
+R 
+&= \begin{pmatrix} 1 & 0 & 0 \\ 0 & \cos \phi & \sin \phi \\ 0 & -\sin \phi & \cos \phi \end{pmatrix}
+\begin{pmatrix} \cos \theta & 0 & -\sin \theta \\ 0 & 1 & 0 \\ \sin \theta & 0 & \cos \theta \end{pmatrix}
+\begin{pmatrix} \cos \psi & \sin \psi & 0 \\ -\sin \psi & \cos \psi & 0 \\ 0 & 0 & 1 \end{pmatrix} \\
+&= \begin{pmatrix} \cos \theta \cos \psi & \cos \theta \sin \psi & -\sin \theta \\ 
+\sin \phi \sin \theta \cos \psi - \cos \phi \sin \psi & \sin \phi \sin \theta \sin \psi + \cos \phi \cos \psi & \sin \phi \cos \theta \\ 
+\cos \phi \sin \theta \cos \psi + \sin \phi \sin \psi & \cos \phi \sin \theta \sin \psi - \sin \phi \cos \psi & \cos \phi \cos \theta \end{pmatrix}.\nonumber
+\end{align}}}%
+The rotation matrix $R$ can be converted into Euler angles as
+\begin{subequations}
+\begin{align}
+\psi &= \tan^{-1} \left( \tfrac{R_{12}}{R_{11}} \right) = \tan^{-1} \left( \tfrac{2 q_1 q_2 - 2 q_0 q_3}{2 q_0^2 + 2 q_1^2 - 1} \right), \\
+\theta &= -\sin^{-1} \left( R_{13} \right) = - \sin^{-1} \left( 2 q_1 q_3 + 2 q_0 q_2 \right), \\
+\phi &= \tan^{-1} \left( \tfrac{R_{23}}{R_{33}} \right) = \tan^{-1} \left( \tfrac{2 q_2 q_3 - 2 q_0 q_1}{2 q_0^2 + 2 q_3^2 - 1} \right).
+\end{align}
+\end{subequations}
+
+Using the relations presented in this section, it is possible to convert the parametrizations discussed in \Sectionref{sec:models-paramOri} into each other. 

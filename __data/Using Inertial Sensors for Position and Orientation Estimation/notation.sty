@@ -1,0 +1,382 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%% Coordinate frames %%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newglossaryentry{cf:n}
+{% This entry goes in the ‘coordinateFrames’ glossary:
+type=coordinateFrames,
+name={$n$},
+text={$n$},
+description={Navigation frame},
+sort={n}}
+
+\newglossaryentry{cf:b}
+{% This entry goes in the ‘coordinateFrames’ glossary:
+type=coordinateFrames,
+name={$b$},
+text={$b$},
+description={Body frame},
+sort={b}}
+
+\newglossaryentry{cf:i}
+{% This entry goes in the ‘coordinateFrames’ glossary:
+type=coordinateFrames,
+name={$i$},
+text={$i$},
+description={Inertial frame},
+sort={i}}
+
+\newglossaryentry{cf:e}
+{% This entry goes in the ‘coordinateFrames’ glossary:
+type=coordinateFrames,
+name={$e$},
+text={$e$},
+description={Earth frame},
+sort={e}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%% General notation %%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Under a: Everything to do with general notation of states, parameters and measurements
+\newglossaryentry{not:state}
+{% This entry goes in the ‘notation’ glossary:
+type=notation,
+name={$x_t$},
+text={$x_t$},
+description={State vector $x$ at time $t$.},
+sort={aa}}
+
+\newglossaryentry{not:meas}
+{% This entry goes in the ‘notation’ glossary:
+type=notation,
+name={$y_t$},
+text={$y_t$},
+description={Measurement vector $y$ at time $t$.},
+sort={ab}}
+
+\newglossaryentry{not:parameters}
+{% This entry goes in the ‘notation’ glossary:
+type=notation,
+name={$\theta$},
+text={$\theta$},
+description={Parameter vector.},
+sort={ac}}
+
+\newglossaryentry{not:statemeasvector}
+{% This entry goes in the ‘notation’ glossary:
+type=notation,
+name={$x_{1:N}$, $y_{1:N}$},
+text={$x_{1:N}$, $y_{1:N}$},
+description={States and measurements for $t = 1,\hdots, N$.},
+sort={ad}}
+
+\newglossaryentry{not:estimate}
+{% This entry goes in the ‘notation’ glossary:
+type=notation,
+name={$\hat{x}$},
+text={$\hat{x}$},
+description={Estimate of $x$.},
+sort={ae}}
+
+% Under b: Everything to do with general vectors / rotations in coordinate frames
+\newglossaryentry{not:quat}
+{% This entry goes in the ‘notation’ glossary:
+type=notation,
+name={$q^\text{nb}$},
+text={$q^\text{nb}$},
+description={Unit quaternion representing the rotation from the $b$-frame to the $n$-frame.},
+sort={ba}}
+
+\newglossaryentry{not:rotMatrix}
+{% This entry goes in the ‘notation’ glossary:
+type=notation,
+name={$R^\text{nb}$},
+text={$R^\text{nb}$},
+description={Rotation matrix representing the rotation from the $b$-frame to the $n$-frame.},
+sort={bb}}
+
+\newglossaryentry{not:xina}
+{% This entry goes in the ‘notation’ glossary:
+type=notation,
+name={$x^\text{n}$},
+text={$x^\text{n}$},
+description={Vector $x$ expressed in the $n$-frame.},
+sort={bc}}
+
+% Under c: Everything to do with sets
+\newglossaryentry{not:realnumbers}
+{% This entry goes in the ‘notation’ glossary:
+type=notation,
+name={$\mathbb{R}^N$},
+text={$\mathbb{R}^N$},
+description={Set of real numbers in N dimensions.},
+sort={ca}}
+
+\newglossaryentry{not:rotationset}
+{% This entry goes in the ‘notation’ glossary:
+type=notation,
+name={$\SO{3}$},
+text={$\SO{3}$},
+description={Special orthogonal group in three dimensions.},
+sort={cb}}
+
+\newglossaryentry{not:element}
+{% This entry goes in the ‘notation’ glossary:
+type=notation,
+name={$\in$},
+text={$\in$},
+description={Element of.},
+sort={cc}}
+
+\newglossaryentry{not:subset}
+{% This entry goes in the ‘notation’ glossary:
+type=notation,
+name={$\subseteq$},
+text={$\subseteq$},
+description={Subset of.},
+sort={cd}}
+
+\newglossaryentry{not:empty}
+{% This entry goes in the ‘notation’ glossary:
+type=notation,
+name={$\emptyset$},
+text={$\emptyset$},
+description={Empty set.},
+sort={ce}}
+
+% Under d: Everything to do with distributions
+\newglossaryentry{not:gaussian}
+{% This entry goes in the ‘notation’ glossary:
+type=notation,
+name={$\mathcal{N}(\mu, \Sigma)$},
+text={$\mathcal{N}(\mu, \Sigma)$},
+description={Gaussian distribution with mean $\mu$ and covariance $\Sigma$.},
+sort={da}}
+
+\newglossaryentry{not:gaussianVar}
+{% This entry goes in the ‘notation’ glossary:
+type=notation,
+name={$\mathcal{N}(x \, ; \, \mu, \Sigma)$},
+text={$\mathcal{N}(x \, ; \, \mu, \Sigma)$},
+description={Random variable $x$ that is normal distributed with mean $\mu$ and covariance $\Sigma$},
+sort={db}}
+
+\newglossaryentry{not:prob}
+{% This entry goes in the ‘notation’ glossary:
+type=notation,
+name={$p(\cdot)$},
+text={$p(\cdot)$},
+description={Probability density function.},
+sort={dc}}
+
+\newglossaryentry{not:probJoint}
+{% This entry goes in the ‘notation’ glossary:
+type=notation,
+name={$p(a,b)$},
+text={$p(a,b)$},
+description={Joint probability of $a$ and $b$.},
+sort={dd}}
+
+\newglossaryentry{not:probCond}
+{% This entry goes in the ‘notation’ glossary:
+type=notation,
+name={$p(a \mid b)$},
+text={$p(a \mid b)$},
+description={Conditional distribution of $a$ given $b$.},
+sort={de}}
+
+\newglossaryentry{not:distr}
+{% This entry goes in the ‘notation’ glossary:
+type=notation,
+name={$\sim$},
+text={$\sim$},
+description={Distributed according to.},
+sort={df}}
+
+\newglossaryentry{not:propto}
+{% This entry goes in the ‘notation’ glossary:
+type=notation,
+name={$\propto$},
+text={$\propto$},
+description={Proportional to.},
+sort={dg}}
+
+% e: misc
+\newglossaryentry{not:id}
+{% This entry goes in the ‘notation’ glossary:
+type=notation,
+name={$\mathcal{I}_n$},
+text={$\mathcal{I}_n$},
+description={Identity matrix of size $n \times n$.},
+sort={ea}}
+
+\newglossaryentry{not:zero}
+{% This entry goes in the ‘notation’ glossary:
+type=notation,
+name={$0_{m \times n}$},
+text={$0_{m \times n}$},
+description={Zero matrix of size $m \times n$.},
+sort={eb}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%  Operators %%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% a: Operations on scalars
+\newglossaryentry{op:argmax}
+{% This entry goes in the ‘notation’ glossary:
+type=operators,
+name={$\argmax$},
+text={$\argmax$},
+description={Maximizing argument.},
+sort={aa}}
+
+\newglossaryentry{op:argmin}
+{% This entry goes in the ‘notation’ glossary:
+type=operators,
+name={$\argmin$},
+text={$\argmin$},
+description={Minimizing argument.},
+sort={ab}}
+
+% b: Operations on vectors
+\newglossaryentry{op:dot}
+{% This entry goes in the ‘notation’ glossary:
+type=operators,
+name={$a \cdot b$},
+text={$a \cdot b$},
+description={Inner product of the vectors $a$ and $b$.},
+sort={ba}}
+
+\newglossaryentry{op:cross}
+{% This entry goes in the ‘notation’ glossary:
+type=operators,
+name={$a \times b$},
+text={$a \times b$},
+description={Cross product of the vectors $a$ and $b$.},
+sort={bb}}
+
+\newglossaryentry{op:mcross}
+{% This entry goes in the ‘notation’ glossary:
+type=operators,
+name={$[a \times ]$},
+text={$[a \times ]$},
+description={Cross product matrix of the vector $a$ as defined in~\eqref{eq:models-crossproductMatrix}.},
+sort={bc}}
+
+\newglossaryentry{op:twonorm}
+{% This entry goes in the ‘notation’ glossary:
+type=operators,
+name={$\| a \|_2$},
+text={$\| a \|_2$},
+description={Two-norm of the vector $a$.},
+sort={bd}}
+
+\newglossaryentry{op:weightednorm}
+{% This entry goes in the ‘notation’ glossary:
+type=operators,
+name={$\| a \|_W$},
+text={$\| a \|_W$},
+description={Weighted norm of the vector $a$.},
+sort={be}}
+
+\newglossaryentry{op:abar}
+{% This entry goes in the ‘notation’ glossary:
+type=operators,
+name={$\bar{a}$},
+text={$\bar{a}$},
+description={Quaternion representation of the vector $a$ as defined in~\eqref{eq:models-quatVector}.},
+sort={bf}}
+
+% c: Operations on matrices
+\newglossaryentry{op:transp}
+{% This entry goes in the ‘notation’ glossary:
+type=operators,
+name={$A^\Transp$},
+text={$A^\Transp$},
+description={Transpose of the matrix $A$.},
+sort={ca}}
+
+\newglossaryentry{op:inverse}
+{% This entry goes in the ‘notation’ glossary:
+type=operators,
+name={$A^{-1}$},
+text={$A^{-1}$},
+description={Inverse of the matrix $A$.},
+sort={cb}}
+
+\newglossaryentry{op:det}
+{% This entry goes in the ‘notation’ glossary:
+type=operators,
+name={$\det A$},
+text={$\det A$},
+description={Determinant of the matrix $A$.},
+sort={cc}}
+
+\newglossaryentry{op:expR}
+{% This entry goes in the ‘notation’ glossary:
+type=operators,
+name={$\expR (\oriError)$},
+text={$\expR (\oriError)$},
+description={Mapping from the vector $\oriError$ to a rotation matrix as defined in~\eqref{eq:models-expR-map}.},
+sort={cd}}
+
+\newglossaryentry{op:logR}
+{% This entry goes in the ‘notation’ glossary:
+type=operators,
+name={$\logR (R)$},
+text={$\logR (R)$},
+description={Mapping from the rotation matrix $R$ to a vector as defined in~\eqref{eq:models-logR-map}.},
+sort={ce}}
+
+% c: Operations on quaternions
+\newglossaryentry{op:qc}
+{% This entry goes in the ‘notation’ glossary:
+type=operators,
+name={$q^\conj$},
+text={$q^\conj$},
+description={Conjugate of the unit quaternion $q$ as defined in~\eqref{eq:models-quatConj}.},
+sort={da}}
+
+\newglossaryentry{op:qmult}
+{% This entry goes in the operators �glossary:
+type=operators,
+name={$\odot$},
+text={$\odot$},
+description={Quaternion multiplication as defined in~\eqref{eq:models-quatMult}.},
+sort={db}}
+
+\newglossaryentry{op:qleft}
+{% This entry goes in the operators �glossary:
+type=operators,
+name={$q^\leftMult$},
+text={$q^\leftMult$},
+description={Left quaternion multiplication matrix of the quaternion $q$ as defined in~\eqref{eq:models-leftRightQuatMult}.},
+sort={dc}}
+
+\newglossaryentry{op:qright}
+{% This entry goes in the operators �glossary:
+type=operators,
+name={$q^\rightMult$},
+text={$q^\rightMult$},
+description={Right quaternion multiplication matrix of the quaternion $q$ as defined in~\eqref{eq:models-leftRightQuatMult}.},
+sort={dd}}
+
+\newglossaryentry{op:expq}
+{% This entry goes in the ‘notation’ glossary:
+type=operators,
+name={$\expq (\oriError)$},
+text={$\expq (\oriError)$},
+description={Mapping from the vector $\oriError$ to a unit quaternion as defined in~\eqref{eq:models-expq-map}.},
+sort={de}}
+
+\newglossaryentry{op:logq}
+{% This entry goes in the ‘notation’ glossary:
+type=operators,
+name={$\logq (q)$},
+text={$\logq (q)$},
+description={Mapping from the unit quaternion $q$ to a vector as defined in~\eqref{eq:models-logq-map}.},
+sort={df}}
+
+
+\glsaddall[types={notation,coordinateFrames,operators}]

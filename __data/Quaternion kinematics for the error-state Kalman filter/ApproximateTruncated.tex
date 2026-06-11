@@ -1,0 +1,214 @@
+% !TEX root = kinematics.tex
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Approximate methods using truncated series}
+
+In the previous section, we have devised closed-form expressions for the transition matrix of complex, IMU-driven dynamic systems written in their linearized, error-state form $\dot{\delta\bfx}=\bfA\delta\bfx$. 
+Closed form expressions may always be of interest, but it is unclear up to which point we should be worried about high order errors and their impact on the performance of real algorithms. 
+This remark is particularly relevant in systems where IMU integration errors are observed (and thus compensated for) at relatively high rates, such as visual-inertial or GPS-inertial fusion schemes.
+
+In this section we devise methods for approximating the transition matrix. 
+They start from the same assumption that the transition matrix can be expressed as a Taylor series, and then truncate these series at the most significant terms. 
+This truncation can be done system-wise, or block-wise.
+
+%=============================================================
+\subsection{System-wise truncation}
+
+%-------------------------------------------------------------
+\subsubsection{First order truncation: the finite differences method}
+
+A typical, widely used integration method for systems of the type
+%
+\begin{equation*}
+\dot\bfx = f(t,\bfx) 
+\end{equation*}
+%
+is based on the finite-differences method for the computation of the derivative, \ie,
+%
+\begin{equation}
+\dot\bfx \triangleq \lim_{\delta t\to 0} \frac{\bfx(t+\delta t)-\bfx(t)}{\delta t} \approx \frac{\bfx_{n+1}-\bfx_n}{\Dt}ª.
+\end{equation}
+%
+This leads immediately to
+%
+\begin{equation}
+\bfx_{n+1} \approx \bfx_n + \Dt\,f(t_n,\bfx_n)~,
+\end{equation}
+%
+which is precisely the Euler method. 
+Linearization of the function $f()$ at the beginning of the integration interval leads to
+%
+\begin{subequations}
+\begin{equation}
+\bfx_{n+1} \approx \bfx_n + \Dt\,\bfA\,\bfx_n~,
+\end{equation}
+%
+where $ \bfA\triangleq\dpar{f}{\bfx}{(t_n,\bfx_n)}$ is a Jacobian matrix. 
+This is strictly equivalent to writing the exponential solution to the linearized differential equation and truncating the series at the linear term (\ie, the following relation is identical to the previous one),
+%
+\begin{equation}
+\bfx_{n+1} = e^{\bfA\Dt}\bfx_n \approx (\bfI + \Dt\,\bfA)\,\bfx_n~.
+\end{equation}
+\end{subequations}
+%
+This means that the Euler method (\appRef{sec:Euler}), the finite-differences method, and the first-order system-wise Taylor truncation method, are all the same. 
+We get the approximate transition matrix,
+%
+\begin{equation}
+\eqbox{\Phi \approx \bfI+\Dt\bfA}~.
+\end{equation}
+
+For the simplified IMU example of \secRef{sec:IMUexample}, the finite-differences method results in the approximated transition matrix
+%
+\begin{equation}
+\Phi \approx \begin{bmatrix}
+\bfI & \bfI\Dt & 0 \\
+0 & \bfI & -\bfR\hatx{\bfa}\Dt \\
+0 & 0 & \bfI-\hatx{\bfomega\Dt}
+\end{bmatrix}~.
+\end{equation}
+%
+However, we already know from \secRef{sec:ClosedFormAngle} that the rotational term has a compact, closed-form solution, $\Phi_{\bftheta\bftheta}=\bfR(\bfomega \Dt)\tr$. 
+It is convenient to re-write the transition matrix according to it,
+%
+\begin{equation}
+\Phi \approx \begin{bmatrix}
+\bfI & \bfI\Dt & 0 \\
+0 & \bfI & -\bfR\hatx{\bfa}\Dt \\
+0 & 0 & \bfR\{\bfomega\Dt\}\tr
+\end{bmatrix}~.
+\end{equation}
+
+%-------------------------------------------------------------
+\subsubsection{N-th order truncation}
+
+Truncating at higher orders will increase the precision of the approximated transition matrix. 
+A particularly interesting order of truncation is that which exploits the sparsity of the result to its maximum. 
+In other words, the order after which no new non-zero terms appear.
+
+For the simplified IMU example of \secRef{sec:IMUexample}, this order is 2, resulting in
+%
+\begin{equation}
+{\bf\Phi} 
+\approx \bfI + \bfA\Dt + \frac12\bfA^2\Dt^2
+= \begin{bmatrix}
+\bfI & \bfI\Dt & -\frac12\bfR\hatx{\bfa}\Dt^2                           \\
+0    & \bfI    &        -\bfR\hatx{\bfa}(\bfI - \frac12\hatx{\bfomega}\Dt)\Dt  \\
+0    & 0       &         \bfR\{\bfomega\Dt\}\tr
+\end{bmatrix}~.
+\end{equation}
+
+In the full IMU example of \secRef{sec:closedFormFullImu}, the is order 3, resulting in
+%
+\begin{equation}
+{\bf\Phi} \approx \bfI + \bfA\Dt + \frac12\bfA^2\Dt^2 + \frac16\bfA^3\Dt^3~,
+\end{equation}
+%
+whose full form is not given here for space reasons. 
+The reader may consult the expressions of $\bfA$, $\bfA^2$ and $\bfA^3$ in \secRef{sec:closedFormFullImu}.
+
+
+%=============================================================
+\subsection{Block-wise truncation}
+\label{sec:BlockWiseTruncation}
+A fairly good approximation to the closed forms previously explained results from truncating the Taylor series of each block of the transition matrix at the first significant term. 
+That is, instead of truncating the series in full powers of $\bfA$, as we have just made above, we regard each block individually. 
+Therefore, truncation needs to be analyzed in a per-block basis. 
+We explore it with two examples.
+
+For the simplified IMU example of \secRef{sec:IMUexample}, we had series $\Sigma_1$ and $\Sigma_2$, which we can truncate as follows
+%
+\begin{empheq}{alignat=6}
+\Sigma_1 &= 
+   \bfI\Dt 
+&+ \frac{1}{2}\Theta_\bftheta\Dt^2 
+&+ \cdots 
+&{}
+&\approx \bfI\Dt \\
+\Sigma_2 &= 
+{}
+&  \frac{1}{2 }\bfI\Dt^2
+&+ \frac{1}{3!}\Theta_\bftheta\Dt^3 
+&+ \cdots 
+&\approx  \  \frac{1}{2}\bfI\Dt^2 
+& ~.
+\end{empheq}
+%
+This leads to the approximate transition matrix
+%
+\begin{equation}
+\Phi \approx \begin{bmatrix}
+\bfI & \bfI\Dt & -\frac12\bfR\hatx{\bfa} \Dt^2 \\
+0 & \bfI & -\bfR\hatx{\bfa} \Dt \\
+0 & 0 & \bfR(\bfomega \Dt)\tr
+\end{bmatrix}~,
+\end{equation}
+%
+which is more accurate than the one in the system-wide first-order truncation above (because of the upper-right term which has now appeared), yet it remains easy to obtain and compute, especially when compared to the closed forms developed in \secRef{sec:ClosedFormInt}. 
+Again, observe that we have taken the closed-form for the lowest term, \ie, $\Phi_{\bftheta\bftheta}=\bfR(\bfomega \Dt)\tr$.
+
+In the general case, it suffices to approximate each $\Sigma_n$ except $\Sigma_0$ by the first term of its series, \ie,
+%
+\begin{equation}
+\eqbox{
+\Sigma_0=\bfR\{\bfomega\Dt\}\tr~,\qquad \Sigma_{n>0} \approx \frac{1}{n!}\bfI\Dt^n}  ~.
+\end{equation}%
+
+For the full IMU example, feeding the previous $\Sigma_n$ into \eqRef{equ:fullIMUtranmat} yields the approximated transition matrix,
+%
+\begin{equation}
+\Phi \approx \begin{bmatrix}
+\bfI & \bfI\Dt & -\frac{1}{2}\bfR\hatx{\bfa}\Dt^2 &  -\tfrac12\bfR\Dt^2 & \frac{1}{3!}\bfR\hatx{\bfa}\Dt^3 & \tfrac12\bfI\Dt^2 \\
+0 & \bfI & -\bfR\hatx{\bfa}\Dt &  -\bfR\Dt & \frac{1}{2}\bfR\hatx{\bfa}\Dt^2 & \bfI\Dt \\
+0 & 0 & \bfR\{\bfomega\Dt\}\tr &  0 & -\bfI\Dt & 0 \\
+0 & 0 & 0 & \bfI & 0 & 0 \\
+0 & 0 & 0 & 0 & \bfI & 0 \\
+0 & 0 & 0 & 0 & 0 & \bfI \\
+\end{bmatrix}\label{equ:FullIMU_PhiTrunc}
+\end{equation}
+%
+with (see \eqRef{equ:efull})
+%
+\begin{equation*}
+\bfa=\bfa_m-\bfa_b~,\quad\bfomega=\bfomega_m-\bfomega_b~,\quad\bfR=\bfR\{\bfq\}~,
+\end{equation*}
+%
+and where we have substituted the matrix blocks by their appropriate values (see also \eqRef{equ:efull}),
+%
+\begin{equation*}
+\bfP_\bfv=\bfI~, \quad 
+\bfV_\bftheta=-\bfR\hatx{\bfa}~, \quad 
+\bfV_\bfa=-\bfR~, \quad
+\bfV_\bfg=\bfI~, \quad
+\Theta_\bftheta=-\hatx\bfomega~, \quad
+\Theta_\bfomega=-\bfI 
+\end{equation*}
+
+A slight simplification of this method is to limit each block in the matrix to a certain maximum order $n$. 
+For $n=1$ we have,
+%
+\begin{equation}
+\Phi \approx \begin{bmatrix}
+\bfI & \bfI\Dt & 0 & 0 & 0 & 0 \\
+0 & \bfI & -\bfR\hatx{\bfa}\Dt &  -\bfR\Dt & 0 & \bfI\Dt \\
+0 & 0 & \bfR\{\bfomega\Dt\}\tr &  0 & -\bfI\Dt & 0 \\
+0 & 0 & 0 & \bfI & 0 & 0 \\
+0 & 0 & 0 & 0 & \bfI & 0 \\
+0 & 0 & 0 & 0 & 0 & \bfI \\
+\end{bmatrix}~,\label{equ:FullIMU_PhiTrunc1}
+\end{equation}
+%
+which is the Euler method, whereas for $n=2$,
+%
+\begin{equation}
+\Phi \approx \begin{bmatrix}
+\bfI & \bfI\Dt & -\frac{1}{2}\bfR\hatx{\bfa}\Dt^2 &  -\tfrac12\bfR\Dt^2 & 0 & \tfrac12\bfI\Dt^2 \\
+0 & \bfI & -\bfR\hatx{\bfa}\Dt &  -\bfR\Dt & \frac{1}{2}\bfR\hatx{\bfa}\Dt^2 & \bfI\Dt \\
+0 & 0 & \bfR\{\bfomega\Dt\}\tr &  0 & -\bfI\Dt & 0 \\
+0 & 0 & 0 & \bfI & 0 & 0 \\
+0 & 0 & 0 & 0 & \bfI & 0 \\
+0 & 0 & 0 & 0 & 0 & \bfI \\
+\end{bmatrix}~.\label{equ:FullIMU_PhiTrunc2}
+\end{equation}
+%
+For $n\ge3$ we have the full form \eqRef{equ:FullIMU_PhiTrunc}.

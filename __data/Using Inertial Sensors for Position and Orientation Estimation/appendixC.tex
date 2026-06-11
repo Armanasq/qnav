@@ -1,0 +1,73 @@
+% !TEX spellcheck = en-US
+\chapter{Gyroscope Bias Estimation}
+\label{app:estGyroBias}
+In this appendix, we will introduce the necessary components to extend Algorithms~\ref{alg:oriEst-smoothingOpt}--\ref{alg:oriEst-ekfOriError} to estimate an unknown gyroscope bias. Note that the measurement models are independent of the gyroscope bias. The dynamic models and time update equations are adapted as described below.
+
+\section{Smoothing in an optimization framework}
+To include a gyroscope bias in \Algorithmref{alg:oriEst-smoothingOpt}, a prior on the bias is included, leading to an additional term in the objective function as
+\begin{align}
+e_{\delta_\omega} = \delta_\omega, \qquad e_{\delta_\omega} \sim \mathcal{N}(0, \Sigma_{\delta_\omega}).
+\end{align}
+The derivatives in~\eqref{eq:oriEst-der} are complemented with
+\begin{align}
+\tfrac{\diff e_{\omega,t} }{\diff \delta_\omega} = \mathcal{I}_3, \qquad \tfrac{\diff e_{\delta_\omega} }{\diff \delta_\omega} = \mathcal{I}_3.
+\end{align}
+
+\section{Filtering in an optimization framework}
+To include estimation of a gyroscope bias in \Algorithmref{alg:oriEst-filteringOpt},~\eqref{eq:oriEst-filtOptCost} needs to take the gyroscope bias into account as 
+\begin{align}
+\tilde{q}^{\text{nb},(0)}_{t+1} = \hat{q}^\text{nb}_t \odot \expq \left( \tfrac{T}{2} ( y_{\omega,t} - \hat{\delta}_{\omega,t} ) \right).
+\end{align}
+Modeling the dynamics of the gyroscope bias as a random walk, $e_{\text{f},t}$ is extended from~\eqref{eq:oriEst-costDerFiltMarg} to 
+\begin{align}
+e_{\text{f},t} = \begin{pmatrix} 
+\oriError^\text{n}_{t}- 2 \logq \left(\hat{q}_{t-1}^\text{nb} \odot \expq (\tfrac{T}{2} y_{\omega,t-1} ) \odot  \tilde{q}_{t}^\text{bn} \right) \\
+\delta_{\omega,t} - \hat{\delta}_{\omega,t-1}
+\end{pmatrix}, 
+\end{align}
+where $\tfrac{\diff e_{\text{f},t}}{\diff x_t} = \mathcal{I}_6$ and $x_t = \begin{pmatrix} (\oriError^\text{n}_{t})^\Transp & \delta_{\omega,t}^\Transp \end{pmatrix}^\Transp$.
+
+The covariance matrix $P_{t+1 \mid t}$ is given by $P_{t+1 \mid t} = F_{t} P_{t \mid t} F_{t}^\Transp + G_{t} Q G_{t}^\Transp$ with
+\begin{subequations}
+\label{eq:app-estGyroBias-timeUpdateFiltOpt}
+\begin{align}
+F_t &= \begin{pmatrix}
+\mathcal{I}_3 & -T \tilde{R}_{t+1}^{\text{nb},(0)} \\
+0 & \mathcal{I}_3
+\end{pmatrix}, \label{eq:app-estGyroBias-timeUpdateFiltOpt-F} \\
+G_t &= \begin{pmatrix} T \tilde{R}_{t+1}^{\text{nb},(0)} & 0 \\ 0 & \mathcal{I}_3 \end{pmatrix}, \qquad
+Q = \begin{pmatrix} \Sigma_\omega & 0 \\ 0 & \Sigma_{\delta_{\omega,t}} \end{pmatrix}. \label{eq:app-estGyroBias-timeUpdateFiltOpt-GQ}
+\end{align} 
+\end{subequations}
+Note that a prior on the gyroscope bias at $t = 1$ also needs to be included. 
+
+\section{Extended Kalman filter with quaternion states}
+To include estimation of an unknown gyroscope bias in \Algorithmref{alg:oriEst-ekfQuat}, the matrices for the time update of the \gls{ekf} need to be adapted to
+\begin{subequations}
+\begin{align}
+F_t &= \begin{pmatrix}
+\left( \expq (\tfrac{T}{2} (y_{\omega,t} - \hat{\delta}_{\omega,t \mid t})) \right)^\rightMult & -\tfrac{T}{2} \left( \hat{q}^\text{nb}_{t \mid t} \right)^\leftMult \tfrac{\diff \expq (\delta_{\omega,t})}{\diff \delta_{\omega,t}} \\
+0_{3 \times 4} & \mathcal{I}_3
+\end{pmatrix}, \\
+Q &= \begin{pmatrix} \Sigma_\omega & 0 \\ 0 & \Sigma_{\delta_{\omega,t}} \end{pmatrix}, \qquad G_t = \begin{pmatrix} -\tfrac{T}{2} \left( \hat{q}^\text{nb}_{t \mid t} \right)^\leftMult \tfrac{\diff \expq (e_{\omega,t})}{\diff e_{\omega,t}} & 0 \\ 0 & \mathcal{I}_3 \end{pmatrix}.
+\end{align}
+\end{subequations}
+Note that also for this algorithm a prior on the gyroscope bias needs to be included. Furthermore, the renormalization of the covariance in~\eqref{eq:oriEst-ekfQuatRenorm} needs to be adjusted to the size of the covariance matrix as
+\begin{align}
+    \label{eq:app-estGyroBias-relinCovFiltOpt}
+    J_t = \begin{pmatrix} \tfrac{1}{\| \tilde{q}^\text{nb}_{t \mid t} \|_2^3} \tilde{q}^\text{nb}_{t \mid t} \left( \tilde{q}^\text{nb}_{t \mid t} \right)^\Transp & 0 \\ 0 & \mathcal{I}_3 \end{pmatrix}.
+\end{align}
+
+\section{Extended Kalman filter with orientation deviation states}
+To include estimation of an unknown gyroscope bias in \Algorithmref{alg:oriEst-ekfOriError}, the update of the linearization point in the time update takes the estimate of the gyroscope bias into account as
+\begin{align}
+\tilde{q}^\text{nb}_{t+1 \mid t} = \tilde{q}^\text{nb}_{t \mid t} \odot \expq \left( \tfrac{T}{2} ( y_{\omega,t} - \hat{\delta}_{\omega,t \mid t} ) \right).
+\end{align}
+The matrices $F_t$ and $G_t$ for the time update are adapted to 
+\begin{align}
+F_t = \begin{pmatrix}
+\mathcal{I}_3 & -T \tilde{R}_{t+1 \mid t}^{\text{nb}} \\
+0 & \mathcal{I}_3
+\end{pmatrix}, \qquad  
+G_t = \begin{pmatrix} T \tilde{R}_{t+1 \mid t}^{\text{nb}} & 0 \\ 0 & \mathcal{I}_3 \end{pmatrix}, \end{align}
+and $Q$ is given in~\eqref{eq:app-estGyroBias-timeUpdateFiltOpt-GQ}. A prior on the gyroscope bias also needs to be included.

@@ -1,0 +1,946 @@
+\begin{thebibliography}{100}
+
+\bibitem{adlerSWK:2015}
+S.~Adler, S.~Schmitt, K.~Wolter, and M.~Kyas.
+\newblock A survey of experimental evaluation in indoor localization research.
+\newblock In {\em Proceedings of the IEEE International Conference on Indoor
+  Positioning and Indoor Navigation (IPIN)}, pages 1--10, Banff, Alberta,
+  Canada, October 2015.
+
+\bibitem{allan:1966}
+D.~W. Allan.
+\newblock Statistics of atomic frequency standards.
+\newblock {\em Proceedings of the IEEE}, 54(2):221--230, 1966.
+
+\bibitem{astrom:1980}
+K.~J. {\AA}str{\"o}m.
+\newblock Maximum likelihood and prediction error methods.
+\newblock {\em Automatica}, 16(5):551--574, 1980.
+
+\bibitem{avciBMMH:2010}
+A.~Avci, S.~Bosch, M.~Marin-Perianu, R.~Marin-Perianu, and P.~Havinga.
+\newblock Activity recognition using inertial sensing for healthcare, wellbeing
+  and sports applications: {A} survey.
+\newblock In {\em Proceedings of the 23rd International Conference on
+  Architecture of Computing Systems (ARCS)}, pages 1--10, Hannover, Germany,
+  February 2010.
+
+\bibitem{baileyD:2006}
+T.~Bailey and H.~Durrant-Whyte.
+\newblock Simultaneous localization and mapping {(SLAM)}: {Part II}.
+\newblock {\em IEEE Robotics \& Automation Magazine}, 13(3):108--117, 2006.
+
+\bibitem{euclideanSpace}
+M.~J. Baker.
+\newblock Euclidean{S}pace -- {M}athematics and computing.
+\newblock
+  \url{http://www.euclideanspace.com/maths/geometry/rotations/conversions/matrixToQuaternion/},
+  2016.
+\newblock Accessed on October 4.
+
+\bibitem{barbourS:2001}
+N.~Barbour and G.~Schmidt.
+\newblock Inertial sensor technology trends.
+\newblock {\em IEEE Sensors Journal}, 1(4):332--339, 2001.
+
+\bibitem{barfoot:2016}
+T.~D. Barfoot.
+\newblock {\em State Estimation for Robotics}.
+\newblock Cambridge University Press, 2017.
+
+\bibitem{bayTG:2006}
+H.~Bay, T.~Tuytelaars, and L.~Van~Gool.
+\newblock {SURF}: {S}peeded up robust features.
+\newblock In {\em Proceedings of the European Conference on Computer Vision
+  (ECCV)}, pages 404--417, Graz, Austria, May 2006.
+
+\bibitem{bell:1994}
+B.~M. Bell.
+\newblock The iterated {K}alman smoother as a {G}auss-{N}ewton method.
+\newblock {\em SIAM Journal on Optimization}, 4(3):626--636, 1994.
+
+\bibitem{bertsekas:1995}
+D.~P. Bertsekas.
+\newblock {\em Dynamic programming and optimal control}, volume~1.
+\newblock Athena Scientific Belmont, MA, 3rd edition, 1995.
+
+\bibitem{bishop:2006}
+C.~M. Bishop.
+\newblock {\em Pattern recognition and machine learning}.
+\newblock Springer Science + Business Media, 2006.
+
+\bibitem{bleserS:2009}
+G.~Bleser and D.~Stricker.
+\newblock Advanced tracking through efficient image processing and
+  visual--inertial sensor fusion.
+\newblock {\em Computers \& Graphics}, 33(1):59--72, 2009.
+
+\bibitem{bloeschEtAl:2016}
+M.~Bloesch, H.~Sommer, T.~Laidlow, M.~Burri, G.~Nuetzi, P.~Fankhauser,
+  D.~Bellicoso, C.~Gehring, S.~Leutenegger, M.~Hutter, and R.~Siegwart.
+\newblock A primer on the differential calculus of {3D} orientations.
+\newblock {\em ArXiv e-prints}, June 2016.
+\newblock arXiv:1606.05285.
+
+\bibitem{bonnetBGLB:2009}
+S.~Bonnet, C.~Bassompierre, C.~Godin, S.~Lesecq, and A.~Barraud.
+\newblock Calibration methods for inertial and magnetic sensors.
+\newblock {\em Sensors and Actuators A: Physical}, 156(2):302--311, 2009.
+
+\bibitem{boydV:2004}
+S.~Boyd and L.~Vandenberghe.
+\newblock {\em Convex Optimization}.
+\newblock Cambridge University Press, 2004.
+
+\bibitem{brown:1972}
+R.~G. Brown.
+\newblock Integrated navigation systems and {K}alman filtering: {A}
+  perspective.
+\newblock {\em Navigation: Journal of the Institute of Navigation},
+  19(4):355--362, 1972.
+
+\bibitem{brysonJS:2009}
+M.~Bryson, M.~Johnson-Roberson, and S.~Sukkarieh.
+\newblock Airborne smoothing and mapping using vision and inertial sensors.
+\newblock In {\em Proceedings of the IEEE International Conference on Robotics
+  and Automation (ICRA)}, pages 3143--3148, Kobe, Japan, May 2009.
+
+\bibitem{bullingBS:2014}
+A.~Bulling, U.~Blanke, and B.~Schiele.
+\newblock A tutorial on human activity recognition using body-worn inertial
+  sensors.
+\newblock {\em ACM Computing Surveys (CSUR)}, 46(3):Article 33, 2014.
+
+\bibitem{cadenaCCLSNRL:2016}
+C.~Cadena, L.~Carlone, H.~Carrillo, Y.~Latif, D.~Scaramuzza, J.~Neira, I.~Reid,
+  and J.~J. Leonard.
+\newblock Past, present, and future of simultaneous localization and mapping:
+  {T}oward the robust-perception age.
+\newblock {\em IEEE Transactions on Robotics}, 32(6):1309--1332, 2016.
+
+\bibitem{callmer:2013}
+J.~Callmer.
+\newblock {\em Autonomous Localization in Unknown Environments}.
+\newblock Dissertation no. 1520, Link{\"o}ping University, Link\"oping, Sweden,
+  June 2013.
+
+\bibitem{chanH:1994}
+Y.~T. Chan and K.~C. Ho.
+\newblock A simple and efficient estimator for hyperbolic location.
+\newblock {\em IEEE Transactions on Signal Processing}, 42(8):1905--1915, 1994.
+
+\bibitem{chaoCC:2010}
+H.~Chao, Y.~Cao, and Y.~Chen.
+\newblock Autopilots for small unmanned aerial vehicles: {A} survey.
+\newblock {\em The International Journal of Control, Automation and Systems},
+  8(1):36--44, 2010.
+
+\bibitem{colomarNH:2012}
+D.~S. Colomar, J.-O. Nilsson, and P.~H{\"a}ndel.
+\newblock Smoothing for {ZUPT}-aided {INS}s.
+\newblock In {\em Proceedings of the IEEE International Conference on Indoor
+  Positioning and Indoor Navigation (IPIN)}, pages 1--5, Sydney, Australia,
+  November 2012.
+
+\bibitem{cooper:2009}
+G.~Cooper, I.~Sheret, L.~McMillan, K.~Siliverdis, N.~Sha, D.~Hodgins,
+  L.~Kenney, and D.~Howard.
+\newblock Inertial sensor-based knee flexion/extension angle estimation.
+\newblock {\em Journal of Biomechanics}, 42(16):2678 -- 2685, 2009.
+
+\bibitem{corkeLD:2007}
+P.~Corke, J.~Lobo, and J.~Dias.
+\newblock An introduction to inertial and visual sensing.
+\newblock {\em The International Journal of Robotics Research}, 26(6):519--535,
+  2007.
+
+\bibitem{corralesCT:2008}
+J.~A. Corrales, F.~A. Candelas, and F.~Torres.
+\newblock Hybrid tracking of human operators using {IMU/UWB} data fusion by a
+  {K}alman filter.
+\newblock In {\em Proceedings of the 3rd ACM/IEEE International Conference on
+  Human-Robot Interaction (HRI)}, pages 193--200, Amsterdam, the Netherlands,
+  2008.
+
+\bibitem{crassidisMC:2007}
+J.~L. Crassidis, F.~L. Markley, and Y.~Cheng.
+\newblock A survey of nonlinear attitude estimation methods.
+\newblock {\em Journal of Guidance, Control, and Dynamics}, 30(1):12--28, 2007.
+
+\bibitem{davis:2006}
+T.~A. Davis.
+\newblock {\em Direct methods for sparse linear systems}.
+\newblock SIAM, 2006.
+
+\bibitem{deAngelisNSHC:2010}
+A.~{De {A}ngelis}, J.~O. Nilsson, I.~Skog, P.~H{\"a}ndel, and P.~Carbone.
+\newblock Indoor positioning by ultrawide band radio aided inertial navigation.
+\newblock {\em Metrology and Measurement Systems}, 17(3):447--460, 2010.
+
+\bibitem{diebel:2006}
+J.~Diebel.
+\newblock Representing attitude: {E}uler angles, unit quaternions, and rotation
+  vectors.
+\newblock {\em Stanford University, Stanford, California, Tech. Rep.
+  94301--9010}, 2006.
+
+\bibitem{durrantWhyteB:2006}
+H.~Durrant-Whyte and T.~Bailey.
+\newblock Simultaneous localization and mapping: {P}art~{I}.
+\newblock {\em IEEE Robotics \& Automation Magazine}, 13(2):99--110, 2006.
+
+\bibitem{elsheimy:2008}
+N.~El-Sheimy, H.~Hou, and X.~Niu.
+\newblock Analysis and modeling of inertial sensors using {A}llan variance.
+\newblock {\em IEEE Transactions on Instrumentation and Measurement},
+  57(1):140--149, 2008.
+
+\bibitem{euler:1775}
+L.~Euler.
+\newblock Formulae generales pro translatione quacunque corporum rigidorum.
+\newblock {\em Novi Commentarii Academiae Scientiarum Imperialis
+  Petropolitanae}, 20:189--207, 1776.
+
+\bibitem{favreJAA:2008}
+J.~Favre, B.~M. Jolles, R.~Aissaoui, and K.~Aminian.
+\newblock Ambulatory measurement of 3{D} knee joint angle.
+\newblock {\em Journal of Biomechanics}, 41(5):1029--1035, 2008.
+
+\bibitem{fischlerB:1981}
+M.~A. Fischler and R.~C. Bolles.
+\newblock Random sample consensus: {A} paradigm for model fitting with
+  applications to image analysis and automated cartography.
+\newblock {\em Communications of the ACM}, 24(6):381--395, 1981.
+
+\bibitem{fitbit:2017}
+{Fitbit}.
+\newblock \url{http:/www.fitbit.com}, 2017.
+\newblock Accessed on March 17.
+
+\bibitem{forsterCDS:2016}
+C.~Forster, L.~Carlone, F.~Dellaert, and D.~Scaramuzza.
+\newblock On-manifold preintegration for real-time visual-inertial odometry.
+\newblock {\em IEEE Transactions on Robotics}, 33(1):1--21, 2017.
+
+\bibitem{foxlin:1996}
+E.~Foxlin.
+\newblock Inertial head-tracker sensor fusion by a complementary separate-bias
+  {K}alman filter.
+\newblock In {\em Proceedings of the IEEE Virtual Reality Annual International
+  Symposium}, pages 185--194, Santa Clara, CA, USA, Mar.--Apr. 1996.
+
+\bibitem{foxlin:2005}
+E.~Foxlin.
+\newblock Pedestrian tracking with shoe-mounted inertial sensors.
+\newblock {\em IEEE Computer Graphics and Applications}, 25(6):38--46, 2005.
+
+\bibitem{foxlinN:2003}
+E.~Foxlin and L.~Naimark.
+\newblock Vis-tracker: A wearable vision-inertial self-tracker.
+\newblock In {\em Proceedings of IEEE Virtual Reality}, Los Angeles, USA, March
+  2003.
+
+\bibitem{garmin:2017}
+{Garmin}.
+\newblock \url{https://www.garmin.com}, 2017.
+\newblock Accessed on March 17.
+
+\bibitem{geziciTGKMPS:2005}
+S.~Gezici, Z.~Tian, G.~B. Giannakis, H.~Kobayashi, A.~F Molisch, H.~V. Poor,
+  and Z.~Sahinoglu.
+\newblock Localization via ultra-wideband radios: a look at positioning aspects
+  for future sensor networks.
+\newblock {\em IEEE Signal Processing Magazine}, 22(4):70--84, 2005.
+
+\bibitem{gilitschenskiKJH:2016}
+I.~Gilitschenski, G.~Kurz, S.~J. Julier, and U.~D. Hanebeck.
+\newblock Unscented orientation estimation based on the {B}ingham distribution.
+\newblock {\em IEEE Transactions on Automatic Control}, 61(1):172--177, 2016.
+
+\bibitem{gloverK:2013}
+J.~Glover and L.~P. Kaelbling.
+\newblock Tracking {3-D} rotations with the quaternion {B}ingham filter.
+\newblock {\em Computer Science and Artificial Intelligence Laboratory
+  Technical Report}, 2013.
+
+\bibitem{golubvL:2013}
+G.~H. Golub and C.~F. van Loan.
+\newblock {\em Matrix Computations}.
+\newblock The John Hopkins University Press, Baltimore, 4 edition, 2013.
+
+\bibitem{grisettiKSB:2010}
+G.~Grisetti, R.~K{\"u}mmerle, C.~Stachniss, and W.~Burgard.
+\newblock A tutorial on graph-based {SLAM}.
+\newblock {\em IEEE Intelligent Transportation Systems Magazine}, 2(4):31--43,
+  2010.
+
+\bibitem{grisettiKSFH:2010}
+G.~Grisetti, R.~K{\"u}mmerle, C.~Stachniss, U.~Frese, and C.~Hertzberg.
+\newblock Hierarchical optimization on manifolds for online 2{D} and 3{D}
+  mapping.
+\newblock In {\em Proceedings of the IEEE International Conference on Robotics
+  and Automation (ICRA)}, pages 273--278, Anchorage, Alaska, May 2010.
+
+\bibitem{grzonkaDKB:2010}
+S.~Grzonka, F.~Dijoux, A.~Karwath, and W.~Burgard.
+\newblock Mapping indoor environments based on human activity.
+\newblock In {\em Proceedings of the IEEE International Conference on Robotics
+  and Automation (ICRA)}, pages 476--481, Anchorage, Alaska, May 2010.
+
+\bibitem{gustafsson:2012}
+F.~Gustafsson.
+\newblock {\em Statistical Sensor Fusion}.
+\newblock Studentlitteratur, 2012.
+
+\bibitem{gustafssonG:2005}
+F.~Gustafsson and F.~Gunnarsson.
+\newblock Mobile positioning using wireless networks: possibilities and
+  fundamental limitations based on available wireless network measurements.
+\newblock {\em IEEE Signal Processing Magazine}, 22(4):41--53, 2005.
+
+\bibitem{hamilton:1844}
+W.~R. Hamilton.
+\newblock On quaternions; or on a new system of imaginaries in algebra.
+\newblock {\em Philosophical Magazine}, xxv, 1844.
+
+\bibitem{hardeggerRCT:2016}
+M.~Hardegger, D.~Roggen, A.~Calatroni, and G.~Tr{\"o}ster.
+\newblock {S-SMART}: {A} unified {B}ayesian framework for simultaneous semantic
+  mapping, activity recognition, and tracking.
+\newblock {\em ACM Transactions on Intelligent Systems and Technology (TIST)},
+  7(3):34, 2016.
+
+\bibitem{harle:2013}
+R.~Harle.
+\newblock A survey of indoor inertial positioning systems for pedestrians.
+\newblock {\em IEEE Communications Surveys \& Tutorials}, 15(3):1281--1293,
+  2013.
+
+\bibitem{harrisS:1988}
+C.~Harris and M.~Stephens.
+\newblock A combined corner and edge detector.
+\newblock In {\em Proceedings of the Alvey Vision Conference}, volume~15, pages
+  147--151, Manchester, United Kingdom, Aug.--Sept. 1988.
+
+\bibitem{haverinenK:2009}
+J.~Haverinen and A.~Kemppainen.
+\newblock Global indoor self-localization based on the ambient magnetic field.
+\newblock {\em Robotics and Autonomous Systems}, 57(10):1028--1035, 2009.
+
+\bibitem{hendebyGWG:2017}
+G.~Hendeby, F.~Gustafsson, N.~Wahlstr{\"o}m, and S.~Gunnarsson.
+\newblock Platform for teaching sensor fusion using a smartphone.
+\newblock {\em International Journal of Engineering Education},
+  33(2B):781--789, 2017.
+
+\bibitem{higgins:1975}
+W.~T. Higgins.
+\newblock A comparison of complementary and {K}alman filtering.
+\newblock {\em IEEE Transactions on Aerospace and Electronic Systems},
+  (3):321--325, 1975.
+
+\bibitem{hol:2011}
+J.~D. Hol.
+\newblock {\em Sensor fusion and calibration of inertial sensors, vision,
+  ultra-wideband and {GPS}}.
+\newblock Dissertation no. 1368, Link{\"o}ping University, Link{\"o}ping,
+  Sweden, June 2011.
+
+\bibitem{holSG:2010b}
+J.~D. Hol, T.~B. Sch{\"o}n, and F.~Gustafsson.
+\newblock Modeling and calibration of inertial and vision sensors.
+\newblock {\em The International Journal of Robotics Research},
+  29(2-3):231--244, 2010.
+
+\bibitem{holSLSG:2007}
+J.~D. Hol, T.~B. Sch{\"o}n, H.~Luinge, P.~J. Slycke, and F.~Gustafsson.
+\newblock Robust real-time tracking by fusing measurements from inertial and
+  vision sensors.
+\newblock {\em Journal of Real-Time Image Processing}, 2(2-3):149--160, 2007.
+
+\bibitem{horn:1987}
+B.~K.~P. Horn.
+\newblock Closed-form solution of absolute orientation using unit quaternions.
+\newblock {\em Journal of the Optical Society of America A}, 4(4):629--642,
+  1987.
+
+\bibitem{ieeeStd1559:2009}
+IEEE.
+\newblock {IEEE} standard for inertial systems terminology, 2009.
+\newblock Technical report, IEEE Std 1559.
+
+\bibitem{invensense-tutorial}
+{InvenSense}.
+\newblock \url{http://www.invensense.com}, 2016.
+\newblock Accessed on November 6.
+
+\bibitem{jazwinski:1970}
+A.~H. Jazwinski.
+\newblock {\em Stochastic processes and filtering theory}.
+\newblock Academic Press, New York and London, 1970.
+
+\bibitem{johansen:2011}
+T.~A. Johansen.
+\newblock Introduction to nonlinear model predictive control and moving horizon
+  estimation.
+\newblock In {\em Selected Topics on Constrained and Nonlinear Control}, pages
+  187--239. STU Bratislava and NTNU Trondheim, 2011.
+
+\bibitem{julierV:2007}
+S.~J. Julier and J.~J. LaViola~Jr.
+\newblock On {K}alman filtering with nonlinear equality constraints.
+\newblock {\em IEEE Transactions on Signal Processing}, 55(6):2774--2784, 2007.
+
+\bibitem{jungT:2001}
+S.-H. Jung and C.J. Taylor.
+\newblock Camera trajectory estimation using inertial sensor measurements and
+  structure from motion results.
+\newblock In {\em Proceedings of the IEEE Computer Society Conference on
+  Computer Vision and Pattern Recognition (CVPR)}, volume~2, pages 732--737,
+  Kauai, Hawaii, USA, December 2001.
+
+\bibitem{kailath:1980}
+T.~Kailath.
+\newblock {\em Linear systems}.
+\newblock Prentice-Hall Englewood Cliffs, NJ, 1980.
+
+\bibitem{kangJPK:2011}
+D.~H. Kang, Y.~J. Jung, A.~J. Park, and J.~W. Kim.
+\newblock Human body motion capture system using magnetic and inertial sensor
+  modules.
+\newblock In {\em Proceedings of the 5th International Universal Communication
+  Symposium (IUCS)}, pages 1--4, Gumi, Korea, October 2011.
+
+\bibitem{kaplanH:1996}
+E.~D. Kaplan and C.~J. Hegarty.
+\newblock {\em Understanding {GPS}: principles and applications}.
+\newblock Artech House, 1996.
+
+\bibitem{kellyS:2011}
+J.~Kelly and G.~S. Sukhatme.
+\newblock Visual-inertial sensor fusion: {L}ocalization, mapping and
+  sensor-to-sensor self-calibration.
+\newblock {\em The International Journal of Robotics Research}, 30(1):56--79,
+  2011.
+
+\bibitem{kokHS:2014}
+M.~Kok, J.~D. Hol, and T.~B. Sch\"on.
+\newblock An optimization-based approach to human body motion capture using
+  inertial sensors.
+\newblock In {\em Proceedings of the 19th World Congress of the International
+  Federation of Automatic Control}, pages 79--85, Cape Town, South Africa,
+  August 2014.
+
+\bibitem{kokHS:2015}
+M.~Kok, J.~D. Hol, and T.~B. Sch\"on.
+\newblock Indoor positioning using ultrawideband and inertial measurements.
+\newblock {\em IEEE Transactions on Vehicular Technology}, 64(4):1293--1303,
+  2015.
+
+\bibitem{kokS:2016}
+M.~Kok and T.~B. Sch\"on.
+\newblock Magnetometer calibration using inertial sensors.
+\newblock {\em IEEE Sensors Journal}, 16(14):5679--5689, 2016.
+
+\bibitem{kuipers:1999}
+J.~B. Kuipers.
+\newblock {\em Quaternions and Rotation Sequences: a primer with applications
+  to orbits, aerospace, and virtual reality}.
+\newblock Princeton University Press, 1999.
+
+\bibitem{kurzGJH:2013}
+G.~Kurz, I.~Gilitschenski, S.~Julier, and U.~D. Hanebeck.
+\newblock Recursive estimation of orientation based on the {B}ingham
+  distribution.
+\newblock In {\em Proceedings of the 16th International Conference on
+  Information Fusion}, pages 1487--1494, Istanbul, Turkey, July 2013.
+
+\bibitem{leuteneggerLBSF:2015}
+S.~Leutenegger, S.~Lynen, M.~Bosse, R.~Siegwart, and P.~Furgale.
+\newblock Keyframe-based visual--inertial odometry using nonlinear
+  optimization.
+\newblock {\em The International Journal of Robotics Research}, 34(3):314--334,
+  2015.
+
+\bibitem{liM:2013}
+M.~Li and A.~I. Mourikis.
+\newblock High-precision, consistent {EKF}-based visual-inertial odometry.
+\newblock {\em The International Journal of Robotics Research}, 32(6):690--711,
+  2013.
+
+\bibitem{ligorioS:2016}
+G.~Ligorio and A.~M. Sabatini.
+\newblock Dealing with magnetic disturbances in human motion capture: {A}
+  survey of techniques.
+\newblock {\em Micromachines}, 7(3):43, 2016.
+
+\bibitem{lindstenS:2013}
+F.~Lindsten and T.~B. Sch\"on.
+\newblock Backward simulation methods for {M}onte {C}arlo statistical
+  inference.
+\newblock {\em Foundations and Trends in Machine Learning}, 6(1):1--143, 2013.
+
+\bibitem{ljung:1999}
+L.~Ljung.
+\newblock {\em System Identification, Theory for the User}.
+\newblock Prentice Hall PTR, 2 edition, 1999.
+
+\bibitem{loboD:2007}
+J.~Lobo and J.~Dias.
+\newblock Relative pose calibration between visual and inertial sensors.
+\newblock {\em The International Journal of Robotics Research}, 26(6):561--575,
+  2007.
+
+\bibitem{lowe:2004}
+D.~G. Lowe.
+\newblock Distinctive image features from scale-invariant keypoints.
+\newblock {\em The International Journal of Computer Vision}, 60(2):91--110,
+  2004.
+
+\bibitem{luinge:2002}
+H.~J. Luinge.
+\newblock {\em Inertial Sensing of Human Movement}.
+\newblock PhD thesis, University of Twente, Enschede, the Netherlands, October
+  2002.
+
+\bibitem{luingeV2005}
+H.~J. Luinge and P.~H. Veltink.
+\newblock Measuring orientation of human body segments using miniature
+  gyroscopes and accelerometers.
+\newblock {\em Medical and Biological Engineering and Computing},
+  43(2):273--282, 2005.
+
+\bibitem{luingeVB:2007}
+H.~J. Luinge, P.~H. Veltink, and C.~T.~M. Baten.
+\newblock Ambulatory measurement of arm orientation.
+\newblock {\em Journal of Biomechanics}, 40(1):78--85, 2007.
+
+\bibitem{luptonS:2012}
+T.~Lupton and S.~Sukkarieh.
+\newblock Visual-inertial-aided navigation for high-dynamic motion in built
+  environments without initial conditions.
+\newblock {\em IEEE Transactions on Robotics}, 28(1):61 --76, February 2012.
+
+\bibitem{madgwickHV:2011}
+S.~O.~H. Madgwick, A.~J.~L. Harrison, and R.~Vaidyanathan.
+\newblock Estimation of {IMU} and {MARG} orientation using a gradient descent
+  algorithm.
+\newblock In {\em Proceedings of the IEEE International Conference on
+  Rehabilitation Robotics}, pages 1--7, Z\"urich, Switserland, Jun.--Jul. 2011.
+
+\bibitem{mahonyHP:2008}
+R.~Mahony, T.~Hamel, and J.-M. Pflimlin.
+\newblock Nonlinear complementary filters on the special orthogonal group.
+\newblock {\em IEEE Transactions on Automatic Control}, 53(5):1203--1218, 2008.
+
+\bibitem{marinsYBMZ:2001}
+J.~L. Marins, X.~Yun, E.~R. Bachmann, R.~B. McGhee, and M.~J. Zyda.
+\newblock An extended {K}alman filter for quaternion-based orientation
+  estimation using {MARG} sensors.
+\newblock In {\em Proceedings of the IEEE/RSJ International Conference on
+  Intelligent Robots and Systems (IROS)}, volume~4, pages 2003--2011, Maui,
+  Hawaii, USA, Oct.--Nov. 2001.
+
+\bibitem{marionT:1995}
+J.~B. Marion and S.~T. Thornton.
+\newblock {\em Classical dynamics of particles and systems}.
+\newblock Harcourt College Publishers, 4 edition, 1995.
+
+\bibitem{markley:2003}
+F.~L. Markley.
+\newblock Attitude error representations for {K}alman filtering.
+\newblock {\em Journal of Guidance, Control, and Dynamics}, 26(2):311--317,
+  2003.
+
+\bibitem{martinelli:2012}
+A.~Martinelli.
+\newblock Vision and {IMU} data fusion: {C}losed-form solutions for attitude,
+  speed, absolute scale, and bias determination.
+\newblock {\em IEEE Transactions on Robotics}, 28(1):44--60, 2012.
+
+\bibitem{mattingleyB:2010}
+J.~Mattingley and S.~Boyd.
+\newblock Real-time convex optimization in signal processing.
+\newblock {\em IEEE Signal Processing Magazine}, 27(3):50--61, 2010.
+
+\bibitem{meriamK:1998}
+J.~L. Meriam and L.~G. Kraige.
+\newblock {\em Engineering mechanics: dynamics}.
+\newblock John Wiley \& Sons, 4 edition, 1998.
+
+\bibitem{miezalTB:2016}
+M.~Miezal, B.~Taetz, and G.~Bleser.
+\newblock On inertial body tracking in the presence of model calibration
+  errors.
+\newblock {\em Sensors}, 16(7):1132, 2016.
+
+\bibitem{mirzaeiR:2008}
+F.~M. Mirzaei and S.~I. Roumeliotis.
+\newblock A {K}alman filter-based algorithm for {IMU}-camera calibration:
+  {O}bservability analysis and performance evaluation.
+\newblock {\em IEEE Transactions on Robotics}, 24(5):1143--1156, 2008.
+
+\bibitem{mullerPRS:2016}
+P.~M{\"u}ller, J.~A. del Peral-Rosado, R.~Pich{\'e}, and G.~Seco-Granados.
+\newblock Statistical trilateration with skew-t distributed errors in {LTE}
+  networks.
+\newblock {\em IEEE Transactions on Wireless Communications},
+  15(10):7114--7127, 2016.
+
+\bibitem{mullerWP:2014}
+P.~M{\"u}ller, H.~Wymeersch, and R.~Pich{\'e}.
+\newblock {UWB} positioning with generalized gaussian mixture filters.
+\newblock {\em IEEE Transactions on Mobile Computing}, 13(10):2406--2414, 2014.
+
+\bibitem{nasa:2016}
+{National Aeronautics and Space Administatration}.
+\newblock Earth fact sheet.
+\newblock \url{http://nssdc.gsfc.nasa.gov/planetary/factsheet/earthfact.html},
+  2016.
+\newblock Accessed on September 7.
+
+\bibitem{ncei-tutorial}
+{National Centers for Environmental Information}.
+\newblock \url{https://www.ngdc.noaa.gov/geomag/geomag.shtml}, 2016.
+\newblock Accessed on October 10.
+
+\bibitem{nocedalW:2006}
+J.~Nocedal and S.~J. Wright.
+\newblock {\em Numerical Optimization}.
+\newblock Springer Series in Operations Research, 2 edition, 2006.
+
+\bibitem{nurminenAPG:2015}
+H.~Nurminen, T.~Ardeshiri, R.~Pich\'e, and F.~Gustafsson.
+\newblock Robust inference for state-space models with skewed measurement
+  noise.
+\newblock {\em IEEE Signal Processing Letters}, 22(11):1898--1902, 2015.
+
+\bibitem{nyqvistG:2013}
+H.~Nyqvist and F.~Gustafsson.
+\newblock A high-performance tracking system based on camera and {IMU}.
+\newblock In {\em Proceedings of the 16th International Conference on
+  Information Fusion}, pages 2065--2072, Istanbul, Turkey, July 2013.
+
+\bibitem{olssonKHS:2016}
+F.~Olsson, M.~Kok, K.~Halvorsen, and T.~B. Sch\"on.
+\newblock Accelerometer calibration using sensor fusion with a gyroscope.
+\newblock In {\em Proceedings of the IEEE Workshop on Statistical Signal
+  Processing}, pages 660--664, Palma de Mallorca, Spain, June 2016.
+
+\bibitem{palaisPR:2009}
+B.~Palais, R.~Palais, and S.~Rodi.
+\newblock A disorienting look at {E}uler's theorem on the axis of a rotation.
+\newblock {\em American Mathematical Monthly}, 116(10):892--909, 2009.
+
+\bibitem{panahandehSJ:2010}
+G.~Panahandeh, I.~Skog, and M.~Jansson.
+\newblock Calibration of the accelerometer triad of an inertial measurement
+  unit, maximum likelihood estimation and {C}ramer-{R}ao bound.
+\newblock In {\em Proceedings of the IEEE International Conference on Indoor
+  Positioning and Indoor Navigation (IPIN)}, pages 1--6, Zurich, Switserland,
+  September 2010.
+
+\bibitem{perlmutterR:2012}
+M.~Perlmutter and L.~Robin.
+\newblock High-performance, low cost inertial {MEMS}: {A} market in motion!
+\newblock In {\em Proceedings of the IEEE/ION Position Location and Navigation
+  Symposium (PLANS)}, pages 225--229, Myrtle Beach, South Carolina, USA, 2012.
+
+\bibitem{pittetRMK:2008}
+S.~Pittet, V.~Renaudin, B.~Merminod, and M.~Kasser.
+\newblock {UWB} and {MEMS} based indoor navigation.
+\newblock {\em Journal of Navigation}, 61(3):369--384, July 2008.
+
+\bibitem{polar:2017}
+{Polar}.
+\newblock \url{https://www.polar.com}, 2017.
+\newblock Accessed on March 17.
+
+\bibitem{raibertBNPT:2008}
+M.~Raibert, K.~Blankespoor, G.~Nelson, Rob Playter, and the BigDog~Team.
+\newblock Big{D}og, the rough-terrain quadruped robot.
+\newblock In {\em Proceedings of the 17th World Congress of the International
+  Federation of Automatic Control (IFAC)}, pages 10822--10825, Seoul, South
+  Korea, July 2008.
+
+\bibitem{raoRL:2001}
+C.~V. Rao, J.~B. Rawlings, and J.~H. Lee.
+\newblock Constrained linear state estimation -- a moving horizon approach.
+\newblock {\em Automatica}, 37(10):1619--1628, 2001.
+
+\bibitem{raoRM:2003}
+C.~V. Rao, J.~B. Rawlings, and D.~Q. Mayne.
+\newblock Constrained state estimation for nonlinear discrete-time systems:
+  {S}tability and moving horizon approximations.
+\newblock {\em IEEE Transactions on Automatic Control}, 48(2):246--258, 2003.
+
+\bibitem{rehbinderH:2004}
+H.~Rehbinder and X.~Hu.
+\newblock Drift-free attitude estimation for accelerated rigid bodies.
+\newblock {\em Automatica}, 40(4):653--659, 2004.
+
+\bibitem{rehderS:2017}
+J.~Rehder and R.~Siegwart.
+\newblock Camera/{IMU} calibration revisited.
+\newblock {\em IEEE Sensors Journal}, 17(11):3257--3268, 2017.
+
+\bibitem{reissHBS:2010}
+A.~Reiss, G.~Hendeby, G.~Bleser, and D.~Stricker.
+\newblock Activity recognition using biomechanical model based pose estimation.
+\newblock In {\em Proceedings of the 5th European Conference on Smart Sensing
+  and Context}, pages 42--55, Passau, Germany, November 2010.
+
+\bibitem{renaudinAL:2010}
+V.~Renaudin, M.~H. Afzal, and G.~Lachapelle.
+\newblock Complete triaxis magnetometer calibration in the magnetic domain.
+\newblock {\em Journal of Sensors}, 2010.
+\newblock Article ID 967245.
+
+\bibitem{robertsonFADJPKLB:2013}
+P.~Robertson, M.~Frassl, M.~Angermann, M.~Doniec, B.~J. Julian,
+  M.~Garcia~Puyol, M.~Khider, M.~Lichtenstern, and L.~Bruno.
+\newblock Simultaneous localization and mapping for pedestrians using
+  distortions of the local magnetic field intensity in large indoor
+  environments.
+\newblock In {\em Proceedings of the IEEE International Conference on Indoor
+  Positioning and Indoor Navigation (IPIN)}, pages 1--10, Montb{\'e}liard,
+  France, October 2013.
+
+\bibitem{roetenbergLBV:2005}
+D.~Roetenberg, H.~J. Luinge, C.~T.~M. Baten, and P.~H. Veltink.
+\newblock Compensation of magnetic disturbances improves inertial and magnetic
+  sensing of human body segment orientation.
+\newblock {\em IEEE Transactions on Neural Systems and Rehabilitation
+  Engineering}, 13(3):395--405, 2005.
+
+\bibitem{roetenbergLS:2013}
+D.~Roetenberg, H.~J. Luinge, and P.~Slycke.
+\newblock Xsens {MVN}: Full 6{DOF} human motion tracking using miniature
+  inertial sensors, May 2013.
+
+\bibitem{rothAOG:2017}
+M.~Roth, T.~Ardeshiri, E.~{\"O}zkan, and F.~Gustafsson.
+\newblock Robust {B}ayesian filtering and smoothing using student's t
+  distribution.
+\newblock {\em ArXiv e-prints}, March 2017.
+\newblock arXiv:1703.02428.
+
+\bibitem{saad:2003}
+Y.~Saad.
+\newblock {\em Iterative methods for sparse linear systems}.
+\newblock SIAM, 2003.
+
+\bibitem{sabatini:2006}
+A.~M. Sabatini.
+\newblock Quaternion-based extended {K}alman filter for determining orientation
+  by inertial and magnetic sensing.
+\newblock {\em IEEE Transactions on Biomedical Engineering}, 53(7):1346--1356,
+  2006.
+
+\bibitem{sahinogluGG:2008}
+Z.~Sahinoglu, S.~Gezici, and I.~G\"uvenc.
+\newblock {\em Ultra-wideband Positioning Systems: Theoretical Limits, Ranging
+  Algorithms, and Protocols}.
+\newblock Cambridge University Press, 2008.
+
+\bibitem{salehiMB:2012}
+S.~Salehi, N.~Mostofi, and G.~Bleser.
+\newblock A practical in-field magnetometer calibration method for {IMU}s.
+\newblock In {\em Proceedings of the IROS Workshop on Cognitive Assistive
+  Systems: Closing the Action-Perception Loop}, pages 39--44, Vila Moura,
+  Portugal, October 2012.
+
+\bibitem{sarkka:2013}
+S.~S{\"a}rkk{\"a}.
+\newblock {\em Bayesian Filtering and Smoothing}.
+\newblock Cambridge University Press, 2013.
+
+\bibitem{savage:1998a}
+P.~G. Savage.
+\newblock Strapdown inertial navigation integration algorithm design part 1:
+  {A}ttitude algorithms.
+\newblock {\em Journal of Guidance, Control and Dynamics}, 21(1):19--28, 1998.
+
+\bibitem{savage:1998b}
+P.~G. Savage.
+\newblock Strapdown inertial navigation integration algorithm design part 2:
+  {V}elocity and position algorithms.
+\newblock {\em Journal of Guidance, Control and Dynamics}, 21(2):208--221,
+  1998.
+
+\bibitem{sayedTK:2005}
+A.~H. Sayed, A.~Tarighat, and N.~Khajehnouri.
+\newblock Network-based wireless location: challenges faced in developing
+  techniques for accurate wireless location information.
+\newblock {\em IEEE Signal Processing Magazine}, 22(4):24--40, 2005.
+
+\bibitem{schonLDWNSD:2015}
+T.~B. Sch{\"o}n, F.~Lindsten, J.~Dahlin, J.~W{\aa}gberg, C.~A. Naesseth,
+  A.~Svensson, and L.~Dai.
+\newblock Sequential monte carlo methods for system identification.
+\newblock In {\em Proceedings of the 17th IFAC Symposium on System
+  Identification}, pages 775--786, Beijing, China, October 2015.
+
+\bibitem{sczysloSGK:2008}
+S.~Sczyslo, J.~Schroeder, S.~Galler, and T.~Kaiser.
+\newblock Hybrid localization using {UWB} and inertial sensors.
+\newblock In {\em Proceedings of the IEEE International Conference on
+  Ultra-Wideband (ICUWB)}, volume~3, pages 89--92, Hannover, Germany, September
+  2008.
+
+\bibitem{seelRS:2014}
+T.~Seel, J.~Raisch, and T.~Schauer.
+\newblock {IMU}-based joint angle measurement for gait analysis.
+\newblock {\em Sensors}, 14(4):6891--6909, 2014.
+
+\bibitem{segalW:1989}
+M.~Segal and E.~Weinstein.
+\newblock A new method for evaluating the log-likelihood gradient, the
+  {H}essian, and the {F}isher information matrix for linear dynamic systems.
+\newblock {\em IEEE Transactions on Information Theory}, 35(3):682--687, 1989.
+
+\bibitem{shuster:1993}
+M.~D. Shuster.
+\newblock A survey of attitude representations.
+\newblock {\em The Journal of the Astronautical Sciences}, 41(4):439--517,
+  Oct.--Dec. 1993.
+
+\bibitem{shuster:2006}
+M.~D. Shuster.
+\newblock The {TRIAD} algorithm as maximum likelihood estimation.
+\newblock {\em The Journal of the Astronautical Sciences}, 54(1):113--123,
+  2006.
+
+\bibitem{shusterO:1981}
+M.~D. Shuster and S.~D. Oh.
+\newblock Three-axis attitude determination from vector observations.
+\newblock {\em Journal of Guidance, Control, and Dynamics}, 4(1):70--77, 1981.
+
+\bibitem{sjanicSG:2017}
+Z.~Sjanic, M.~A. Skoglund, and F.~Gustafsson.
+\newblock {EM-SLAM} with inertial/visual applications.
+\newblock {\em IEEE Transactions on Aerospace and Electronic Systems},
+  53(1):273--285, 2017.
+
+\bibitem{skogH:2009}
+I.~Skog and P.~H\"andel.
+\newblock In-car positioning and navigation technologies -- {A} survey.
+\newblock {\em IEEE Transactions on Intelligent Transportation Systems},
+  10(1):4--21, 2009.
+
+\bibitem{skogHNR:2010}
+I.~Skog, P.~Handel, J.-O. Nilsson, and J.~Rantakokko.
+\newblock Zero-velocity detection -- {A}n algorithm evaluation.
+\newblock {\em IEEE Transactions on Biomedical Engineering}, 57(11):2657--2666,
+  2010.
+
+\bibitem{skoglundHA:2015}
+M.~A. Skoglund, G.~Hendeby, and D.~Axehill.
+\newblock Extended {K}alman filter modifications based on an optimization view
+  point.
+\newblock In {\em Proceedings of the 18th International Conference on
+  Information Fusion}, pages 1856--1861, Washington, D.C., USA, 2015.
+
+\bibitem{skoglundSK:2017}
+M.~A. Skoglund, Z.~Sjanic, and M.~Kok.
+\newblock On orientation estimation using iterative methods in {E}uclidean
+  space.
+\newblock In {\em Proceedings of the 20th International Conference on
+  Information Fusion}, pages 1--8, Xi'an, China, July 2017.
+
+\bibitem{solinKWSS:2015}
+A.~Solin, M.~Kok, N.~Wahlstr\"om, T.~B. Sch\"on, and S.~S\"arkk\"a.
+\newblock Modeling and interpolation of the ambient magnetic field by
+  {G}aussian processes.
+\newblock {\em ArXiv e-prints}, September 2015.
+\newblock arXiv:1509.04634.
+
+\bibitem{taetzBM:2016}
+B.~Taetz, G.~Bleser, and M.~Miezal.
+\newblock Towards self-calibrating inertial body motion capture.
+\newblock In {\em Proceedings of the 19th International Conference on
+  Information Fusion}, pages 1751--1759, Heidelberg, Germany, July 2016.
+
+\bibitem{tedaldiPM:2014}
+D.~Tedaldi, A.~Pretto, and E.~Menegatti.
+\newblock A robust and easy to implement method for {IMU} calibration without
+  external equipments.
+\newblock In {\em Proceedings of the IEEE International Conference on Robotics
+  and Automation (ICRA)}, pages 3042--3049, Hong Kong, China, May--Jun. 2014.
+
+\bibitem{ros:2017}
+{The Robot Operating System}.
+\newblock \url{http://www.ros.org/}, 2017.
+\newblock Accessed on February 13.
+
+\bibitem{tittertonW:1997}
+D.~H. Titterton and J.~L. Weston.
+\newblock {\em Strapdown inertial navigation technology}.
+\newblock IEE radar, sonar, navigaton and avionics series 5. Peter Peregrinus
+  Ltd. on behalf of the Institution of Electrical Engineers, 1997.
+
+\bibitem{trivisio-tutorial}
+{Trivisio Prototyping GmbH}.
+\newblock \url{http://www.trivisio.com}, 2016.
+\newblock Accessed on October 24.
+
+\bibitem{vasconcelosESOC:2011}
+J.~F. Vasconcelos, G.~Elkaim, C.~Silvestre, P.~Oliveira, and B.~Cardeira.
+\newblock Geometric approach to strapdown magnetometer calibration in sensor
+  frame.
+\newblock {\em IEEE Transactions on Aerospace and Electronic systems},
+  47(2):1293--1306, April 2011.
+
+\bibitem{verhaegenV:2007}
+M.~Verhaegen and V.~Verdult.
+\newblock {\em Filtering and system identification: a least squares approach}.
+\newblock Cambridge university press, 2007.
+
+\bibitem{vicon-tutorial}
+{Vicon}.
+\newblock \url{http://www.vicon.com}, 2016.
+\newblock Accessed on August 5.
+
+\bibitem{marcardRBP:2017}
+T.~von Marcard, B.~Rosenhahn, M.~Black, and G.~Pons-Moll.
+\newblock Sparse inertial poser: {A}utomatic {3D} human pose estimation from
+  sparse {IMU}s.
+\newblock {\em Computer Graphics Forum}, 36(2):349--360, April 2017.
+
+\bibitem{vydhyanathanBLS:2015}
+A.~Vydhyanathan, G.~Bellusci, H.~Luinge, and P.~Slycke.
+\newblock The next generation {X}sens motion trackers for industrial
+  applications.
+\newblock
+  \url{https://www.xsens.com/download/pdf/documentation/mti/mti_white_paper.pdf},
+  2015.
+
+\bibitem{woodman:2007}
+O.~J. Woodman.
+\newblock An introduction to inertial navigation.
+\newblock {\em University of Cambridge, Computer Laboratory, Tech. Rep.
+  UCAMCL-TR-696}, 2007.
+
+\bibitem{xio:2017}
+{x-io Technologies Limited}.
+\newblock \url{http://x-io.co.uk/open-source-imu-and-ahrs-algorithms/}, 2017.
+\newblock Accessed on February 13.
+
+\bibitem{xsens-tutorial}
+{Xsens Technologies B.V.}
+\newblock \url{http://www.xsens.com}, 2016.
+\newblock Accessed on October 4.
+
+\bibitem{yunB:2006}
+X.~Yun and E.~R. Bachmann.
+\newblock Design, implementation, and experimental results of a
+  quaternion-based {K}alman filter for human body motion tracking.
+\newblock {\em IEEE Transactions on Robotics}, 22(6):1216--1227, 2006.
+
+\bibitem{zoubirKCM:2012}
+A.~M. Zoubir, V.~Koivunen, Y.~Chakhchoukh, and M.~Muma.
+\newblock Robust estimation in signal processing: {A} tutorial-style treatment
+  of fundamental concepts.
+\newblock {\em IEEE Signal Processing Magazine}, 29(4):61--80, 2012.
+
+\end{thebibliography}

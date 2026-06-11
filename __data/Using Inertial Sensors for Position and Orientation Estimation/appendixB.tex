@@ -1,0 +1,76 @@
+% !TEX spellcheck = en-US
+\chapter{Pose Estimation}
+\label{app:poseEst}
+In this appendix, we will introduce the necessary components to extend Algorithms~\ref{alg:oriEst-smoothingOpt}--\ref{alg:oriEst-ekfOriError} to pose estimation algorithms using the state space model~\eqref{eq:models-ssPose}.
+\section{Smoothing in an optimization framework}
+In \Sectionref{sec:oriEst-poseEstimation}, we presented the smoothing optimization problem for pose estimation. To adapt \Algorithmref{alg:oriEst-smoothingOpt}, the derivatives~\eqref{eq:oriEst-derInit}--\eqref{eq:oriEst-derDynModelPrev} in combination with the following derivatives are needed
+\begin{subequations}
+\label{eq:oriEst-derPose}
+\begin{align}
+\tfrac{\diff e_{\text{p,i}} }{\diff p_1^\text{n}}&= \mathcal{I}_3, \, &
+\tfrac{\diff e_{\text{v,i}} }{\diff v_1^\text{n}}&= \mathcal{I}_3, \, &
+\tfrac{\diff e_{\text{p},t} }{\diff p_t^\text{n}}&= -\mathcal{I}_3,
+\label{eq:app-poseEst-smoothingDerPosVelInitPos} \\
+\tfrac{\diff e_{\text{p,a},t} }{\diff p_{t+1}^\text{n}}&= \tfrac{2}{T^2}\mathcal{I}_3,  \, &
+\tfrac{\diff e_{\text{p,a},t} }{\diff p_t^\text{n}}&= - \tfrac{2}{T^2} \mathcal{I}_3, && \nonumber \\
+\tfrac{\diff e_{\text{p,a},t} }{\diff v_t^\text{n}}&= - \tfrac{1}{T} \mathcal{I}_3, \, &
+\tfrac{\diff e_{\text{p,a},t} }{\diff \oriError_t^\text{n}}&= [ \tilde{R}^\text{nb}_t y_{\text{a},t} \times], && \label{eq:app-poseEst-smoothingDerPos} \\
+\tfrac{\diff e_{\text{v,a},t} }{\diff v_{t+1}^\text{n}}&= \tfrac{1}{T}\mathcal{I}_3, \, &
+\tfrac{\diff e_{\text{v,a},t} }{\diff v_t^\text{n}}&= - \tfrac{1}{T} \mathcal{I}_3, \, &
+\tfrac{\diff e_{\text{v,a},t} }{\diff \oriError_t^\text{n}}&= [ \tilde{R}^\text{nb}_t y_{\text{a},t} \times]. \label{eq:app-poseEst-smoothingDerVel} 
+\end{align}
+\end{subequations}
+
+\section{Filtering in an optimization framework}
+To obtain position, velocity and orientation estimates in a filtering framework, the optimization problem~\eqref{eq:oriEst-filtOptNLS} is adapted to
+\begin{align}
+\hat{x}_t &= \argmin_{x_{t}} - \log p(x_{t} \mid y_{1:t}) \nonumber \\
+&= \argmin_{x_{t}} \| e_{\text{f},t} \|_{P_{t \mid t-1}^{-1}} + \| e_{\text{p},t} \|_{\Sigma_\text{p}^{-1}},
+\end{align}
+where $\| e_{\text{p},t} \|_{\Sigma_\text{p}^{-1}}$ is the position measurement model also used in the smoothing optimization problem presented in \Sectionref{sec:oriEst-poseEstimation}. Furthermore, $e_{\text{f},t}$ is extended from~\eqref{eq:oriEst-costDerFiltMarg} to be 
+\begin{align}
+e_{\text{f},t} = \begin{pmatrix} p_{t}^\text{n} - p_{t-1}^\text{n} - T v_{t-1}^\text{n} - \tfrac{T^2}{2} \left( R_{t-1}^\text{nb} y_{\text{a},t-1} + g^\text{n} \right) \\
+v_{t}^\text{n} - v_{t-1}^\text{n} - T \left( R_{t-1}^\text{nb} y_{\text{a},t-1} + g^\text{n} \right) \\
+\oriError^\text{n}_{t}- 2 \logq \left(\hat{q}_{t-1}^\text{nb} \odot \expq (\tfrac{T}{2} y_{\omega,t-1} ) \odot  \tilde{q}_{t}^\text{bn} \right) \end{pmatrix}, 
+\end{align}
+where $\tfrac{\diff e_{\text{f},t}}{\diff x_t} = \mathcal{I}_9$ and $x_t = \begin{pmatrix} p_t^\Transp & v_t^\Transp & (\oriError^\text{n}_{t})^\Transp \end{pmatrix}^\Transp$.
+
+The covariance matrix $P_{t+1 \mid t}$ is given by $P_{t+1 \mid t} = F_{t} P_{t \mid t} F_{t}^\Transp + G_{t} Q G_{t}^\Transp$ with
+\begin{subequations}
+\label{eq:app-estPose-timeUpdateFiltOpt}
+\begin{align}
+F_t &= \begin{pmatrix} \mathcal{I}_3 & T \mathcal{I}_3 & - \tfrac{T^2}{2}  [\hat{R}_t^\text{nb} y_{\text{a},t} \times] \\
+0 & \mathcal{I}_3 & - T [\hat{R}_t^\text{nb} y_{\text{a},t} \times] \\
+0 & 0 & \mathcal{I}_3 \end{pmatrix}
+, \qquad
+G_t = \begin{pmatrix} \mathcal{I}_6 & 0 \\ 0 & T \tilde{R}_{t+1}^{(0)} \end{pmatrix}, \label{eq:app-estPose-timeUpdateFiltOptFG} \\
+Q &= \begin{pmatrix} \Sigma_\text{a} & 0 & 0 \\ 0 & \Sigma_\text{a} & 0 \\ 0 & 0 & \Sigma_\omega \end{pmatrix}.
+\end{align}
+\end{subequations}
+Similar to the update of the linearization point in~\eqref{eq:oriEst-filteringOpt-updateLinPointIt0}, we also update the estimates of the position and velocity before starting the optimization algorithm, such that $e_{\text{f},t}$ is equal to zero for iteration $k = 0$.
+
+\section{Extended Kalman filter with quaternion states}
+Following the notation in \Sectionref{sec:oriEst-ekf}, the following matrices are needed for implementing the \gls{ekf} for pose estimation with quaternion states
+\begin{subequations}
+\label{eq:app-poseEst-ekfMeas}
+\begin{align}
+F_t &= \begin{pmatrix} \mathcal{I}_3 & T \mathcal{I}_3 & \tfrac{T^2}{2} \left. \tfrac{\partial R^\text{nb}_{t \mid t}}{\partial q^\text{nb}_{t \mid t}} \right|_{q^\text{nb}_{t \mid t}=\hat{q}^\text{nb}_{t \mid t}} y_{\text{a},t} \\
+0 & \mathcal{I}_3 & T \left. \tfrac{\partial R^\text{nb}_{t \mid t}}{\partial q^\text{nb}_{t \mid t}} \right|_{q^\text{nb}_{t \mid t}=\hat{q}^\text{nb}_{t \mid t}} y_{\text{a},t} \\
+0 & 0 & \left( \expq ( \tfrac{T}{2} y_{\omega,t} ) \right)^\rightMult \end{pmatrix}, \quad
+H = \mathcal{I}_3, \quad R = \Sigma_\text{p},
+ \\
+G_t &= \begin{pmatrix} \mathcal{I}_6 & 0 \\ 0 & -\tfrac{T}{2} \left( \hat{q}^\text{nb}_{t \mid t} \right)^\leftMult \tfrac{\diff \expq (e_{\omega,t})}{\diff e_{\omega,t}} \end{pmatrix}, %\\
+\quad
+Q = \begin{pmatrix} \Sigma_\text{a} & 0 & 0 \\ 0 & \Sigma_\text{a} & 0 \\ 0 & 0 & \Sigma_\omega \end{pmatrix}. 
+\end{align}
+\end{subequations}
+
+\section{Extended Kalman filter with orientation deviation states}
+In the time update of the pose estimation algorithm with orientation deviation states, the linearization point is again directly updated as in~\eqref{eq:oriEst-oriErrorEKF-dynUpdateLin}. The position and velocity states are updated according to the dynamic model~\eqref{eq:models-ssPose-dyn}. Furthermore, the matrices $Q$, $H$ and $R$ from~\eqref{eq:app-poseEst-ekfMeas} are needed for implementing the \gls{ekf} for pose estimation in combination with 
+\begin{align}
+F_t = \begin{pmatrix} \mathcal{I}_3 & T \mathcal{I}_3 & - \tfrac{T^2}{2}  [\tilde{R}_{t \mid t}^\text{nb} y_{\text{a},t} \times] \\
+0 & \mathcal{I}_3 & - T [\tilde{R}_{t \mid t}^\text{nb} y_{\text{a},t} \times] \\
+0 & 0 & \mathcal{I}_3 \end{pmatrix}
+, \qquad
+G_t = \begin{pmatrix} \mathcal{I}_6 & 0 \\ 0 & T \tilde{R}_{t+1 \mid t} \end{pmatrix}.
+\end{align}

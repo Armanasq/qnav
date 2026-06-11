@@ -1,0 +1,555 @@
+% !TEX root = kinematics.tex
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Closed-form integration methods}
+\label{sec:ClosedFormInt}
+
+In many cases it is possible to arrive to a closed-form expression for the integration step. 
+We consider now the case of a first-order linear differential equation,
+%
+\begin{equation}
+\dot\bfx(t)=\bfA\tdot\bfx(t)~,
+\end{equation}
+%
+that is, the relation is linear and constant over the interval. 
+In such cases, the integration over the interval $[t_n , t_n+\Dt]$ results in
+%
+\begin{equation}
+\bfx_{n+1}= e^{\bfA\tdot\Dt}\bfx_n = \Phi\bfx_n~,
+\end{equation}
+%
+where $\Phi$ is known as the transition matrix. 
+The Taylor expansion of this transition matrix is
+%
+\begin{equation}
+\Phi= e^{\bfA\tdot\Dt}=\bfI + \bfA\Dt + \frac{1}{2} \bfA^2\Dt^2 + \frac{1}{3!}\bfA^3\Dt^3 + \dots   = \sum_{k=0}^\infty \frac{1}{k!}\bfA^k\Dt^k ~.
+\label{equ:TaylorExp}
+\end{equation}
+
+
+When writing this series for known instances of $\bfA$, it is sometimes possible to identify known series in the result. 
+This allows writing the resulting integration in closed form. 
+A few examples follow.
+
+%=============================================================
+\subsection{Integration of the angular error}
+\label{sec:ClosedFormAngle}
+
+For example, consider the angular error dynamics without bias and noise (a cleaned version of Eq.~\eqRef{equ:equat}),
+%
+\begin{equation}
+\dot{\delta\bftheta} = -\hatx\bfomega\delta\bftheta 
+\end{equation}
+%
+Its transition matrix can be written as a Taylor series,
+%
+%
+\begin{align}
+\Phi &= e^{-\hatx\bfomega\Dt} \label{equ:phiexp}\\
+&= \bfI -\hatx\bfomega\Dt + \frac12\hatx\bfomega^2\Dt^2 - \frac{1}{3!}\hatx\bfomega^3\Dt^3 + \frac{1}{4!}\hatx\bfomega^4\Dt^4 - \dots 
+\end{align}%
+%
+Now defining $\bfomega\Dt \triangleq \bfu \Delta\theta$, the unitary axis of rotation and the rotated angle, and applying \eqRef{equ:prop2}, we can group terms and get
+%
+%
+\begin{align}
+\Phi 
+&= \bfI -\hatx{\bfu}\Delta\theta + \frac12\hatx{\bfu}^2\Delta\theta^2 - \frac{1}{3!}\hatx{\bfu}^3\Delta\theta^3 + \frac{1}{4!}\hatx{\bfy}^4\Delta\theta^4 - \dots \nonumber\\
+&= \bfI - \hatx{\bfu}\left(\Delta\theta - \frac{\Delta\theta^3}{3!} + \frac{\Delta\theta^5}{5!} - \cdots\right) + \hatx{\bfu}^2\left(\frac{\Delta\theta^2}{2!} - \frac{\Delta\theta^4}{4!}  + \frac{\Delta\theta^6}{6!} - \cdots\right) \nonumber\\
+&= \bfI - \hatx{\bfu}\sin\Delta\theta + \hatx{\bfu}^2(1-\cos\Delta\theta) ~,
+\end{align}%
+%
+which is a closed-form solution.
+
+\bigskip
+This solution corresponds to a rotation matrix, $\Phi=\bfR\{-\bfu\Delta\theta\} = \bfR\{\bfomega\Dt\}\tr$, according to the Rodrigues rotation formula \eqRef{equ:rodrigues}, a result that could be obtained by direct inspection of \eqRef{equ:phiexp} and recalling \eqRef{equ:vectomat}. 
+Let us therefore write this as the final closed-form result,
+%
+\begin{equation}
+\eqbox{\Phi=\bfR\{\bfomega\Dt\}\tr}~.
+\end{equation}
+
+%=============================================================
+\subsection{Simplified IMU example}
+\label{sec:IMUexample}
+
+Consider the simplified, IMU driven system with error-state dynamics governed by,
+%
+\begin{subequations}
+%
+\begin{align}
+\dot{\delta\bfp}   &= \delta\bfv \\
+\dot{\delta\bfv}   &= -\bfR\hatx{\bfa}\,\delta\bftheta \\
+\dot{\delta\bftheta} &= -\hatx\bfomega\delta\bftheta~,
+\end{align}%%
+\end{subequations}%
+%
+where $(\bfa,\bfomega)$ are the IMU readings, and we have obviated gravity and sensor biases. 
+This system is defined by the state vector and the dynamic matrix,
+%
+\begin{equation}
+\bfx = \begin{bmatrix}
+\delta\bfp \\ \delta\bfv \\ \delta\bftheta
+\end{bmatrix}
+\qquad
+\bfA = \begin{bmatrix}
+0 & \bfP_\bfv & 0 \\
+0 & 0 & \bfV_\bftheta \\
+0 & 0 & \Theta_\bftheta
+\end{bmatrix}~.
+\end{equation}
+%
+with
+%
+%
+\begin{align}
+\bfP_\bfv &= \bfI \\
+\bfV_\bftheta &= -\bfR\hatx{\bfa} \\
+\Theta_\bftheta &= -\hatx\bfomega \label{equ:ThetaThetaDef}
+\end{align}%
+
+
+Its integration with a step time $\Dt$ is $\bfx_{n+1}= e^{(\bfA\Dt)}\tdot\bfx_n=\Phi\tdot\bfx_n$. 
+The transition matrix $\Phi$ admits a Taylor development \eqRef{equ:TaylorExp}, in increasing powers of $\bfA\Dt$.
+We can write a few powers of $\bfA$ to get an illustration of their general form,
+%
+\begin{equation}
+\bfA \!=\! \begin{bmatrix}
+0 & \bfP_\bfv & 0 \\
+0 & 0 & \bfV_\bftheta \\
+0 & 0 & \Theta_\bftheta
+\end{bmatrix}
+\!,
+\bfA^2 \!=\! 
+\begin{bmatrix} 
+0 & 0 & \bfP_v\bfV_\bftheta \\ 
+0 & 0 & \bfV_\bftheta\Theta_\bftheta \\
+0 & 0 & \Theta_\bftheta^2
+\end{bmatrix}
+\!,
+\bfA^3 \!=\! 
+\begin{bmatrix} 
+0 & 0 & \bfP_v\bfV_\bftheta\Theta_\bftheta \\ 
+0 & 0 & \bfV_\bftheta\Theta_\bftheta^2 \\
+0 & 0 & \Theta_\bftheta^3
+\end{bmatrix}
+\!,
+\bfA^4 \!=\! 
+\begin{bmatrix} 
+0 & 0 & \bfP_v\bfV_\bftheta\Theta_\bftheta^2 \\ 
+0 & 0 & \bfV_\bftheta\Theta_\bftheta^3 \\
+0 & 0 & \Theta_\bftheta^4
+\end{bmatrix}
+\!,
+\end{equation}
+%
+from which it is now visible that, for $k>1$,
+%
+\begin{equation}
+\bfA^{k>1} = 
+\begin{bmatrix} 
+0 & 0 & \bfP_v\bfV_\bftheta\Theta_\bftheta^{k-2} \\ 
+0 & 0 & \bfV_\bftheta\Theta_\bftheta^{k-1} \\
+0 & 0 & \Theta_\bftheta^k
+\end{bmatrix}
+\end{equation}
+
+We can observe that the terms in the increasing powers of $\bfA$ have a fixed part and an increasing power of $\Theta_\bftheta$. 
+These powers can lead to closed form solutions, as in the previous section. 
+
+
+Let us partition the matrix $\Phi$ as follows,
+%
+\begin{equation}
+\Phi = \begin{bmatrix}
+\bfI & \Phi_{\bfp\bfv} & \Phi_{\bfp\bftheta} \\
+0 & \bfI & \Phi_{\bfv\bftheta} \\
+0 & 0 & \Phi_{\bftheta\bftheta}
+\end{bmatrix}~,
+\end{equation}
+%
+and let us advance step by step, exploring all the non-zero blocks of $\Phi$ one by one. 
+
+\paragraph{Trivial diagonal terms}
+Starting by the two upper terms in the diagonal, they are the identity as shown. 
+
+\paragraph{Rotational diagonal term}
+Next is the rotational diagonal term $\Phi_{\bftheta\bftheta}$, relating the new angular error to the old angular error. 
+Writing the full Taylor series for this term leads to
+%
+\begin{equation}
+\Phi_{\bftheta\bftheta} = 
+\sum_{k=0}^\infty \frac{1}{k!}\Theta_\bftheta^k \Dt^k = \sum_{k=0}^\infty \frac{1}{k!}\hatx{-\bfomega}^k \Dt^k ~, \label{equ:thetaThetaSeries}
+\end{equation}
+%
+which corresponds, as we have seen in the previous section, to our well-known rotation matrix,
+%
+\begin{equation}
+\eqbox{\Phi_{\bftheta\bftheta} = \bfR\{\bfomega\Dt\}\tr}~.
+\end{equation}
+
+\paragraph{Position-vs-velocity term}
+The simplest off-diagonal term is $\Phi_{\bfp\bfv}$, which is
+%
+\begin{equation}
+\eqbox{\Phi_{\bfp\bfv} = \bfP_\bfv\Dt = \bfI\Dt}~.
+\end{equation}
+
+\paragraph{Velocity-vs-angle term}
+Let us now move to the term $\Phi_{\bfv, \bftheta}$, by writing its series,
+%
+\begin{equation}
+\Phi_{\bfv\bftheta} = \bfV_\bftheta\Dt 
++ \frac{1}{2}\bfV_\bftheta\Theta_\bftheta\Dt^2 
++ \frac{1}{3!}\bfV_\bftheta\Theta_\bftheta^2\Dt^3
++\cdots
+\end{equation}
+%
+\begin{equation}
+\Phi_{\bfv\bftheta} = \Dt\bfV_\bftheta( \bfI 
++ \frac{1}{2}\Theta_\bftheta\Dt 
++ \frac{1}{3!}\Theta_\bftheta^2\Dt^2
++\cdots)
+\end{equation}
+%
+which reduces to
+%
+\begin{equation}
+\Phi_{\bfv\bftheta} = \Dt\bfV_\bftheta\left( \bfI 
++ \sum_{k\ge1}\frac{(\Theta_\bftheta\Dt)^k}{(k+1)!} 
+\right)
+\end{equation}
+
+
+At this point we have two options. 
+We can truncate the series at the first significant term, obtaining $\Phi_{\bfv\bftheta} = \bfV_\bftheta\Dt$, but this would not be a closed-form. 
+See next section for results using this simplified method.
+Alternatively, let us factor $\bfV_\bftheta$ out and write
+%
+\begin{equation}
+\Phi_{\bfv\bftheta} = \bfV_\bftheta\Sigma_1
+\end{equation}
+%
+with
+%
+\begin{equation}
+\Sigma_1 = \bfI\Dt 
++ \frac{1}{2}\Theta_\bftheta\Dt^2 
++ \frac{1}{3!}\Theta_\bftheta^2\Dt^3
++\cdots~.
+\end{equation}
+%
+The series $\Sigma_1$ ressembles the series we wrote for $\Phi_{\bftheta\bftheta}$, \eqRef{equ:thetaThetaSeries}, with two exceptions:
+\begin{itemize}
+\item The powers of $\Theta_\bftheta$ in $\Sigma_1$ do not match with the rational coefficients $\tfrac{1}{k!}$ and with the powers of 
+$\Dt$. 
+In fact, we remark here that the subindex ``1" in $\Sigma_1$ denotes the fact that one power of $\Theta_\bftheta$ is missing in each of the members.
+
+\item Some terms at the start of the series are missing. 
+Again, the subindex ``1" indicates that one such term is missing.
+\end{itemize}
+
+The first issue may be solved by applying \eqRef{equ:prop2} to \eqRef{equ:ThetaThetaDef}, which yields the identity
+%
+\begin{equation}
+\Theta_\bftheta
+ = \frac{\hatx\bfomega^3}{\norm\bfomega^2}
+ = \frac{-\Theta_\bftheta^3 }{\norm\bfomega^2} ~. \label{equ:skewPowerAugment2}
+\end{equation}
+%
+This expression allows us to increase the exponents of $\Theta_\bftheta$ in the series by two, and write, if $\bfomega \neq 0$,
+%
+\begin{equation}
+\Sigma_1 =
+  \bfI\Dt 
+- \frac{\Theta_\bftheta}{\norm\bfomega^2}\left(\frac12\Theta_\bftheta^2\Dt^2 + \frac1{3!}\Theta_\bftheta^3\Dt^3 + \dots \right) ~,
+\end{equation}
+%
+and $\Sigma_1=\bfI\Dt$ otherwise. 
+All the powers in the new series match with the correct coefficients. 
+Of course, and as indicated before, some terms are missing. 
+This second issue can be solved by adding and substracting the missing terms, and substituting the full series by its closed form. 
+We obtain
+%
+\begin{equation}
+\Sigma_1 =
+  \bfI\Dt 
+- \frac{\Theta_\bftheta}{\norm\bfomega^2}\left(\bfR\{\bfomega\Dt\}\tr - \bfI - \Theta_\bftheta\Dt \right) ~,
+\end{equation}
+%%
+which is a closed-form solution valid if $\bfomega\neq 0$.  
+Therefore we can finally write
+%
+\begin{subequations}
+\begin{empheq}
+ [left={\Phi_{\bfv\bftheta}=\empheqlbrace},box=\fbox]
+ {alignat=2}
+ &-\bfR\hatx{\bfa}\Dt   &&  \bfomega\to 0 \\
+ &-\bfR\hatx{\bfa} \left(\bfI\Dt 
++ \frac{\hatx\bfomega}{\norm\bfomega^2}\left(\bfR\{\bfomega\Dt\}\tr - \bfI + \hatx\bfomega\Dt \right)
+\right)
+ &\quad & \bfomega \neq 0
+\end{empheq}
+\end{subequations}
+
+%\item 
+\paragraph{Position-vs-angle term}
+Let us finally board the term $\Phi_{\bfp\bftheta}$. 
+Its Taylor series is,
+%
+\begin{equation}
+\Phi_{\bfp\bftheta} = 
+  \frac{1}{2 }\bfP_\bfv\bfV_\bftheta\Dt^2
++ \frac{1}{3!}\bfP_\bfv\bfV_\bftheta\Theta_\bftheta\Dt^3 
++ \frac{1}{4!}\bfP_\bfv\bfV_\bftheta\Theta_\bftheta^2\Dt^4
++\cdots
+\end{equation}
+%
+We factor out the constant terms and get,
+%
+\begin{equation}
+\Phi_{\bfp\bftheta} = \bfP_\bfv\bfV_\bftheta\ \Sigma_2~,
+\end{equation}
+%
+with
+%
+\begin{equation}
+\Sigma_2 = 
+  \frac{1}{2 }\bfI\Dt^2
++ \frac{1}{3!}\Theta_\bftheta\Dt^3 
++ \frac{1}{4!}\Theta_\bftheta^2\Dt^4
++ \cdots ~.
+\end{equation}
+%
+where we note the subindex ``2" in $\Sigma_2$ admits the following interpretation:
+%
+\begin{itemize}
+\item Two powers of $\Theta_\bftheta$ are missing in each term of the series,
+\item The first two terms of the series are missing.
+\end{itemize}
+
+Again, we use \eqRef{equ:skewPowerAugment2} to increase the exponents of $\Theta_\bftheta$, yielding
+%
+\begin{equation}
+\Sigma_2 = 
+  \frac{1}{2}\bfI \Dt^2
+- \frac{1}{\norm\bfomega^2}\left(
+  \frac{1}{3!}\Theta_\bftheta^3\Dt^3 
++ \frac{1}{4!}\Theta_\bftheta^4\Dt^4
++ \cdots \right)~.
+\end{equation}
+%
+We substitute the incomplete series by its closed form,
+%
+\begin{equation}
+\Sigma_2 =
+  \frac12\bfI \Dt^2
+- \frac{1}{\norm\bfomega^2}
+\left(
+  \bfR\{\bfomega\Dt\}\tr 
+	- \bfI 
+	- \Theta_\bftheta\Dt
+	- \frac{1}{2}\Theta_\bftheta^2\Dt^2
+\right)~,
+\end{equation}
+%
+which leads to the final result
+%
+\begin{subequations}
+\begin{empheq}[left={\Phi_{\bfp\bftheta}=\empheqlbrace},box=\fbox]{alignat=2}
+ & -\bfR\hatx{\bfa} \frac{\Dt^2}{2} && \bfomega\to 0  \\
+ & -\bfR\hatx{\bfa} 
+\left(
+\frac12\bfI \Dt^2
+- \frac{1}{\norm\bfomega^2}
+\left(
+  \bfR\{\bfomega\Dt\}\tr 
+	- \sum_{k=0}^2\frac{(-\hatx\bfomega\Dt)^k}{k!}
+\right)\right)
+ &\quad &\omega\neq 0 
+\end{empheq}
+\end{subequations}
+
+
+
+
+%=============================================================
+\subsection{Full IMU example}
+\label{sec:closedFormFullImu}
+
+In order to give means to generalize the methods exposed in the simplified IMU example, we need to examine the full IMU case from a little closer.
+
+Consider the full IMU system \eqRef{equ:efull}, which can be posed as
+%
+\begin{equation}
+\dot{\delta\bfx} = \bfA\delta\bfx + \bfB\bfw~,
+\end{equation}
+%
+whose discrete-time integration requires the transition matrix 
+%
+\begin{equation}
+\Phi=\sum_{k=0}^\infty\frac{1}{k!}\bfA^k\Dt^k = \bfI + \bfA\Dt + \frac12\bfA^2\Dt^2 + \dots~, \label{equ:tranmatseries}
+\end{equation}
+%
+which we wish to compute. 
+The dynamic matrix $\bfA$ is block-sparse, and its blocks can be easily determined by examining the original equations \eqRef{equ:efull},
+
+%
+\begin{equation}
+\bfA = \begin{bmatrix}
+  0& \bfP_\bfv&  0&  0&  0&  0\\
+  0&  0& \bfV_\bftheta& \bfV_\bfa&  0& \bfV_\bfg\\
+  0&  0& \Theta_\bftheta&  0& \Theta_\bfomega
+&  0\\
+  0&  0&  0&  0&  0&  0\\
+  0&  0&  0&  0&  0&  0\\
+  0&  0&  0&  0&  0&  0
+\end{bmatrix}~. \label{equ:FullIMU_Fmat}
+\end{equation}
+%
+
+As we did before, let us write a few powers of $\bfA$,
+%
+%
+\begin{align*}
+\bfA^2 &= \begin{bmatrix}
+  ~~0~~& ~~0~~& ~\bfP_\bfv \bfV_\bftheta~& \bfP_\bfv \bfV_\bfa&          0& \bfP_\bfv \bfV_\bfg\\
+  0& 0& ~\bfV_\bftheta \Theta_\bftheta~&    0&      ~\bfV_\bftheta \Theta_\bfomega~&    0\\
+  0& 0&  \Theta_\bftheta^2&     0& \Theta_\bftheta \Theta_\bfomega&     0\\
+  0& 0&     0&     0&          0&     0\\
+  0& 0&     0&     0&          0&     0\\
+  0& 0&     0&     0&          0&     0
+\end{bmatrix}\\
+\bfA^3 &= \begin{bmatrix}
+  ~~0~~& ~~0~~& \bfP_\bfv \bfV_\bftheta \Theta_\bftheta& ~0~&             ~\bfP_\bfv \bfV_\bftheta \Theta_\bfomega~& ~~0~~\\
+  0& 0&  \bfV_\bftheta \Theta_\bftheta^2&    0&     \bfV_\bftheta \Theta_\bftheta \Theta_\bfomega&    0\\
+  0& 0&     \Theta_\bftheta^3&     0& \Theta_\bftheta^2\Theta_\bfomega&     0\\
+  0& 0&        0&     0&                    0&     0\\
+  0& 0&        0&     0&                    0&     0\\
+  0& 0&        0&     0&                    0&     0
+\end{bmatrix}\\
+\bfA^4 &= \begin{bmatrix}
+  ~~0~~& ~~0~~& \bfP_\bfv \bfV_\bftheta \Theta_\bftheta^2 & ~0~&         \bfP_\bfv \bfV_\bftheta\Theta_\bftheta \Theta_\bfomega& ~~0~~\\
+  0& 0&    \bfV_\bftheta \Theta_\bftheta^3&    0&  \bfV_\bftheta \Theta_\bftheta^2 \Theta_\bfomega&    0\\
+  0& 0&       \Theta_\bftheta^4&     0& \Theta_\bftheta^3\Theta_\bfomega&     0\\
+  0& 0&          0&     0&                              0&     0\\
+  0& 0&          0&     0&                              0&     0\\
+  0& 0&          0&     0&                              0&     0
+\end{bmatrix}~.%
+\end{align*}%
+%
+Basically, we observe the following,
+
+\begin{itemize}
+\item
+The only term in the diagonal of $\bfA$, the rotational term $\Theta_\bftheta$, propagates right and up in the sequence of powers $\bfA^k$. 
+All terms not affected by this propagation vanish. 
+This propagation afects the structure of the sequence $\{\bfA^k\}$ in the three following aspects:
+\item 
+The sparsity of the powers of $\bfA$ is stabilized after the 3rd power. 
+That is to say, there are no more non-zero blocks appearing or vanishing for powers of $\bfA$ higher than 3.
+\item 
+The upper-left $3\times 3$ block, corresponding to the simplified IMU model in the previous example, has not changed with respect to that example. 
+Therefore, its closed-form solution developed before holds.
+\item 
+The terms related to the gyrometer bias error (those of the fifth column) introduce a similar series of powers of $\Theta_\bftheta$, which can be solved with the same techniques we used in the simplified example. 
+\end{itemize}
+
+We are interested at this point in finding a generalized method to board the construction of the closed-form elements of the transition matrix $\Phi$. 
+Let us recall the remarks we made about the series $\Sigma_1$ and $\Sigma_2$,
+%
+\begin{itemize}
+\item The subindex coincides with the lacking powers of $\Theta_\bftheta$ in each of the members of the series.
+\item The subindex coincides with the number of terms missing at the beginning of the series.
+\end{itemize}
+
+Taking care of these properties, let us introduce the series $\Sigma_n(\bfX,y)$, defined by\footnote{Note that, being $\bfX$ a square matrix that is not necessarily invertible (as it is the case for $\bfX=\Theta_\bftheta$), we are not allowed to rearrange the definition of $\Sigma_n$ with $\Sigma_n=\bfX^{-n}\sum_{k=n}^\infty\frac{1}{k!}(y\bfX)^{k}$.}
+%
+\begin{equation}
+\Sigma_n(\bfX,y) \triangleq \sum_{k=n}^\infty \frac{1}{k!}\bfX^{k-n}y^k = \sum_{k=0}^\infty \frac{1}{(k+n)!}\bfX^{k}y^{\,k+n}= y^n\sum_{k=0}^\infty \frac{1}{(k+n)!}\bfX^k y^k
+\end{equation}
+%
+in which the sum starts at term $n$ and the terms lack $n$ powers of the matrix $\bfX$. 
+It follows immediately that $\Sigma_1$ and $\Sigma_2$ respond to 
+%
+\begin{equation}
+\Sigma_n=\Sigma_n(\Theta_\bftheta,\Dt)~,
+\end{equation}
+%
+and that $\Sigma_0 = \bfR\{\bfomega\Dt\}\tr$. 
+We can now write the transition matrix \eqRef{equ:tranmatseries} as a function of these series,
+%
+\begin{equation}
+\Phi = \begin{bmatrix}
+\bfI & \bfP_\bfv\Dt & \bfP_\bfv\bfV_\bftheta\Sigma_2 &  \tfrac12\bfP_\bfv\bfV_\bfa\Dt^2 & \bfP_\bfv\bfV_\bftheta\Sigma_3\bftheta_\bfomega & \tfrac12\bfP_\bfv\bfV_\bfg\Dt^2 \\
+0 & \bfI & \bfV_\bftheta\Sigma_1 &  \bfV_\bfa\Dt & \bfV_\bftheta\Sigma_2\bftheta_\bfomega & \bfV_\bfg\Dt \\
+0 & 0 & \Sigma_0 &  0 & \Sigma_1\bftheta_\bfomega & 0 \\
+0 & 0 & 0 & \bfI & 0 & 0 \\
+0 & 0 & 0 & 0 & \bfI & 0 \\
+0 & 0 & 0 & 0 & 0 & \bfI \\
+\end{bmatrix}~.\label{equ:fullIMUtranmat}
+\end{equation}�
+
+Our problem has now derived to the problem of finding a general, closed-form expression for $\Sigma_n$. 
+Let us observe the closed-form results we have obtained so far,
+%
+%
+\begin{align}
+\Sigma_0 &= \bfR\{\bfomega\Dt\}\tr \\
+\Sigma_1 &=
+  \bfI\Dt 
+- \frac{\Theta_\bftheta}{\norm\bfomega^2}\left(\bfR\{\bfomega\Dt\}\tr - \bfI - \Theta_\bftheta\Dt \right) \\
+\Sigma_2 &= 
+  \frac12 \bfI\Dt^2
+- \frac{1}{\norm\bfomega^2}\left(
+  \bfR\{\bfomega\Dt\}\tr - \bfI - \Theta_\bftheta\Dt - \frac12\Theta_\bftheta^2\Dt^2
+ \right)~.
+\end{align}%
+
+In order to develop $\Sigma_3$, we need to apply the identity \eqRef{equ:skewPowerAugment2} twice (because we lack three powers, and each application of \eqRef{equ:skewPowerAugment2} increases this number by only two), getting
+%
+\begin{equation}
+\Sigma_3 = 
+  \frac1{3!}\bfI\Dt^3 
++ \frac{\Theta_\bftheta}{\norm\bfomega^4}
+	\left(
+		  \frac1{4!}\Theta_\bftheta^4\Dt^4
+		+ \frac1{5!}\Theta_\bftheta^5\Dt^5
+		+ \dots
+	\right)~,
+\end{equation}%
+%
+which leads to
+%
+\begin{equation}
+\Sigma_3 = 
+  \frac1{3!}\bfI\Dt^3 
++ \frac{\Theta_\bftheta}{\norm\bfomega^4}
+	\left(
+		\bfR\{\bfomega\Dt\}\tr - \bfI - \Theta_\bftheta\Dt - \frac12\Theta_\bftheta^2\Dt^2 - \frac1{3!}\Theta_\bftheta^3\Dt^3
+	\right)~.
+\end{equation}%
+%
+By careful inspection of the series $\Sigma_0\dots\Sigma_3$, we can now derive a general, closed-form expression for $\Sigma_n$, as follows,
+%
+\begin{subequations}
+\begin{empheq}[left={\Sigma_n=\empheqlbrace},box=\widefbox]{alignat=2}
+ & \frac1{n!}\bfI\Dt^n && \bfomega \to 0 \\
+ & \bfR\{\bfomega\Dt\}\tr && n = 0 \\
+ &  \frac1{n!}\bfI\Dt^n
+- \frac{(-1)^{\tfrac{n+1}{2}}\hatx\bfomega}{\norm\bfomega^{n+1}}
+	\left(
+		\bfR\{\bfomega\Dt\}\tr - \sum_{k=0}^n \frac{(-\hatx\bfomega\Dt)^k}{k!}
+	\right) && n \text{ odd}  \\
+ &   \frac1{n!}\bfI\Dt^n
++ \frac{(-1)^{\tfrac{n}{2}}}{\norm\bfomega^n}\left(
+  \bfR\{\bfomega\Dt\}\tr - \sum_{k=0}^n \frac{(-\hatx\bfomega\Dt)^k}{k!}
+	\right) &\quad & n \text{ even} 
+\end{empheq}
+\end{subequations}
+
+The final result for the transition matrix $\Phi$ follows immediately by substituting the appropriate values of $\Sigma_n,\ n\in\{0,1,2,3\}$, in the corresponding positions of \eqRef{equ:fullIMUtranmat}.
+
+It might be worth noticing that the series now appearing in these new expressions of $\Sigma_n$ have a finite number of terms, and thus that they can be effectively computed. 
+That is to say, the expression of $\Sigma_n$ is a closed form as long as $n<\infty$, which is always the case. 
+For the current example, we have $n\leq 3$ as can be observed in \eqRef{equ:fullIMUtranmat}.

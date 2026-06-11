@@ -1,0 +1,150 @@
+% !TEX root = kinematics.tex
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Runge-Kutta numerical integration methods}
+\label{sec:NumInt}
+
+We aim at integrating nonlinear differential equations of the form
+%
+\begin{equation}
+\dot\bfx = f(t,\bfx)
+\end{equation}
+%
+over a limited time interval $\Dt$, in order to convert them to a differences equation, \ie,
+%
+\begin{equation}
+\bfx(t+\Dt) =  \bfx(t)+\int_t^{t+\Dt}f(\tau,\bfx(\tau))d\tau~,
+\end{equation}
+%
+or equivalently, if we assume that $t_n = n\Dt$ and $\bfx_n\triangleq \bfx(t_n)$,
+\begin{equation}
+\bfx_{n+1} =  \bfx_n+\int_{n\Dt}^{(n+1)\Dt}f(\tau,\bfx(\tau))d\tau~.
+\end{equation}
+
+One of the most utilized family of methods is the Runge-Kutta methods (from now on, RK). 
+These methods use several iterations to estimate the derivative over the interval, and then use this derivative to integrate over the step $\Dt$.
+
+
+In the sections that follow, several RK methods are presented, from the simplest one to the most general one, and are named according to their most common name. 
+
+
+\bigskip
+NOTE: All the material here is taken from the \emph{Runge-Kutta method} entry in the English Wikipedia.
+
+%=============================================================
+\subsection{The Euler method}
+\label{sec:Euler}
+
+The Euler method assumes that the derivative $f(\cdot)$ is constant over the interval, and therefore
+%
+\begin{equation}
+\eqbox{\bfx_{n+1} =  \bfx_n + \Dt\tdot f(t_n,\bfx_n)~.}
+\end{equation}
+
+Put as a general RK method, this corresponds to a single-stage method, which can be depicted as follows. 
+Compute the derivative at the initial point,
+%
+\begin{equation}
+k_1 = f(t_n,\bfx_n)~,
+\end{equation}
+%
+and use it to compute the integrated value at the end point,
+%
+\begin{equation}
+\bfx_{n+1} = \bfx_n + \Dt\tdot k_1~.
+\end{equation}
+
+%=============================================================
+\subsection{The midpoint method}
+
+The midpoint method assumes that the derivative is the one at the midpoint of the interval, and makes one iteration to compute the value of $\bfx$ at this midpoint, \ie,
+%
+\begin{equation}
+\eqbox{\bfx_{n+1} =  \bfx_n + \Dt\tdot f \Big( t_n + \frac{1}{2}\Dt \ ,\ \bfx_n + \frac{1}{2} \Dt \tdot f(t_n , \bfx_n) \Big)}~.
+\end{equation}
+
+The midpoint method can be explained as a two-step method as follows. 
+First, use the Euler method to integrate until the midpoint, using $k_1$ as defined previously,
+%
+%
+\begin{align}
+k_1 &= f(t_n,\bfx_n) \\
+\bfx(t_n+\tfrac12\Dt) &=  \bfx_n + \frac{1}{2} \Dt\tdot k_1~.
+\end{align}%
+%
+Then use this value to evaluate the derivative at the midpoint, $k_2$, leading to the integration
+%
+%
+\begin{align}
+k_2 &= f(t_n+\tfrac12\Dt \ ,\ \bfx(t_n+\tfrac12\Dt)) \\
+\bfx_{n+1} &=  \bfx_n + \Dt\tdot k_2~.
+\end{align}%
+
+
+
+%=============================================================
+\subsection{The RK4 method}
+
+This is usually referred to as simply the Runge-Kutta method. 
+It assumes evaluation values for $f()$ at the start, midpoint and end of the interval. 
+And it uses four stages or iterations to compute the integral, with four derivatives, $k_1\dots k_4$, that are obtained sequentially. 
+These derivatives, or \emph{slopes}, are then weight-averaged to obtain the 4th-order estimate of the derivative in the interval. 
+
+The RK4 method is better specified as a small algorithm than a one-step formula like the two methods above. The RK4 integration step is,
+
+\begin{equation}
+\eqbox{\bfx_{n+1} = \bfx_n + \frac{\Dt}{6} \Big( k_1 + 2k_2 + 2k_3 + k_4 \Big) }~,
+\end{equation}
+% 
+that is, the increment is computed by assuming a slope which is the weighted average of the slopes $k_1,k_2,k_3,k_4$, with
+%
+%
+\begin{align}
+k_1 &= f(t_n, \bfx_n) \\
+k_2 &= f\Big(t_n + \frac{1}{2}\Dt \ ,\ \bfx_n + \frac{\Dt}{2} k_1\Big) \\
+k_3 &= f\Big(t_n + \frac{1}{2}\Dt \ ,\ \bfx_n + \frac{\Dt}{2} k_2\Big) \\
+k_4 &= f\Big(t_n + \Dt \ ,\ \bfx_n + \Dt \tdot k_3\Big) ~.
+\end{align}%
+
+The different slopes have the following interpretation:
+%
+\begin{itemize}
+\item $k_1$ is the slope at the beginning of the interval, using $\bfx_n$ , (Euler's method);
+\item   $ k_2$ is the slope at the midpoint of the interval, using $\bfx_n + \tfrac12 \Dt\tdot k_1$, (midpoint method);
+\item    $k_3$ is again the slope at the midpoint, but now using $\bfx_n + \tfrac12 \Dt\tdot k_2$;
+\item    $k_4$ is the slope at the end of the interval, using $\bfx_n + \Dt\tdot k_3 $.
+
+
+\end{itemize}
+
+%=============================================================
+\subsection{General Runge-Kutta method}
+
+More elaborated RK methods are possible. 
+They aim at either reduce the error and/or increase stability. 
+They take the general form
+%
+\begin{equation}
+\eqbox{\bfx_{n+1} = \bfx_n + \Dt \sum_{i=1}^s b_i k_i} ~,
+\end{equation}
+%
+where
+%
+\begin{equation}
+k_i = f\Big( t_n+\Dt \tdot c_i ,  \bfx_n + \Dt \sum_{j=1}^s a_{ij}  k_j \Big)~,
+\end{equation}
+%
+that is, the number of iterations (the order of the method) is $s$, the averaging weights are defined by $b_i$, the evaluation time instants by $c_i$, and the slopes $k_i$ are determined using the values $a_{ij}$. 
+Depending on the structure of the terms $a_{ij}$, one can have \emph{explicit} or \emph{implicit} RK methods. 
+
+\begin{itemize}
+\item In explicit methods, all $k_i$ are computed sequentially, \ie, using only previously computed values. 
+This implies that the matrix $[a_{ij}]$ is lower triangular with zero diagonal entries (\ie, $a_{ij}=0$ for $j\ge i$). 
+Euler, midpoint and RK4 methods are explicit. 
+
+\item Implicit methods have a full $[a_{ij}]$ matrix and require the solution of a linear set of equations to determine all $k_i$. 
+They are therefore costlier to compute, but they are able to improve on accuracy and stability \wrt explicit methods.
+\end{itemize}
+
+Please refer to specialized documentation for more detailed information.

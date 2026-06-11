@@ -1,0 +1,143 @@
+% !TEX root = kinematics.tex
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{The transition matrix via Runge-Kutta integration}
+\label{sec:TranMatRK}
+
+Still another way to approximate the transition matrix is to use Runge-Kutta integration. 
+This might be necessary in cases where the dynamic matrix $\bfA$ cannot be considered constant along the integration interval, \ie,
+%
+\begin{equation}
+\dot\bfx(t)=\bfA(t)\bfx(t)~. \label{equ:RKtran1}
+\end{equation}
+
+Let us rewrite the following two relations defining the same system in continuous- and discrete-time. 
+They involve the dynamic matrix $\bfA$ and the transition matrix $\Phi$,
+%
+\begin{align}
+\dot\bfx(t) &= \bfA(t)\tdot\bfx(t) \label{equ:ode_dxFx} \\
+\bfx(t_n+\tau) &= \Phi(t_n+\tau|t_n)\tdot\bfx(t_n)~.
+\end{align}
+%
+These equations allow us to develop $\dot\bfx(t_n+\tau)$ in two ways as follows (left and right developments, please note the tiny dots indicating the time-derivatives),
+%
+\begin{align}
+\dot{(\Phi(t_n+\tau|t_n)\bfx(t_n))} =& \eqbox{\dot\bfx(t_n+\tau)} =  \bfA(t_n+\tau)\bfx(t_n+\tau) \nonumber \\
+\dot\Phi(t_n+\tau|t_n)\bfx(t_n)+\Phi(t_n+\tau|t_n)\dot\bfx(t_n) =&~~~~~~~~~~~~~~~=  \bfA(t_n+\tau)\Phi(t_n+\tau|t_n)\bfx(t_n) \nonumber \\
+\dot\Phi(t_n+\tau|t_n)\bfx(t_n) =&& \label{equ:last}
+\end{align}%
+%
+Here, \eqRef{equ:last} comes from noticing that $\dot\bfx(t_n)=\dot\bfx_n=0$, because it is a sampled value. 
+Then,
+%
+\begin{equation}
+\dot\Phi(t_n+\tau|t_n) = \bfA(t_n+\tau)\Phi(t_n+\tau|t_n) \label{equ:ode_dPhiFtPhi}
+\end{equation}
+%
+which is the same ODE as \eqRef{equ:ode_dxFx}, now applied to the transition matrix instead of the state vector. 
+%
+%We know that, in the cases where $\bfA$ is considered constant over the integration interval (\ie, $\bfA(t) = \bfA(t_n)\triangleq\bfA$ for $t_n<t<t_n+\Dt$), the transition matrix can be computed in closed form, $\Phi=e^{\bfA\Dt}$, or approximated by truncation of its Taylor series. 
+%If $\bfA(t)$ does not want to be considered constant, then one can attempt numerical integration of \eqRef{equ:ode_dPhiFtPhi} using any high-order runge-Kutta method. 
+Mind that, because of the identity $\bfx(t_n)=\Phi_{t_n|t_n}\bfx(t_n)$, the transition matrix at the beginning of the interval, $t=t_n$, is always the identity,
+%
+\begin{equation}
+\Phi_{t_n|t_n} = \bfI~.
+\end{equation}
+
+Using RK4 with $f(t,\Phi(t))=\bfA(t)\Phi(t)$, we have
+%
+\begin{equation}
+\Phi\triangleq\Phi(t_n+\Dt|t_n) = \bfI + \frac{\Dt}{6}(\bfK_1+2\bfK_2+2\bfK_3+\bfK_4)
+\end{equation}
+%
+with
+%
+%
+\begin{align}
+\bfK_1 &= \bfA(t_n) \\
+\bfK_2 &= \bfA\Big(t_n + \frac{1}{2}\Dt \Big)\Big(\bfI + \frac{\Dt}{2} \bfK_1 \Big)\\
+\bfK_3 &= \bfA\Big(t_n + \frac{1}{2}\Dt \Big)\Big( \bfI + \frac{\Dt}{2} \bfK_2\Big) \\
+\bfK_4 &= \bfA\Big(t_n + \Dt \Big)\Big( \bfI + \Dt \tdot \bfK_3\Big) ~.
+\end{align}%
+
+%=============================================================
+\subsection{Error-state example}
+
+Let us consider the error-state Kalman filter for the non-linear, time-varying system
+%
+\begin{equation}
+\dot\bfx_t(t) = f(t, \bfx_t(t), \bfu(t))
+\end{equation}
+%
+where $\bfx_t$ denotes the true state, and $\bfu$ is a control input. 
+This true state is a composition, denoted by $\oplus$, of a nominal state $\bfx$ and the error state $\delta\bfx$,
+%
+\begin{equation}
+\bfx_t(t) = \bfx(t) \oplus \delta\bfx(t)
+\end{equation}
+%
+where the error-state dynamics admits a linear form which is time-varying depending on the nominal state $\bfx$ and the control $\bfu$, \ie,
+%
+\begin{equation}
+\dot{\delta\bfx} = \bfA(\bfx(t),\bfu(t))\tdot\delta\bfx
+\end{equation}
+%
+that is, the error-state dynamic matrix in \eqRef{equ:RKtran1} has the form $\bfA(t) = \bfA(\bfx(t),\bfu(t))$. 
+The dynamics of the error-state transition matrix can be written,
+%
+\begin{equation}
+\dot{\Phi}(t_n+\tau|t_n)=\bfA(\bfx(t),\bfu(t))\tdot\Phi(t_n+\tau|t_n)~.
+\end{equation}
+%
+In order to RK-integrate this equation, we need the values of $\bfx(t)$ and $\bfu(t)$ at the RK evaluation points, which for RK4 are $\{t_n,t_n+\Dt/2,t_n+\Dt\}$. 
+Starting by the easy ones, the control inputs $\bfu(t)$ at the evaluation points can be obtained by linear interpolation of the current and last measurements,
+%
+%
+\begin{align}
+\bfu(t_n) &= \bfu_n\\
+\bfu(t_n+\Dt/2) &= \frac{\bfu_n+\bfu_{n+1}}{2} \\
+\bfu(t_n+\Dt) &= \bfu_{n+1}
+\end{align}%
+%
+The nominal state dynamics should be integrated using the best integration practicable. 
+For example, using RK4 integration we have,
+%
+%
+\begin{align*}
+\bfk_1 &= f(\bfx_n,\bfu_n) \nonumber \\
+\bfk_2 &= f(\bfx_n+\frac{\Dt}{2}\bfk_1,\frac{\bfu_n+\bfu_{n+1}}{2}) \nonumber\\
+\bfk_3 &= f(\bfx_n+\frac{\Dt}{2}\bfk_2,\frac{\bfu_n+\bfu_{n+1}}{2}) \nonumber\\
+\bfk_4 &= f(\bfx_n+\Dt\bfk_3,\bfu_{n+1}) \nonumber\\
+\bfk &= (\bfk_1+2\bfk_2+2\bfk_3+\bfk_4)/6 ~,
+\end{align*}%
+%
+which gives us the estimates at the evaluation points,
+%
+%
+\begin{align}
+\bfx(t_n) &= \bfx_n \\
+\bfx(t_n+\Dt/2) &= \bfx_n+\frac{\Dt}{2}\bfk\\
+\bfx(t_n+\Dt) &= \bfx_n+\Dt\,\bfk ~.
+\end{align}%
+%
+We notice here that $\bfx(t_n+\Dt/2)=\frac{\bfx_n+\bfx_{n+1}}{2}$, the same linear interpolation we used for the control. 
+This should not be surprising given the linear nature of the RK update.
+
+Whichever the way we obtained the nominal state values, we can now compute the RK4 matrices for the integration of the transition matrix,
+%
+%
+\begin{align*}
+\bfK_1 &= \bfA(\bfx_n,\bfu_n) \\
+\bfK_2 &= \bfA\Big(\bfx_n+\frac{\Dt}{2}\bfk, \frac{\bfu_n+\bfu_{n+1}}{2}\Big)\Big(\bfI + \frac{\Dt}{2} \bfK_1 \Big)\\
+\bfK_3 &= \bfA\Big(\bfx_n+\frac{\Dt}{2}\bfk, \frac{\bfu_n+\bfu_{n+1}}{2}\Big)\Big(\bfI + \frac{\Dt}{2} \bfK_2 \Big)\\
+\bfK_4 &= \bfA\Big(\bfx_n+\Dt\bfk, \bfu_{n+1}\Big)\Big(\bfI + \Dt \bfK_3 \Big)\\
+\bfK &= (\bfK_1+2\bfK_2+2\bfK_3+\bfK_4)/6 
+\end{align*}%
+% 
+which finally lead to,
+%
+\begin{equation}
+\eqbox{\Phi\triangleq\Phi_{t_n+\Dt|t_n} = \bfI + \Dt\,\bfK}
+\end{equation}
+
+

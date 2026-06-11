@@ -1,0 +1,65 @@
+% !Mode:: "TeX:DE:UTF-8:Main"
+% !TEX spellcheck = en-US
+
+\documentclass[a4paper,10pt,notitlepage]{report}
+\pdfoutput=1
+\usepackage[bookmarks=false]{hyperref}
+\usepackage[numbers]{natbib}
+\usepackage[margin=1in]{geometry}
+
+\usepackage[utf8]{inputenc}
+
+\usepackage{myTutorialPaper,notation}
+
+%\graphicspath{{./figures/}}
+
+\begin{document}
+\title{\textbf{Using Inertial Sensors for Position and Orientation Estimation}}
+
+\author{Manon~Kok$^\star$, Jeroen~D.~Hol$^\dagger$ and Thomas~B.~Sch\"on$^\ddagger$ \\
+\small{$^\star$Department of Engineering, University of Cambridge, Cambridge, United Kingdom} \\
+\small{E-mail: mk930@cam.ac.uk} \\
+\small{$^\dagger$Xsens Technologies B.V., Enschede, the Netherlands} \\
+\small{E-mail: jeroen.hol@xsens.com} \\
+\small{$^\ddagger$Department of Information Technology, Uppsala University, Sweden} \\
+\small{E-mail: thomas.schon@it.uu.se} \\
+}
+
+\input{coverArXiv.tex}
+
+\glsreset{mems}
+
+\tableofcontents
+
+\include{chapter1}
+
+\include{chapter2}
+
+\include{chapter3}
+
+\include{chapter4}
+
+\include{chapter5}
+
+\include{chapter6}
+
+\include{chapter7}
+
+\include{notation}
+
+\chapter*{Acknowledgements}
+This research was financially supported by the projects \emph{Probabilistic modeling of dynamical systems} (Contract number:
+621-2013-5524), \emph{NewLEADS - New Directions in Learning Dynamical Systems} (Contract number: 621-2016-06079) and \emph{CADICS}, all funded by the Swedish Research Council, the project \emph{ASSEMBLE} (Contract number: RIT15-0012) funded by the Swedish Foundation for Strategic Research (SSF) and the EPSRC grant \emph{Autonomous behaviour and learning in an uncertain world} (Grant number: EP/J012300/1). High accuracy reference measurements are provided through the use of the Vicon real-time tracking system courtesy of the UAS Technologies Lab, Artificial Intelligence and Integrated Computer Systems Division (AIICS) at the Department of Computer and Information Science (IDA), Link\"oping University, Sweden \url{http://www.ida.liu.se/divisions/aiics/aiicssite/index.en.shtml}. The authors would also like to thank Fredrik Olsson, Michael Lorenz, \dr Oliver Woodford, \dr Gustaf Hendeby, \prof Fredrik Gustafsson and \prof Magnus Herberthson for comments and suggestions that greatly improved this tutorial. 
+
+\appendix
+
+\include{appendixA}
+
+\include{appendixB}
+
+\include{appendixC}
+
+\bibliographystyle{plain} % or plainnat
+\bibliography{references}
+
+\end{document}

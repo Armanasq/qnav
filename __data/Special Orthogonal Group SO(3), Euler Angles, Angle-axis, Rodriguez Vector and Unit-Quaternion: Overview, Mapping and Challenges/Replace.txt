@@ -1,0 +1,12 @@
+\rho                \mathbf{d}
+M^{\mathcal{B}}     \mathbf{K}^{\mathcal{B}}
+M^{\mathcal{I}}     \mathbf{K}^{\mathcal{I}}
+\mathcal{Z}         \mathcal{Y}
+-W\right            -\Theta\right
+W & =               \Theta & =
+-W)                 -\Theta)
+-W]                 -\Theta]
+W= &                \Theta= &
+\mathbf{M}          \mathbf{K}
+\dot{M}             \dot{\mathbf{K}}
+$W$                 $\mathbf{K}$
