@@ -1,0 +1,55 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qnav"
+version = "0.1.0"
+description = "Convention-safe attitude, heading, frame-transform, and navigation math for robotics, aerospace, and sensor fusion."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "qnav contributors" }]
+keywords = [
+    "attitude", "quaternion", "AHRS", "navigation", "SO3", "rotation",
+    "IMU", "sensor-fusion", "kalman-filter", "robotics", "aerospace",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering",
+]
+dependencies = ["numpy>=1.22"]
+
+[project.optional-dependencies]
+test = ["pytest>=7", "hypothesis>=6", "pytest-cov"]
+docs = [
+    "mkdocs>=1.5",
+    "mkdocs-material>=9.5",
+    "mkdocstrings[python]>=0.24",
+    "mike>=2",
+    "pymdown-extensions>=10",
+]
+dev = ["qnav[test,docs]", "ruff", "mypy"]
+
+[project.urls]
+Homepage = "https://github.com/armanasq/qnav"
+Documentation = "https://armanasq.github.io/qnav/"
+Repository = "https://github.com/armanasq/qnav"
+
+[tool.setuptools.packages.find]
+include = ["qnav*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "NPY", "B"]
+ignore = ["E501"]
