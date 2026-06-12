@@ -1,0 +1,3819 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Convention-safe attitude, heading, frame-transform, and navigation math for robotics, aerospace, and sensor fusion.">
+      
+      
+      
+        <link rel="canonical" href="https://armanasq.github.io/qnav/0.1.0/math/formula_catalog/">
+      
+      
+        <link rel="prev" href="../heading/">
+      
+      
+        <link rel="next" href="../../design/api_principles/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Formula Catalog - qnav</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="cyan">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#qnav-formula-catalog" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="qnav" class="md-header__button md-logo" aria-label="qnav" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            qnav
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Formula Catalog
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="cyan"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="cyan"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/armanasq/qnav" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    armanasq/qnav
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../getting_started/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Getting Started
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../conventions/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Conventions
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../quaternions/" class="md-tabs__link">
+          
+  
+  
+  Math
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../design/api_principles/" class="md-tabs__link">
+          
+  
+  
+  Design
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../api/quaternion/" class="md-tabs__link">
+          
+  
+  
+  API Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="qnav" class="md-nav__button md-logo" aria-label="qnav" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    qnav
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/armanasq/qnav" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    armanasq/qnav
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting_started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../conventions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Conventions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Math
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Math
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../quaternions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quaternion Algebra
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../so3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SO(3) Lie Group
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../euler_angles/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Euler Angles
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../frames/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Coordinate Frames
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../attitude_determination/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Attitude Determination
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../filtering/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Filtering
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../heading/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Heading and Tilt
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Formula Catalog
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Formula Catalog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-quaternion-algebra" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Quaternion algebra
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Quaternion algebra">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-definition-and-algebra-basis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 Definition and algebra basis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-product-hamilton-product" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 Product (Hamilton product)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-identity-conjugate-norm-inverse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 Identity, conjugate, norm, inverse
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-exponential-of-a-quaternion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4 Exponential of a quaternion
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15-logarithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.5 Logarithm
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#16-power-and-slerp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.6 Power and SLERP
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#17-double-cover" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.7 Double cover
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-representation-conversions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Representation conversions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Representation conversions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-rotation-vector-axis-angle-quaternion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Rotation vector / axis-angle → quaternion
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-quaternion-axis-angle-log" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Quaternion → axis-angle (Log)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-quaternion-dcm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Quaternion → DCM
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-dcm-quaternion-shepperd-style-robust-extraction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 DCM → quaternion (Shepperd-style robust extraction)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25-rotation-vector-dcm-rodrigues-rotation-formula-and-back" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5 Rotation vector → DCM (Rodrigues rotation formula) and back
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#26-euler-angles-intrinsic-z-y-x-yawpitchroll-aerospace" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.6 Euler angles (intrinsic Z-Y'-X'' yaw–pitch–roll, aerospace)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#27-rodrigues-gibbs-vector" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.7 Rodrigues (Gibbs) vector
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#28-modified-rodrigues-parameters-mrp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.8 Modified Rodrigues Parameters (MRP)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-so3-hatvee-explog-jacobians" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. SO(3): hat/vee, exp/log, Jacobians
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. SO(3): hat/vee, exp/log, Jacobians">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-group-definitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Group definitions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-hat-vee" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Hat / vee
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-exp-log" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 Exp / Log
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-plusminus-operators-manifold-calculus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 Plus/minus operators (manifold calculus)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35-right-jacobian-of-so3-and-inverse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5 Right Jacobian of SO(3) and inverse
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#36-useful-rotation-action-jacobians" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.6 Useful rotation-action Jacobians
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#37-perturbations-local-vs-global" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.7 Perturbations: local vs global
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#38-so3-error-metric-hashims-normalized-euclidean-distance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.8 SO(3) error metric (Hashim's normalized Euclidean distance)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-kinematics-and-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Kinematics and integration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Kinematics and integration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-continuous-time-kinematics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Continuous-time kinematics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-zeroth-order-quaternion-integration-exact-for-constant" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Zeroth-order quaternion integration (exact for constant ω)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-first-order-integrator-varying-rotation-axis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 First-order integrator (varying rotation axis)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-runge-kutta-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 Runge-Kutta integration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#45-transition-matrix-computation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5 Transition matrix computation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-error-state-kalman-filter-eskf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Error-state Kalman filter (ESKF)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Error-state Kalman filter (ESKF)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-state-inputs-error-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 State, inputs, error state
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-true-nominal-error-kinematics-continuous-time" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 True / nominal / error kinematics (continuous time)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-discrete-nominal-propagation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3 Discrete nominal propagation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#54-discrete-error-state-propagation-f_x-f_i-q_i" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.4 Discrete error-state propagation, \(F_x\), \(F_i\), \(Q_i\)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#55-measurement-update-correction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.5 Measurement update (correction)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#56-injection-and-reset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.6 Injection and reset
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#57-global-error-eskf-left-error-differences" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.7 Global-error ESKF (left error) — differences
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#58-kok-hol-schon-ekf-smoothing-variants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.8 Kok-Hol-Schön EKF / smoothing variants
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-vector-observation-attitude-determination" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Vector-observation attitude determination
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Vector-observation attitude determination">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-wahba-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 Wahba problem
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-davenport-q-method-eigenvalue-form" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 Davenport q-method (eigenvalue form)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-triad-style-orthogonalized-pair-initialization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 TRIAD-style orthogonalized pair (initialization)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-tilt-and-heading-from-accelerometermagnetometer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Tilt and heading from accelerometer/magnetometer
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Tilt and heading from accelerometer/magnetometer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71-accelerometer-measurement-of-gravity-quasi-static" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.1 Accelerometer measurement of gravity (quasi-static)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#72-rollpitch-from-accelerometer-ned-z-y-x" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.2 Roll/pitch from accelerometer (NED, Z-Y'-X'')
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#73-tilt-compensated-magnetic-heading" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.3 Tilt-compensated magnetic heading
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#74-yaw-invariant-tilt-metric-qnav-metric-baseline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.4 Yaw-invariant tilt metric (qnav metric baseline)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-complementary-mahony-madgwick-filters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Complementary / Mahony / Madgwick filters
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Complementary / Mahony / Madgwick filters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#81-complementary-filter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.1 Complementary filter
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#82-mahony-filter-explicit-complementary-filter-pi-feedback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.2 Mahony filter (explicit complementary filter, PI feedback)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#83-madgwick-filter-gradient-descent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.3 Madgwick filter (gradient descent)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-sensor-error-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Sensor error models
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Sensor error models">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#91-gyroscope" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.1 Gyroscope
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#92-accelerometer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.2 Accelerometer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#93-magnetometer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.3 Magnetometer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#94-allan-variance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.4 Allan variance
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#95-mounting-virtual-rotation-equivariance-data-augmentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.5 Mounting / virtual-rotation equivariance (data augmentation)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-rigid-body-rotational-dynamics-eulers-equations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Rigid-body rotational dynamics (Euler's equations)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-attitude-error-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Attitude error metrics
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#known-inter-source-discrepancies-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Known inter-source discrepancies (summary)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Design
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../design/api_principles/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Principles
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../design/performance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Performance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/quaternion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    attitude.quaternion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/so3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    attitude.so3
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/dcm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    attitude.dcm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/euler/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    attitude.euler
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/kinematics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    attitude.kinematics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/jacobians/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    attitude.jacobians
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/covariance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    attitude.covariance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/frames/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    frames
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/heading/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    heading
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/sensors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    sensors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/calibration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    calibration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/determination/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    determination
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/filters/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    filters
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/simulation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    simulation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/metrics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    metrics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-quaternion-algebra" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Quaternion algebra
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Quaternion algebra">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-definition-and-algebra-basis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 Definition and algebra basis
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-product-hamilton-product" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 Product (Hamilton product)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-identity-conjugate-norm-inverse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 Identity, conjugate, norm, inverse
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-exponential-of-a-quaternion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4 Exponential of a quaternion
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15-logarithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.5 Logarithm
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#16-power-and-slerp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.6 Power and SLERP
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#17-double-cover" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.7 Double cover
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-representation-conversions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Representation conversions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Representation conversions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-rotation-vector-axis-angle-quaternion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Rotation vector / axis-angle → quaternion
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-quaternion-axis-angle-log" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Quaternion → axis-angle (Log)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-quaternion-dcm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Quaternion → DCM
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-dcm-quaternion-shepperd-style-robust-extraction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 DCM → quaternion (Shepperd-style robust extraction)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25-rotation-vector-dcm-rodrigues-rotation-formula-and-back" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5 Rotation vector → DCM (Rodrigues rotation formula) and back
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#26-euler-angles-intrinsic-z-y-x-yawpitchroll-aerospace" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.6 Euler angles (intrinsic Z-Y'-X'' yaw–pitch–roll, aerospace)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#27-rodrigues-gibbs-vector" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.7 Rodrigues (Gibbs) vector
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#28-modified-rodrigues-parameters-mrp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.8 Modified Rodrigues Parameters (MRP)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-so3-hatvee-explog-jacobians" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. SO(3): hat/vee, exp/log, Jacobians
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. SO(3): hat/vee, exp/log, Jacobians">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-group-definitions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Group definitions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-hat-vee" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Hat / vee
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-exp-log" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 Exp / Log
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#34-plusminus-operators-manifold-calculus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.4 Plus/minus operators (manifold calculus)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#35-right-jacobian-of-so3-and-inverse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.5 Right Jacobian of SO(3) and inverse
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#36-useful-rotation-action-jacobians" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.6 Useful rotation-action Jacobians
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#37-perturbations-local-vs-global" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.7 Perturbations: local vs global
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#38-so3-error-metric-hashims-normalized-euclidean-distance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.8 SO(3) error metric (Hashim's normalized Euclidean distance)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-kinematics-and-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Kinematics and integration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Kinematics and integration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-continuous-time-kinematics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Continuous-time kinematics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-zeroth-order-quaternion-integration-exact-for-constant" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Zeroth-order quaternion integration (exact for constant ω)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-first-order-integrator-varying-rotation-axis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 First-order integrator (varying rotation axis)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-runge-kutta-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 Runge-Kutta integration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#45-transition-matrix-computation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5 Transition matrix computation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-error-state-kalman-filter-eskf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Error-state Kalman filter (ESKF)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Error-state Kalman filter (ESKF)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-state-inputs-error-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 State, inputs, error state
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-true-nominal-error-kinematics-continuous-time" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 True / nominal / error kinematics (continuous time)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-discrete-nominal-propagation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3 Discrete nominal propagation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#54-discrete-error-state-propagation-f_x-f_i-q_i" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.4 Discrete error-state propagation, \(F_x\), \(F_i\), \(Q_i\)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#55-measurement-update-correction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.5 Measurement update (correction)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#56-injection-and-reset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.6 Injection and reset
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#57-global-error-eskf-left-error-differences" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.7 Global-error ESKF (left error) — differences
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#58-kok-hol-schon-ekf-smoothing-variants" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.8 Kok-Hol-Schön EKF / smoothing variants
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-vector-observation-attitude-determination" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Vector-observation attitude determination
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Vector-observation attitude determination">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-wahba-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 Wahba problem
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-davenport-q-method-eigenvalue-form" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 Davenport q-method (eigenvalue form)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-triad-style-orthogonalized-pair-initialization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 TRIAD-style orthogonalized pair (initialization)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-tilt-and-heading-from-accelerometermagnetometer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Tilt and heading from accelerometer/magnetometer
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Tilt and heading from accelerometer/magnetometer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71-accelerometer-measurement-of-gravity-quasi-static" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.1 Accelerometer measurement of gravity (quasi-static)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#72-rollpitch-from-accelerometer-ned-z-y-x" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.2 Roll/pitch from accelerometer (NED, Z-Y'-X'')
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#73-tilt-compensated-magnetic-heading" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.3 Tilt-compensated magnetic heading
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#74-yaw-invariant-tilt-metric-qnav-metric-baseline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7.4 Yaw-invariant tilt metric (qnav metric baseline)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-complementary-mahony-madgwick-filters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Complementary / Mahony / Madgwick filters
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Complementary / Mahony / Madgwick filters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#81-complementary-filter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.1 Complementary filter
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#82-mahony-filter-explicit-complementary-filter-pi-feedback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.2 Mahony filter (explicit complementary filter, PI feedback)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#83-madgwick-filter-gradient-descent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8.3 Madgwick filter (gradient descent)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-sensor-error-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9. Sensor error models
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Sensor error models">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#91-gyroscope" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.1 Gyroscope
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#92-accelerometer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.2 Accelerometer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#93-magnetometer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.3 Magnetometer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#94-allan-variance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.4 Allan variance
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#95-mounting-virtual-rotation-equivariance-data-augmentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.5 Mounting / virtual-rotation equivariance (data augmentation)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-rigid-body-rotational-dynamics-eulers-equations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10. Rigid-body rotational dynamics (Euler's equations)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-attitude-error-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        11. Attitude error metrics
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#known-inter-source-discrepancies-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Known inter-source discrepancies (summary)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="qnav-formula-catalog">qnav Formula Catalog<a class="headerlink" href="#qnav-formula-catalog" title="Permanent link">&para;</a></h1>
+<p>Extracted formula catalog with full source traceability. Every formula cites its source file
+(and the LaTeX equation label / section / equation number where available). Where sources
+disagree, both forms are shown and the discrepancy is noted.</p>
+<p><strong>Source abbreviations</strong></p>
+<table>
+<thead>
+<tr>
+<th>Abbrev.</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>[MATH]</td>
+<td><code>__data/math.md</code> — qnav in-house convention baseline</td>
+</tr>
+<tr>
+<td>[SOLA]</td>
+<td>Solà, <em>Quaternion kinematics for the error-state Kalman filter</em> — <code>__data/Quaternion kinematics for the error-state Kalman filter/*.tex</code></td>
+</tr>
+<tr>
+<td>[HASH]</td>
+<td>Hashim, <em>SO(3), Euler Angles, Angle-axis, Rodriguez Vector and Unit-Quaternion</em> — <code>__data/Special Orthogonal Group SO(3), .../Paper_Hashim_SUBMIT.tex</code></td>
+</tr>
+<tr>
+<td>[SURV]</td>
+<td>Al-Jlailaty &amp; Mansour, <em>Efficient Attitude Estimators: A Tutorial and Survey</em> — <code>__data/Efficient Attitude Estimators A Tutorial and Survey/attitudesurvey.tex</code></td>
+</tr>
+<tr>
+<td>[KOK]</td>
+<td>Kok, Hol &amp; Schön, <em>Using Inertial Sensors for Position and Orientation Estimation</em> — <code>__data/Using Inertial Sensors for Position and Orientation Estimation/*.tex</code></td>
+</tr>
+<tr>
+<td>[PARW]</td>
+<td>Parwana &amp; Kothari, <em>Quaternions and Attitude Representation</em> — <code>__data/Quaternions and Attitude Representation/Quaternion_archive.tex</code></td>
+</tr>
+<tr>
+<td>[SATD]</td>
+<td><code>__data/Satdyn_mb_2010f.pdf</code> — satellite dynamics notes</td>
+</tr>
+</tbody>
+</table>
+<p>Unless stated otherwise, all formulas below are written in the <strong>qnav convention</strong>: Hamilton,
+scalar-first <span class="arithmatex">\(\mathbf{q}=[w,x,y,z]^\top\)</span>, passive body→world transform
+<span class="arithmatex">\(\mathbf{v}_w = \mathbf{R}(\mathbf{q})\,\mathbf{v}_b\)</span>, right-handed, radians.</p>
+<hr />
+<h2 id="1-quaternion-algebra">1. Quaternion algebra<a class="headerlink" href="#1-quaternion-algebra" title="Permanent link">&para;</a></h2>
+<h3 id="11-definition-and-algebra-basis">1.1 Definition and algebra basis<a class="headerlink" href="#11-definition-and-algebra-basis" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[q = q_w + q_x i + q_y j + q_z k \in \mathbb{H},\qquad
+i^2=j^2=k^2=ijk=-1,\quad ij=-ji=k,\ jk=-kj=i,\ ki=-ik=j\]</div>
+<p>[SOLA Quaternion.tex <code>equ:ijkQuat</code>, <code>equ:quatAlgebra</code>]. The choice <span class="arithmatex">\(ij=k\)</span> (vs JPL's <span class="arithmatex">\(ji=k\)</span>)
+makes the quaternion <strong>right-handed</strong> (Hamilton). [SOLA §"Quaternion conventions", <code>equ:quatAlgDef</code>]</p>
+<p>Vector form (scalar-first):</p>
+<div class="arithmatex">\[\mathbf{q} = \begin{bmatrix} q_w \\ \mathbf{q}_v \end{bmatrix}
+= \begin{bmatrix} q_w \\ q_x \\ q_y \\ q_z \end{bmatrix}\]</div>
+<p>[SOLA Quaternion.tex §1.1.1; MATH §1.1; KOK §3.4 (<span class="arithmatex">\(q=(q_0,q_v)\)</span>); HASH <code>eq:OVERVIEW_PER_Q_1</code>]</p>
+<h3 id="12-product-hamilton-product">1.2 Product (Hamilton product)<a class="headerlink" href="#12-product-hamilton-product" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[\mathbf{p}\otimes\mathbf{q} = \begin{bmatrix}
+p_wq_w - p_{x}q_{x} - p_{y}q_{y} - p_{z}q_{z} \\
+p_wq_{x} + p_{x}q_w + p_{y}q_{z} - p_{z}q_{y} \\
+p_wq_{y} - p_{x}q_{z} + p_{y}q_w + p_{z}q_{x} \\
+p_wq_{z} + p_{x}q_{y} - p_{y}q_{x} + p_{z}q_w
+\end{bmatrix}
+= \begin{bmatrix}
+p_wq_w - \mathbf{p}_v^\top\mathbf{q}_v \\
+p_w\mathbf{q}_v + q_w\mathbf{p}_v + \mathbf{p}_v\times\mathbf{q}_v
+\end{bmatrix}\]</div>
+<p>[SOLA <code>equ:quatProd</code>, <code>equ:quatProdVec</code>; identical in MATH §1.2, KOK <code>eq:models-quatMult</code> (⊙),
+HASH <code>eq:OVERVIEW_Q_Mul</code> (⊙), PARW (∘)]. Associative, distributive, <strong>not commutative</strong>;
+commutator <span class="arithmatex">\(\mathbf{p}\otimes\mathbf{q}-\mathbf{q}\otimes\mathbf{p} = 2\,\mathbf{p}_v\times\mathbf{q}_v\)</span>
+[SOLA <code>equ:quatCommutator</code>].</p>
+<p>Matrix forms (<span class="arithmatex">\(\mathbf{q}_1\otimes\mathbf{q}_2 = [\mathbf{q}_1]_L\,\mathbf{q}_2 = [\mathbf{q}_2]_R\,\mathbf{q}_1\)</span>,
+[SOLA <code>equ:quatMatProd</code>–<code>equ:quatMatrix</code>; KOK <code>eq:models-leftRightQuatMult</code>]):</p>
+<div class="arithmatex">\[[\mathbf{q}]_L = q_w\mathbf{I}_4 + \begin{bmatrix} 0 &amp; -\mathbf{q}_v^\top \\ \mathbf{q}_v &amp; [\mathbf{q}_v]_\times \end{bmatrix},
+\qquad
+[\mathbf{q}]_R = q_w\mathbf{I}_4 + \begin{bmatrix} 0 &amp; -\mathbf{q}_v^\top \\ \mathbf{q}_v &amp; -[\mathbf{q}_v]_\times \end{bmatrix},
+\qquad [\mathbf{p}]_R[\mathbf{q}]_L = [\mathbf{q}]_L[\mathbf{p}]_R\]</div>
+<h3 id="13-identity-conjugate-norm-inverse">1.3 Identity, conjugate, norm, inverse<a class="headerlink" href="#13-identity-conjugate-norm-inverse" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[\mathbf{q}_1 = [1,\mathbf{0}]^\top;\qquad
+\mathbf{q}^* = \begin{bmatrix} q_w \\ -\mathbf{q}_v \end{bmatrix};\qquad
+(\mathbf{p}\otimes\mathbf{q})^* = \mathbf{q}^*\otimes\mathbf{p}^*\]</div>
+<div class="arithmatex">\[\|\mathbf{q}\| = \sqrt{\mathbf{q}\otimes\mathbf{q}^*} = \sqrt{q_w^2+q_x^2+q_y^2+q_z^2};\qquad
+\|\mathbf{p}\otimes\mathbf{q}\| = \|\mathbf{p}\|\,\|\mathbf{q}\|\]</div>
+<div class="arithmatex">\[\mathbf{q}^{-1} = \mathbf{q}^*/\|\mathbf{q}\|^2
+\;\xrightarrow{\ \|\mathbf{q}\|=1\ }\; \mathbf{q}^{-1}=\mathbf{q}^*\]</div>
+<p>[SOLA <code>equ:q_norm</code> and surrounding; MATH §1.3; HASH <code>eq:OVERVIEW_PER_Q_2</code>]</p>
+<h3 id="14-exponential-of-a-quaternion">1.4 Exponential of a quaternion<a class="headerlink" href="#14-exponential-of-a-quaternion" title="Permanent link">&para;</a></h3>
+<p>Pure quaternion <span class="arithmatex">\(\mathbf{v}=\mathbf{u}\theta\)</span>, <span class="arithmatex">\(\|\mathbf{u}\|=1\)</span> (extended Euler formula):</p>
+<div class="arithmatex">\[e^{\mathbf{v}} = e^{\mathbf{u}\theta} = \cos\theta + \mathbf{u}\sin\theta
+= \begin{bmatrix} \cos\theta \\ \mathbf{u}\sin\theta \end{bmatrix},\qquad
+e^{-\mathbf{v}} = (e^{\mathbf{v}})^*\]</div>
+<p>[SOLA <code>equ:EulerFormulaQuat</code>]. Small-angle Taylor safeguard:
+<span class="arithmatex">\(e^{\mathbf{v}} \approx \big[\,1-\theta^2/2,\ \ \mathbf{v}(1-\theta^2/6)\,\big]^\top \to [1,\mathbf{v}]^\top\)</span>
+[SOLA Quaternion.tex, after <code>equ:EulerFormulaQuat</code>; MATH §1.5 uses threshold <span class="arithmatex">\(\|\boldsymbol\omega\|&lt;10^{-8}\)</span>
+with sinc → 1/2 replacement].</p>
+<p>General quaternion: <span class="arithmatex">\(e^{\mathbf{q}} = e^{q_w}\big[\cos\|\mathbf{q}_v\|,\ \tfrac{\mathbf{q}_v}{\|\mathbf{q}_v\|}\sin\|\mathbf{q}_v\|\big]^\top\)</span>
+[SOLA <code>equ:expGeneralQuat</code>].</p>
+<h3 id="15-logarithm">1.5 Logarithm<a class="headerlink" href="#15-logarithm" title="Permanent link">&para;</a></h3>
+<p>Unit quaternion: <span class="arithmatex">\(\log\mathbf{q} = \mathbf{u}\theta\)</span> with</p>
+<div class="arithmatex">\[\theta = \arctan(\|\mathbf{q}_v\|,\,q_w),\qquad \mathbf{u} = \mathbf{q}_v/\|\mathbf{q}_v\|\]</div>
+<p>(4-quadrant <code>atan2</code>). Small-angle series:
+<span class="arithmatex">\(\log(\mathbf{q}) \approx \tfrac{\mathbf{q}_v}{q_w}\big(1 - \tfrac{\|\mathbf{q}_v\|^2}{3q_w^2}\big) \approx \mathbf{q}_v\)</span>
+[SOLA <code>equ:qlog</code> and §"Logarithm of unit quaternions"]. General quaternion:
+<span class="arithmatex">\(\log\mathbf{q} = [\log\|\mathbf{q}\|,\ \mathbf{u}\theta]^\top\)</span>.</p>
+<blockquote>
+<p>Note: [KOK <code>eq:models-logq-map</code>] uses <span class="arithmatex">\(\rho=\arccos(q_0)\,q_v/\|q_v\|_2\)</span> — equivalent on the
+<span class="arithmatex">\(q_0\ge 0\)</span> hemisphere but the <code>atan2</code> form [SOLA] is numerically preferred (qnav adopts atan2).</p>
+</blockquote>
+<h3 id="16-power-and-slerp">1.6 Power and SLERP<a class="headerlink" href="#16-power-and-slerp" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[\mathbf{q}^t = \exp(t\log\mathbf{q}) = \begin{bmatrix}\cos t\theta \\ \mathbf{u}\sin t\theta\end{bmatrix}
+\quad (\|\mathbf{q}\|=1)\]</div>
+<p>[SOLA <code>equ:qa</code>]. SLERP (three equivalent methods, [SOLA §"SLERP" / <code>sec:slerp</code>]):</p>
+<div class="arithmatex">\[\mathbf{q}(t) = \mathbf{q}_0\otimes(\mathbf{q}_0^*\otimes\mathbf{q}_1)^t
+= \mathbf{q}_0\cos(t\Delta\theta) + \mathbf{q}_\perp\sin(t\Delta\theta)
+= \mathbf{q}_0\frac{\sin((1-t)\Delta\theta)}{\sin\Delta\theta}+\mathbf{q}_1\frac{\sin(t\Delta\theta)}{\sin\Delta\theta}\]</div>
+<p>with <span class="arithmatex">\(\Delta\theta=\arccos(\mathbf{q}_0^\top\mathbf{q}_1)\)</span>,
+<span class="arithmatex">\(\mathbf{q}_\perp = \dfrac{\mathbf{q}_1-(\mathbf{q}_0^\top\mathbf{q}_1)\mathbf{q}_0}{\|\mathbf{q}_1-(\mathbf{q}_0^\top\mathbf{q}_1)\mathbf{q}_0\|}\)</span>.
+<strong>Shortest-path fix:</strong> if <span class="arithmatex">\(\mathbf{q}_0^\top\mathbf{q}_1&lt;0\)</span>, negate <span class="arithmatex">\(\mathbf{q}_1\)</span> (double cover)
+[SOLA <code>fig:slerp_fix</code> discussion]. Matrix analogue <span class="arithmatex">\(\mathbf{R}(t)=\mathbf{R}_0(\mathbf{R}_0^\top\mathbf{R}_1)^t\)</span> [SOLA <code>equ:Rslerp</code>].</p>
+<h3 id="17-double-cover">1.7 Double cover<a class="headerlink" href="#17-double-cover" title="Permanent link">&para;</a></h3>
+<p><span class="arithmatex">\(\mathbf{R}\{-\mathbf{q}\}=\mathbf{R}\{\mathbf{q}\}\)</span> [SOLA <code>equ:rotneg</code>; MATH §1.6; HASH §7
+"Problem of unit-quaternion"]. The 4-D angle to identity is half the 3-D rotation angle,
+<span class="arithmatex">\(\theta_{4D}=\phi/2\)</span> [SOLA <code>sec:double_cover</code>]. <strong>All quaternion distance/loss functions must be
+sign-invariant</strong> [MATH §1.6].</p>
+<hr />
+<h2 id="2-representation-conversions">2. Representation conversions<a class="headerlink" href="#2-representation-conversions" title="Permanent link">&para;</a></h2>
+<h3 id="21-rotation-vector-axis-angle-quaternion">2.1 Rotation vector / axis-angle → quaternion<a class="headerlink" href="#21-rotation-vector-axis-angle-quaternion" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[\mathbf{q}\{\boldsymbol\phi\} = \mathrm{Exp}(\phi\mathbf{u}) = e^{\phi\mathbf{u}/2}
+= \begin{bmatrix} \cos(\phi/2) \\ \mathbf{u}\sin(\phi/2) \end{bmatrix},
+\qquad \mathrm{Exp}(\boldsymbol\phi)\triangleq\exp(\boldsymbol\phi/2)\]</div>
+<p>[SOLA <code>equ:vectoquat</code>; MATH §1.5; HASH <code>eq:OVERVIEW_Q_ang_2_Q</code>; SURV <code>eq_quaternion</code>].</p>
+<blockquote>
+<p><strong>Sign discrepancy:</strong> [KOK <code>eq:models-axisAngle-quat</code>] writes
+<span class="arithmatex">\(q^{uv}(n,\alpha)=[\cos\frac{\alpha}{2},\,-n\sin\frac{\alpha}{2}]^\top\)</span> with a <strong>minus</strong> sign —
+a consequence of Kok et al. defining the rotation angle for the frame (passive, opposite
+sense). qnav adopts the [SOLA]/[MATH] positive-sign form.</p>
+</blockquote>
+<h3 id="22-quaternion-axis-angle-log">2.2 Quaternion → axis-angle (Log)<a class="headerlink" href="#22-quaternion-axis-angle-log" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[\phi = 2\,\mathrm{atan2}(\|\mathbf{q}_v\|,\,q_w),\qquad \mathbf{u}=\mathbf{q}_v/\|\mathbf{q}_v\|,
+\qquad \mathrm{Log}(\mathbf{q}) \triangleq 2\log(\mathbf{q}) = \phi\,\mathbf{u}\]</div>
+<p>Small-angle: <span class="arithmatex">\(\mathrm{Log}(\mathbf{q}) \approx 2\frac{\mathbf{q}_v}{q_w}\big(1-\frac{\|\mathbf{q}_v\|^2}{3q_w^2}\big)\)</span>
+[SOLA <code>equ:log_q_small</code>]. HASH variant: <span class="arithmatex">\(\alpha=2\cos^{-1}(q_0)\)</span>, <span class="arithmatex">\(u = q/\sin(\alpha/2)\)</span>
+[HASH <code>eq:OVERVIEW_Q_Q_2_ang1/2</code>] — valid but <code>atan2</code> form is preferred near <span class="arithmatex">\(\phi\approx 0,\ 2\pi\)</span>.</p>
+<h3 id="23-quaternion-dcm">2.3 Quaternion → DCM<a class="headerlink" href="#23-quaternion-dcm" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[\mathbf{R}\{\mathbf{q}\} = (q_w^2-\mathbf{q}_v^\top\mathbf{q}_v)\,\mathbf{I}_3 + 2\,\mathbf{q}_v\mathbf{q}_v^\top + 2\,q_w[\mathbf{q}_v]_\times\]</div>
+<div class="arithmatex">\[\mathbf{R}\{\mathbf{q}\} = \begin{bmatrix}
+q_w^2{+}q_x^2{-}q_y^2{-}q_z^2 &amp; 2(q_xq_y - q_wq_z) &amp; 2(q_xq_z + q_wq_y) \\
+2(q_xq_y + q_wq_z) &amp; q_w^2{-}q_x^2{+}q_y^2{-}q_z^2 &amp; 2(q_yq_z - q_wq_x) \\
+2(q_xq_z - q_wq_y) &amp; 2(q_yq_z + q_wq_x) &amp; q_w^2{-}q_x^2{-}q_y^2{+}q_z^2
+\end{bmatrix}\]</div>
+<p>[SOLA Quaternion.tex "quaternion to rotation matrix" boxed eq.; identical (unit-norm form
+<span class="arithmatex">\(1-2(y^2+z^2)\)</span> etc.) in MATH §1.4, HASH <code>eq:OVERVIEW_Q_R</code>/<code>eq:OVERVIEW_Q_R1</code>, KOK <code>eq:app-defRq</code>,
+SURV DCM-from-quaternion algorithm <span class="arithmatex">\(c_{11}\dots c_{33}\)</span>, PARW]. <strong>All sources agree</strong> on this
+matrix under the body→world / Hamilton reading. Homomorphism properties:
+<span class="arithmatex">\(\mathbf{R}\{\mathbf{q}^*\}=\mathbf{R}\{\mathbf{q}\}^\top\)</span>,
+<span class="arithmatex">\(\mathbf{R}\{\mathbf{q}_1\otimes\mathbf{q}_2\}=\mathbf{R}\{\mathbf{q}_1\}\mathbf{R}\{\mathbf{q}_2\}\)</span>,
+<span class="arithmatex">\(\mathbf{R}\{\mathbf{q}^t\}=\mathbf{R}\{\mathbf{q}\}^t\)</span>
+[SOLA <code>equ:rotident</code>–<code>equ:rotprod</code>].</p>
+<h3 id="24-dcm-quaternion-shepperd-style-robust-extraction">2.4 DCM → quaternion (Shepperd-style robust extraction)<a class="headerlink" href="#24-dcm-quaternion-shepperd-style-robust-extraction" title="Permanent link">&para;</a></h3>
+<p>Primary branch (valid when <span class="arithmatex">\(1+\mathrm{Tr}\,R &gt; 0\)</span> comfortably):</p>
+<div class="arithmatex">\[q_w = \tfrac12\sqrt{1+R_{11}+R_{22}+R_{33}},\qquad
+\mathbf{q}_v = \frac{1}{4q_w}\begin{bmatrix} R_{32}-R_{23} \\ R_{13}-R_{31} \\ R_{21}-R_{12} \end{bmatrix}\]</div>
+<p>[HASH <code>eq:OVERVIEW_Q_comp_1</code>; KOK appendix]. Robust variants pivoting on the largest of
+<span class="arithmatex">\(\{q_w,q_x,q_y,q_z\}\)</span> (largest diagonal element of <span class="arithmatex">\(R\)</span>), e.g.
+<span class="arithmatex">\(q_x = \pm\tfrac12\sqrt{1+R_{11}-R_{22}-R_{33}}\)</span>, etc.
+[HASH <code>eq:OVERVIEW_Q_comp_2/3/4</code>]. qnav <code>attitude/conversions</code> must implement the 4-branch
+pivoted version to avoid division by near-zero.</p>
+<h3 id="25-rotation-vector-dcm-rodrigues-rotation-formula-and-back">2.5 Rotation vector → DCM (Rodrigues rotation formula) and back<a class="headerlink" href="#25-rotation-vector-dcm-rodrigues-rotation-formula-and-back" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[\mathbf{R} = \mathrm{Exp}(\boldsymbol\phi) = e^{[\boldsymbol\phi]_\times}
+= \mathbf{I} + \sin\phi\,[\mathbf{u}]_\times + (1-\cos\phi)\,[\mathbf{u}]_\times^2
+= \mathbf{I}\cos\phi + [\mathbf{u}]_\times\sin\phi + \mathbf{u}\mathbf{u}^\top(1-\cos\phi)\]</div>
+<p>[SOLA <code>equ:rodrigues</code>, <code>equ:vectomat</code>; HASH <code>eq:SO3PPF_PER_AX_ANG</code>; KOK <code>eq:models-axisAngle-rotMatrix</code>
+— note KOK writes <span class="arithmatex">\(\mathcal{I}_3 - \sin\alpha[n\times]+(1-\cos\alpha)[n\times]^2\)</span>, the <strong>minus sign</strong>
+again reflecting their opposite angle-sign convention; qnav uses the <span class="arithmatex">\(+\sin\)</span> form].</p>
+<p>Inverse (Log map):</p>
+<div class="arithmatex">\[\phi = \arccos\!\Big(\frac{\mathrm{Tr}(\mathbf{R})-1}{2}\Big),\qquad
+\mathbf{u} = \frac{(\mathbf{R}-\mathbf{R}^\top)^\vee}{2\sin\phi}\]</div>
+<p>[SOLA "logarithmic maps" of <span class="arithmatex">\(SO(3)\)</span>; HASH <code>eq:OVERVIEW_att_ang_alpha</code>, <code>eq:OVERVIEW_att_ang_u</code>].
+<strong>Singularities:</strong> undefined axis at <span class="arithmatex">\(\phi=0\)</span> (use series) and extraction failure at
+<span class="arithmatex">\(\phi=\pi\)</span> (<span class="arithmatex">\(\sin\phi=0\)</span>; recover axis from the symmetric part <span class="arithmatex">\(\mathbf{u}\mathbf{u}^\top = (\mathbf{R}+\mathbf{I})/2\)</span>)
+[HASH §5 "Problems of angle-axis parameterization": fails at <span class="arithmatex">\(\alpha=k\pi\)</span>].</p>
+<h3 id="26-euler-angles-intrinsic-z-y-x-yawpitchroll-aerospace">2.6 Euler angles (intrinsic Z-Y'-X'' yaw–pitch–roll, aerospace)<a class="headerlink" href="#26-euler-angles-intrinsic-z-y-x-yawpitchroll-aerospace" title="Permanent link">&para;</a></h3>
+<p>Elementary (frame-transform / passive) matrices [SURV eq. block around <code>eq_CDCM</code>; HASH <code>eq:OVERVIEW_EUL_R</code>]:</p>
+<div class="arithmatex">\[C_x(\phi)=\begin{bmatrix}1&amp;0&amp;0\\0&amp;c\phi&amp;s\phi\\0&amp;-s\phi&amp;c\phi\end{bmatrix},\quad
+C_y(\theta)=\begin{bmatrix}c\theta&amp;0&amp;-s\theta\\0&amp;1&amp;0\\s\theta&amp;0&amp;c\theta\end{bmatrix},\quad
+C_z(\psi)=\begin{bmatrix}c\psi&amp;s\psi&amp;0\\-s\psi&amp;c\psi&amp;0\\0&amp;0&amp;1\end{bmatrix}\]</div>
+<p>Body→nav DCM (qnav default; equals <span class="arithmatex">\(\mathbf{R}_{nb}\)</span>):</p>
+<div class="arithmatex">\[\mathbf{R}_{nb} = R_z(\psi)\,R_y(\theta)\,R_x(\phi) = \begin{bmatrix}
+c\theta c\psi &amp; s\phi s\theta c\psi - c\phi s\psi &amp; c\phi s\theta c\psi + s\phi s\psi\\
+c\theta s\psi &amp; s\phi s\theta s\psi + c\phi c\psi &amp; c\phi s\theta s\psi - s\phi c\psi\\
+-s\theta &amp; s\phi c\theta &amp; c\phi c\theta \end{bmatrix}\]</div>
+<p>[HASH <code>eq:OVERVIEW_EUL_R</code> (body→inertial, <span class="arithmatex">\(R_{z}R_{y}R_{x}\)</span> with active elementary rotations);
+SURV <code>eq_CDCM</code> writes the transpose, <span class="arithmatex">\(C_n^b = C_z(\psi)C_y(\theta)C_x(\phi)\)</span> with passive
+elementary matrices — nav→body. KOK <code>eq:models-rotMatrix</code> likewise composes as
+<span class="arithmatex">\(R^{uv}=R(e_1,\phi)R(e_2,\theta)R(e_3,\psi)\)</span> giving the nav→body matrix. <strong>Same Z-Y-X sequence
+in all sources; only the direction (body→nav vs nav→body) differs — transpose relation.</strong>]</p>
+<p>DCM → Euler (from <span class="arithmatex">\(\mathbf{R}_{nb}\)</span> above):</p>
+<div class="arithmatex">\[\phi = \mathrm{atan2}(R_{32}, R_{33}),\qquad
+\theta = -\arcsin(R_{31}) = \mathrm{atan2}\!\big({-R_{31}},\ \sqrt{R_{32}^2+R_{33}^2}\big),\qquad
+\psi = \mathrm{atan2}(R_{21}, R_{11})\]</div>
+<p>[HASH <code>eq:SO3_EUL</code>; SURV roll/pitch/heading algorithm (expressed on <span class="arithmatex">\(C_b^n\)</span> elements
+<span class="arithmatex">\(c_{32},c_{33},c_{31},c_{21},c_{11}\)</span>); KOK gives the equivalent on <span class="arithmatex">\(R^{bn}\)</span>:
+<span class="arithmatex">\(\psi=\tan^{-1}(R_{12}/R_{11})\)</span>, <span class="arithmatex">\(\theta=-\sin^{-1}(R_{13})\)</span>, <span class="arithmatex">\(\phi=\tan^{-1}(R_{23}/R_{33})\)</span> —
+same formulas after the transpose].</p>
+<p><strong>Gimbal lock:</strong> at <span class="arithmatex">\(\theta=\pm\pi/2\)</span>, <span class="arithmatex">\(\phi\)</span> and <span class="arithmatex">\(\psi\)</span> are not separately observable; the
+Euler-rate matrix is singular [HASH §4 "Euler parameterization problem"; KOK §3.4].</p>
+<p>Euler → quaternion: compose elementary quaternions
+<span class="arithmatex">\(\mathbf{q} = \mathbf{q}_z(\psi)\otimes\mathbf{q}_y(\theta)\otimes\mathbf{q}_x(\phi)\)</span> with
+<span class="arithmatex">\(\mathbf{q}_z(\psi)=[\cos\frac\psi2,0,0,\sin\frac\psi2]^\top\)</span> etc. (qnav default Z-Y'-X'').
+[PARW derives the analogous product for the 1-2-3 sequence — different sequence, see conflict
+table in <code>docs/source_index.md</code>.]</p>
+<p>Quaternion → Euler (Z-Y'-X'', from §2.3 matrix elements):</p>
+<div class="arithmatex">\[\phi=\mathrm{atan2}\big(2(q_yq_z+q_wq_x),\ q_w^2-q_x^2-q_y^2+q_z^2\big),\quad
+\theta=\arcsin\big(2(q_wq_y-q_xq_z)\big),\quad
+\psi=\mathrm{atan2}\big(2(q_xq_y+q_wq_z),\ q_w^2+q_x^2-q_y^2-q_z^2\big)\]</div>
+<p>(derived by substituting §2.3 into the DCM→Euler atan2 formulas; clamp the <span class="arithmatex">\(\arcsin\)</span> argument
+to <span class="arithmatex">\([-1,1]\)</span>.)</p>
+<h3 id="27-rodrigues-gibbs-vector">2.7 Rodrigues (Gibbs) vector<a class="headerlink" href="#27-rodrigues-gibbs-vector" title="Permanent link">&para;</a></h3>
+<p>Definition and angle-axis relations [HASH <code>eq:OVERVIEW_SO3_lem7_1/2/3</code>]:</p>
+<div class="arithmatex">\[\boldsymbol\rho = \tan\!\big(\tfrac{\alpha}{2}\big)\,\mathbf{u},\qquad
+\alpha = 2\arctan\|\boldsymbol\rho\|,\qquad \mathbf{u}=\cot\!\big(\tfrac\alpha2\big)\boldsymbol\rho\]</div>
+<p>Rodrigues → DCM (and Cayley form) [HASH <code>eq:OVERVIEW_PER_ROD</code>, <code>eq:OVERVIEW_ROD_SO3_R</code>]:</p>
+<div class="arithmatex">\[\mathbf{R}_\rho = \frac{1}{1+\|\boldsymbol\rho\|^2}\Big((1-\|\boldsymbol\rho\|^2)\mathbf{I}_3
++ 2\boldsymbol\rho\boldsymbol\rho^\top + 2[\boldsymbol\rho]_\times\Big)
+= (\mathbf{I}_3+[\boldsymbol\rho]_\times)(\mathbf{I}_3-[\boldsymbol\rho]_\times)^{-1}\]</div>
+<p>DCM → Rodrigues [HASH <code>eq:OVERVIEW_ROD</code>, <code>eq:OVERVIEW_SO3_ROD</code>]:</p>
+<div class="arithmatex">\[\boldsymbol\rho = \mathrm{vex}\big((\mathbf{R}+\mathbf{I}_3)^{-1}(\mathbf{R}-\mathbf{I}_3)\big)
+= \frac{1}{1+\mathrm{Tr}(\mathbf{R})}\begin{bmatrix} R_{32}-R_{23}\\ R_{13}-R_{31}\\ R_{21}-R_{12}\end{bmatrix}\]</div>
+<p>Quaternion ↔ Rodrigues [HASH Lemma 4, <code>eq:OVERVIEW_SO3_lem4_1/2/3</code>]:</p>
+<div class="arithmatex">\[q_w = \pm\frac{1}{\sqrt{1+\|\boldsymbol\rho\|^2}},\qquad
+\mathbf{q}_v = \pm\frac{\boldsymbol\rho}{\sqrt{1+\|\boldsymbol\rho\|^2}},\qquad
+\boldsymbol\rho = \frac{\mathbf{q}_v}{q_w}\]</div>
+<p>Rodrigues kinematics [HASH <code>eq:OVERVIEW_ROD_dot</code>]:
+<span class="arithmatex">\(\dot{\boldsymbol\rho} = \tfrac12\big(\mathbf{I}_3+[\boldsymbol\rho]_\times+\boldsymbol\rho\boldsymbol\rho^\top\big)\boldsymbol\Omega\)</span>.</p>
+<p><strong>Singularity:</strong> <span class="arithmatex">\(\boldsymbol\rho\to\infty\)</span> as <span class="arithmatex">\(\alpha\to\pi\)</span>; the three 180° principal rotations
+are unrepresentable [HASH §6 "Problems of Rodriguez vector parameterization"].</p>
+<h3 id="28-modified-rodrigues-parameters-mrp">2.8 Modified Rodrigues Parameters (MRP)<a class="headerlink" href="#28-modified-rodrigues-parameters-mrp" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[\boldsymbol\sigma = \tan\!\big(\tfrac{\alpha}{4}\big)\,\mathbf{u} = \frac{\mathbf{q}_v}{1+q_w},
+\qquad \text{shadow set } \boldsymbol\sigma' = -\frac{\boldsymbol\sigma}{\|\boldsymbol\sigma\|^2}\]</div>
+<p>[HASH mentions the MRP/shadow-set transformation only in passing; no full MRP kinematics in the
+corpus — qnav <code>attitude/mrp</code> will need standard literature (Markley &amp; Crassidis) as a
+supplementary source. Singularity at <span class="arithmatex">\(\alpha=2\pi\)</span>; switch to the shadow set at <span class="arithmatex">\(\|\boldsymbol\sigma\|&gt;1\)</span>.]</p>
+<hr />
+<h2 id="3-so3-hatvee-explog-jacobians">3. SO(3): hat/vee, exp/log, Jacobians<a class="headerlink" href="#3-so3-hatvee-explog-jacobians" title="Permanent link">&para;</a></h2>
+<h3 id="31-group-definitions">3.1 Group definitions<a class="headerlink" href="#31-group-definitions" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[SO(3)=\{\mathbf{R}\in\mathbb{R}^{3\times3}\mid \mathbf{R}^\top\mathbf{R}=\mathbf{R}\mathbf{R}^\top=\mathbf{I}_3,\ \det\mathbf{R}=+1\},\qquad
+\mathfrak{so}(3)=\{\mathcal{A}\mid \mathcal{A}^\top=-\mathcal{A}\}\]</div>
+<p>[SOLA <code>equ:Rorthogonal</code>, <code>equ:unitDet</code>; HASH <code>eq:OVERVIEW_PER_SO3_1/2/3</code>]</p>
+<h3 id="32-hat-vee">3.2 Hat / vee<a class="headerlink" href="#32-hat-vee" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[[\mathbf{a}]_\times \equiv \mathbf{a}^\wedge = \begin{bmatrix} 0 &amp; -a_z &amp; a_y \\ a_z &amp; 0 &amp; -a_x \\ -a_y &amp; a_x &amp; 0 \end{bmatrix},
+\qquad ([\mathbf{a}]_\times)^\vee = \mathrm{vex}([\mathbf{a}]_\times) = \mathbf{a},
+\qquad [\mathbf{a}]_\times\mathbf{b} = \mathbf{a}\times\mathbf{b}\]</div>
+<p>[SOLA <code>equ:skew</code>; HASH <code>eq:OVERVIEW_PER_SO3_4/5</code>; KOK <code>eq:models-crossproductMatrix</code>].
+Identities: <span class="arithmatex">\([\mathbf{a}]_\times^\top=-[\mathbf{a}]_\times\)</span>,
+<span class="arithmatex">\([\mathbf{u}]_\times^2=\mathbf{u}\mathbf{u}^\top-\mathbf{I}\)</span>, <span class="arithmatex">\([\mathbf{u}]_\times^3=-[\mathbf{u}]_\times\)</span>
+[SOLA <code>equ:prop1/2</code>], <span class="arithmatex">\([R\mathbf{v}]_\times = R[\mathbf{v}]_\times R^\top\)</span> [HASH math identities],
+anti-symmetric projection <span class="arithmatex">\(\mathcal{P}_a(\mathbf{B})=\tfrac12(\mathbf{B}-\mathbf{B}^\top)\)</span>
+[HASH <code>eq:OVERVIEW_PER_SO3_VEX_7</code>].</p>
+<h3 id="33-exp-log">3.3 Exp / Log<a class="headerlink" href="#33-exp-log" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[\exp:\ \mathfrak{so}(3)\to SO(3);\qquad
+\mathrm{Exp}:\ \mathbb{R}^3\to SO(3),\ \ \mathrm{Exp}(\boldsymbol\phi)=e^{[\boldsymbol\phi]_\times}
+\ \text{(Rodrigues, §2.5)};$$
+$$\log(\mathbf{R})=[\mathbf{u}\phi]_\times,\qquad \mathrm{Log}(\mathbf{R})=(\log\mathbf{R})^\vee = \phi\,\mathbf{u}\]</div>
+<p>[SOLA Quaternion.tex exponential/logarithmic map sections]. For the quaternion the capitalized
+maps absorb the half-angle: <span class="arithmatex">\(\mathrm{Exp}(\boldsymbol\phi)=\exp(\boldsymbol\phi/2)\)</span>,
+<span class="arithmatex">\(\mathrm{Log}(\mathbf{q})=2\log(\mathbf{q})\)</span> [SOLA].</p>
+<h3 id="34-plusminus-operators-manifold-calculus">3.4 Plus/minus operators (manifold calculus)<a class="headerlink" href="#34-plusminus-operators-manifold-calculus" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[\mathbf{q}_S = \mathbf{q}_R\oplus\boldsymbol\theta = \mathbf{q}_R\otimes\mathrm{Exp}(\boldsymbol\theta),
+\qquad
+\boldsymbol\theta = \mathbf{q}_S\ominus\mathbf{q}_R = \mathrm{Log}(\mathbf{q}_R^*\otimes\mathbf{q}_S)\]</div>
+<p>(and identically with <span class="arithmatex">\(\mathbf{R}\)</span>: <span class="arithmatex">\(\mathbf{R}\oplus\boldsymbol\theta = \mathbf{R}\,\mathrm{Exp}(\boldsymbol\theta)\)</span>,
+<span class="arithmatex">\(\mathbf{R}_S\ominus\mathbf{R}_R=\mathrm{Log}(\mathbf{R}_R^\top\mathbf{R}_S)\)</span>)
+[SOLA "additive and subtractive operators in SO(3)"]. These are <strong>right (local) operators</strong>,
+matching Hamilton local perturbations.</p>
+<h3 id="35-right-jacobian-of-so3-and-inverse">3.5 Right Jacobian of SO(3) and inverse<a class="headerlink" href="#35-right-jacobian-of-so3-and-inverse" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[\mathbf{J}_r(\boldsymbol\theta) = \mathbf{I} - \frac{1-\cos\|\boldsymbol\theta\|}{\|\boldsymbol\theta\|^2}[\boldsymbol\theta]_\times
++ \frac{\|\boldsymbol\theta\|-\sin\|\boldsymbol\theta\|}{\|\boldsymbol\theta\|^3}[\boldsymbol\theta]_\times^2\]</div>
+<div class="arithmatex">\[\mathbf{J}_r^{-1}(\boldsymbol\theta) = \mathbf{I} + \frac12[\boldsymbol\theta]_\times
++ \left(\frac{1}{\|\boldsymbol\theta\|^2} - \frac{1+\cos\|\boldsymbol\theta\|}{2\|\boldsymbol\theta\|\sin\|\boldsymbol\theta\|}\right)[\boldsymbol\theta]_\times^2\]</div>
+<p>[SOLA "Right Jacobian of SO(3)", citing Chirikjian p.40]. Small angle:
+<span class="arithmatex">\(\mathbf{J}_r \approx \mathbf{I} - \tfrac12[\boldsymbol\theta]_\times\)</span>. Left Jacobian:
+<span class="arithmatex">\(\mathbf{J}_l(\boldsymbol\theta)=\mathbf{J}_r(-\boldsymbol\theta)=\mathbf{J}_r(\boldsymbol\theta)^\top\)</span>
+(standard identity; not stated in corpus explicitly).</p>
+<p>First-order BCH-type properties [SOLA <code>equ:Jr1</code> ff.]:</p>
+<div class="arithmatex">\[\mathrm{Exp}(\boldsymbol\theta+\delta\boldsymbol\theta) \approx \mathrm{Exp}(\boldsymbol\theta)\,\mathrm{Exp}(\mathbf{J}_r(\boldsymbol\theta)\delta\boldsymbol\theta),\qquad
+\mathrm{Log}\big(\mathrm{Exp}(\boldsymbol\theta)\mathrm{Exp}(\delta\boldsymbol\theta)\big) \approx \boldsymbol\theta + \mathbf{J}_r^{-1}(\boldsymbol\theta)\,\delta\boldsymbol\theta\]</div>
+<h3 id="36-useful-rotation-action-jacobians">3.6 Useful rotation-action Jacobians<a class="headerlink" href="#36-useful-rotation-action-jacobians" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[\frac{\partial(\mathbf{R}\mathbf{a})}{\partial\mathbf{a}} = \mathbf{R};\qquad
+\frac{\partial(\mathbf{q}\otimes\mathbf{a}\otimes\mathbf{q}^*)}{\partial\delta\boldsymbol\theta}
+= -\mathbf{R}\{\boldsymbol\theta\}[\mathbf{a}]_\times\mathbf{J}_r(\boldsymbol\theta)\]</div>
+<p>[SOLA <code>equ:drot_da</code>]. Jacobian w.r.t. the (raw, 4-D) quaternion <span class="arithmatex">\(\mathbf{q}=[w,\mathbf{v}]\)</span>:</p>
+<div class="arithmatex">\[\frac{\partial(\mathbf{q}\otimes\mathbf{a}\otimes\mathbf{q}^*)}{\partial\mathbf{q}}
+= 2\big[\,w\mathbf{a}+\mathbf{v}\times\mathbf{a}\ \ \big|\ \ \mathbf{v}^\top\mathbf{a}\,\mathbf{I}_3 + \mathbf{v}\mathbf{a}^\top - \mathbf{a}\mathbf{v}^\top - w[\mathbf{a}]_\times\,\big]\in\mathbb{R}^{3\times4}\]</div>
+<p>[SOLA <code>equ:drot_dq</code>]. Composition Jacobians (functions <span class="arithmatex">\(SO(3)\times SO(3)\to SO(3)\)</span>, right
+perturbations): <span class="arithmatex">\(\partial(\mathcal{Q}\circ\mathcal{R})/\partial\mathcal{Q} = \mathbf{R}_\phi^\top\)</span>,
+<span class="arithmatex">\(\partial(\mathcal{Q}\circ\mathcal{R})/\partial\mathcal{R} = \mathbf{I}\)</span> [SOLA "Jacobians of the
+rotation composition"].</p>
+<h3 id="37-perturbations-local-vs-global">3.7 Perturbations: local vs global<a class="headerlink" href="#37-perturbations-local-vs-global" title="Permanent link">&para;</a></h3>
+<p>Local (right): <span class="arithmatex">\(\tilde{\mathbf{q}}=\mathbf{q}\otimes\mathrm{Exp}(\Delta\boldsymbol\phi_L)\)</span>,
+<span class="arithmatex">\(\Delta\boldsymbol\phi_L=\mathrm{Log}(\mathbf{q}^*\otimes\tilde{\mathbf{q}})\)</span>.
+Global (left): <span class="arithmatex">\(\tilde{\mathbf{q}}=\mathrm{Exp}(\Delta\boldsymbol\phi_G)\otimes\mathbf{q}\)</span>,
+<span class="arithmatex">\(\Delta\boldsymbol\phi_G=\mathrm{Log}(\tilde{\mathbf{q}}\otimes\mathbf{q}^*)\)</span>.
+First-order: <span class="arithmatex">\(\Delta\mathbf{q}\approx[1,\ \tfrac12\Delta\boldsymbol\phi]^\top\)</span>,
+<span class="arithmatex">\(\Delta\mathbf{R}\approx\mathbf{I}+[\Delta\boldsymbol\phi]_\times\)</span>. Conversion:
+<span class="arithmatex">\(\Delta\boldsymbol\phi_G = \mathbf{R}\,\Delta\boldsymbol\phi_L\)</span>.
+[SOLA "Perturbations, uncertainties, noise" + "Global-to-local relations".]</p>
+<h3 id="38-so3-error-metric-hashims-normalized-euclidean-distance">3.8 SO(3) error metric (Hashim's normalized Euclidean distance)<a class="headerlink" href="#38-so3-error-metric-hashims-normalized-euclidean-distance" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[\|\mathbf{R}\|_I \triangleq \tfrac14\mathrm{Tr}(\mathbf{I}_3-\mathbf{R}) \in [0,1]
+= \sin^2(\alpha/2) = \frac{\|\boldsymbol\rho\|^2}{1+\|\boldsymbol\rho\|^2} = 1-q_w^2\]</div>
+<div class="arithmatex">\[\mathrm{vex}(\mathcal{P}_a(\mathbf{R})) = 2\cos(\tfrac\alpha2)\sin(\tfrac\alpha2)\,\mathbf{u}
+= \frac{2\boldsymbol\rho}{1+\|\boldsymbol\rho\|^2} = 2q_wq_v,\qquad
+\|\mathrm{vex}(\mathcal{P}_a(\mathbf{R}))\|^2 = 4(1-\|\mathbf{R}\|_I)\|\mathbf{R}\|_I\]</div>
+<p>[HASH <code>eq:OVERVIEW_SO3_Ecul_Dist</code>, Lemmas 1, 2, 5, 6.]</p>
+<hr />
+<h2 id="4-kinematics-and-integration">4. Kinematics and integration<a class="headerlink" href="#4-kinematics-and-integration" title="Permanent link">&para;</a></h2>
+<h3 id="41-continuous-time-kinematics">4.1 Continuous-time kinematics<a class="headerlink" href="#41-continuous-time-kinematics" title="Permanent link">&para;</a></h3>
+<p>Local (body) rates <span class="arithmatex">\(\boldsymbol\omega_L\)</span> (gyro-measured), with <span class="arithmatex">\(\boldsymbol\Omega(\boldsymbol\omega)\triangleq[\boldsymbol\omega]_R\)</span>:</p>
+<div class="arithmatex">\[\dot{\mathbf{q}} = \tfrac12\,\mathbf{q}\otimes\boldsymbol\omega_L = \tfrac12\boldsymbol\Omega(\boldsymbol\omega_L)\,\mathbf{q},
+\qquad
+\boldsymbol\Omega(\boldsymbol\omega) = \begin{bmatrix} 0 &amp; -\boldsymbol\omega^\top \\ \boldsymbol\omega &amp; -[\boldsymbol\omega]_\times \end{bmatrix},
+\qquad \dot{\mathbf{R}} = \mathbf{R}\,[\boldsymbol\omega_L]_\times\]</div>
+<p>[SOLA <code>equ:qdotLocal</code>, <code>equ:Omega</code>, <code>equ:Rdot</code>; HASH <code>eq:OVERVIEW_Q_dot</code> (<span class="arithmatex">\(\dot Q=\frac12\Gamma(\Omega)Q\)</span>,
+same <span class="arithmatex">\(\Gamma\)</span>), <code>eq:OVERVIEW_SO3_dyn</code>; KOK <code>eq:models-contTimeOri</code>; SURV "Poisson equation"
+<span class="arithmatex">\(\dot Q=\frac12 Q[\mathbf{w}\times]\)</span>; PARW <span class="arithmatex">\(\dot q=\frac12 q\circ w'\)</span> (body rate) <span class="arithmatex">\(=\frac12 w\circ q\)</span>
+(world rate)].</p>
+<p>Global (world) rates: <span class="arithmatex">\(\dot{\mathbf{q}}=\tfrac12\boldsymbol\omega_G\otimes\mathbf{q}\)</span>,
+<span class="arithmatex">\(\dot{\mathbf{R}}=[\boldsymbol\omega_G]_\times\mathbf{R}\)</span>, with
+<span class="arithmatex">\(\boldsymbol\omega_G = \mathbf{R}\boldsymbol\omega_L\)</span> [SOLA <code>equ:qdotGlobal</code>].
+Rate recovery: <span class="arithmatex">\(\boldsymbol\omega_L = 2\mathbf{q}^*\otimes\dot{\mathbf{q}}\)</span>,
+<span class="arithmatex">\([\boldsymbol\omega_L]_\times=\mathbf{R}^\top\dot{\mathbf{R}}\)</span> [SOLA].</p>
+<p>Euler-rate (Z-Y'-X'') matrix and gimbal-lock singularity at <span class="arithmatex">\(\theta=\pm\pi/2\)</span>:</p>
+<div class="arithmatex">\[\begin{bmatrix}\dot\phi\\\dot\theta\\\dot\psi\end{bmatrix}
+= \begin{bmatrix}
+1 &amp; \sin\phi\tan\theta &amp; \cos\phi\tan\theta\\
+0 &amp; \cos\phi &amp; -\sin\phi\\
+0 &amp; \sin\phi\sec\theta &amp; \cos\phi\sec\theta
+\end{bmatrix}\begin{bmatrix}p\\q\\r\end{bmatrix}\]</div>
+<p>[HASH <code>eq:OVERVIEW_EUL_J</code>; PARW "321 Euler angle kinematic equation" — identical.]</p>
+<h3 id="42-zeroth-order-quaternion-integration-exact-for-constant">4.2 Zeroth-order quaternion integration (exact for constant ω)<a class="headerlink" href="#42-zeroth-order-quaternion-integration-exact-for-constant" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[\mathbf{q}_{n+1} = \mathbf{q}_n\otimes\mathbf{q}\{\boldsymbol\omega\Delta t\},\qquad
+\mathbf{q}\{\boldsymbol\omega\Delta t\}=\begin{bmatrix}
+\cos(\|\boldsymbol\omega\|\Delta t/2)\\
+\frac{\boldsymbol\omega}{\|\boldsymbol\omega\|}\sin(\|\boldsymbol\omega\|\Delta t/2)\end{bmatrix}\]</div>
+<ul>
+<li>Forward: <span class="arithmatex">\(\boldsymbol\omega=\boldsymbol\omega_n\)</span> [SOLA <code>equ:intZeroth</code>]</li>
+<li>Backward: <span class="arithmatex">\(\boldsymbol\omega=\boldsymbol\omega_{n+1}\)</span> (typical for real-time processing) [SOLA]</li>
+<li>Midward: <span class="arithmatex">\(\boldsymbol\omega=\bar{\boldsymbol\omega}=\tfrac12(\boldsymbol\omega_n+\boldsymbol\omega_{n+1})\)</span> [SOLA <code>equ:intFirstC</code>, <code>equ:wbar</code>]</li>
+</ul>
+<p>[Same scheme: MATH §1.5 (<span class="arithmatex">\(\mathbf{q}_{t+1}=\mathbf{q}_t\otimes\mathrm{Exp}(\boldsymbol\omega_t\Delta t)\)</span>);
+KOK <code>eq:models-dynModelOri</code> (<span class="arithmatex">\(q_{t+1}=q_t\odot\exp_q(\tfrac{T}{2}\omega_t)\)</span>);
+HASH <code>eq:OVERVIEW_SO3_dyn_discrete</code> for DCM: <span class="arithmatex">\(R[k{+}1]=R[k]\exp([\Omega[k]]_\times\Delta t)\)</span>;
+SURV <code>eq_recur</code>/<code>eq_delta_phi</code> with Taylor-series sin/cos (<code>eq_delta_ser</code>).]</p>
+<h3 id="43-first-order-integrator-varying-rotation-axis">4.3 First-order integrator (varying rotation axis)<a class="headerlink" href="#43-first-order-integrator-varying-rotation-axis" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[\mathbf{q}_{n+1} \approx \mathbf{q}_n\otimes\left(\mathbf{q}\{\bar{\boldsymbol\omega}\Delta t\}
++ \frac{\Delta t^2}{24}\begin{bmatrix}0\\ \boldsymbol\omega_n\times\boldsymbol\omega_{n+1}\end{bmatrix}\right)\]</div>
+<p>[SOLA <code>equ:intFirstB</code>; equivalent to Trawny's JPL result but Hamilton form, <code>equ:intFirstA</code>].
+The correction vanishes when the rotation axis is fixed
+(<span class="arithmatex">\(\mathbf{q}_{n+1}=\mathbf{q}_n\otimes\mathbf{q}\{\mathbf{u}\,\Delta\theta_n\}\)</span>,
+<span class="arithmatex">\(\Delta\theta_n=\int\omega\,dt\)</span> — exact) [SOLA <code>equ:first_order_constant_axis</code>].
+<strong>Renormalize</strong> after first-order integration (the sum breaks unit norm) [SOLA closing note].</p>
+<p>Related strapdown coning correction [SURV <code>eq_phimequation</code>, digital algorithm]:
+<span class="arithmatex">\(\boldsymbol\phi_m=\boldsymbol\alpha_m+\boldsymbol\beta_m\)</span>, with
+<span class="arithmatex">\(\boldsymbol\alpha_m=\int\boldsymbol\omega\,d\tau\)</span> and the coning increment
+<span class="arithmatex">\(\Delta\boldsymbol\beta_l = \tfrac12(\boldsymbol\alpha_{l-1}+\tfrac16\Delta\boldsymbol\alpha_{l-1})\times\Delta\boldsymbol\alpha_l\)</span>;
+sculling counterpart for velocity increments
+<span class="arithmatex">\(\delta\mathbf{v}_{Scul,l} = \tfrac12[(\boldsymbol\alpha_{l-1}+\tfrac16\Delta\boldsymbol\alpha_{l-1})\times\Delta\mathbf{v}_l + (\mathbf{v}_{l-1}+\tfrac16\Delta\mathbf{v}_{l-1})\times\Delta\boldsymbol\alpha_l]\)</span>
+[SURV <code>eq_jk</code>]. Rotation-vector kinematics (Bortz):
+<span class="arithmatex">\(\dot{\boldsymbol\phi}=\boldsymbol\omega+\tfrac12\boldsymbol\phi\times\boldsymbol\omega
++\tfrac{1}{\phi^2}\big(1-\tfrac{\phi\sin\phi}{2(1-\cos\phi)}\big)\boldsymbol\phi\times(\boldsymbol\phi\times\boldsymbol\omega)\)</span>
+[SURV "rotation vector kinematics"].</p>
+<h3 id="44-runge-kutta-integration">4.4 Runge-Kutta integration<a class="headerlink" href="#44-runge-kutta-integration" title="Permanent link">&para;</a></h3>
+<p>Euler: <span class="arithmatex">\(\mathbf{x}_{n+1}=\mathbf{x}_n+\Delta t\,f(t_n,\mathbf{x}_n)\)</span>;
+midpoint: <span class="arithmatex">\(\mathbf{x}_{n+1}=\mathbf{x}_n+\Delta t\,f(t_n+\tfrac{\Delta t}2,\ \mathbf{x}_n+\tfrac{\Delta t}2 f(t_n,\mathbf{x}_n))\)</span>;
+RK4:</p>
+<div class="arithmatex">\[\mathbf{x}_{n+1} = \mathbf{x}_n + \frac{\Delta t}{6}(k_1+2k_2+2k_3+k_4)\]</div>
+<p>with the standard stages; general RK <span class="arithmatex">\(\mathbf{x}_{n+1}=\mathbf{x}_n+\Delta t\sum_i b_ik_i\)</span>
+[SOLA RungeKutta.tex <code>sec:NumInt</code>]. When applied to <span class="arithmatex">\(\dot{\mathbf{q}}=\frac12\mathbf{q}\otimes\boldsymbol\omega\)</span>,
+renormalize the quaternion after the step.</p>
+<h3 id="45-transition-matrix-computation">4.5 Transition matrix computation<a class="headerlink" href="#45-transition-matrix-computation" title="Permanent link">&para;</a></h3>
+<p>Closed-form: <span class="arithmatex">\(\Phi = e^{\mathbf{A}\Delta t} = \sum_k \frac{1}{k!}\mathbf{A}^k\Delta t^k\)</span>
+[SOLA ClosedForms.tex <code>equ:TaylorExp</code>]. For pure angular-error dynamics
+<span class="arithmatex">\(\dot{\delta\boldsymbol\theta}=-[\boldsymbol\omega]_\times\delta\boldsymbol\theta\)</span>:</p>
+<div class="arithmatex">\[\Phi = e^{-[\boldsymbol\omega]_\times\Delta t} = \mathbf{R}\{\boldsymbol\omega\Delta t\}^\top\]</div>
+<p>[SOLA ClosedForms.tex <code>sec:ClosedFormAngle</code>, boxed]. Truncations: system-wise
+<span class="arithmatex">\(\Phi\approx\mathbf{I}+\Delta t\,\mathbf{A}\)</span> (finite differences) or
+<span class="arithmatex">\(\mathbf{I}+\mathbf{A}\Delta t+\tfrac12\mathbf{A}^2\Delta t^2\)</span>; block-wise truncation keeps
+<span class="arithmatex">\(\Phi_{\theta\theta}=\mathbf{R}\{\boldsymbol\omega\Delta t\}^\top\)</span> exact and truncates
+off-diagonal blocks at first significant term (<span class="arithmatex">\(\Sigma_0=\mathbf{R}\{\boldsymbol\omega\Delta t\}^\top\)</span>,
+<span class="arithmatex">\(\Sigma_{n&gt;0}\approx\frac{1}{n!}\mathbf{I}\Delta t^n\)</span>)
+[SOLA ApproximateTruncated.tex <code>sec:BlockWiseTruncation</code>]. Time-varying <span class="arithmatex">\(\mathbf{A}(t)\)</span>:
+RK4 on <span class="arithmatex">\(\dot\Phi = \mathbf{A}(t)\Phi\)</span>, <span class="arithmatex">\(\Phi(t_n|t_n)=\mathbf{I}\)</span>, giving
+<span class="arithmatex">\(\Phi = \mathbf{I} + \Delta t\,\mathbf{K}\)</span>, <span class="arithmatex">\(\mathbf{K}=\tfrac16(\mathbf{K}_1+2\mathbf{K}_2+2\mathbf{K}_3+\mathbf{K}_4)\)</span>
+[SOLA TransitionRK.tex <code>sec:TranMatRK</code>].</p>
+<hr />
+<h2 id="5-error-state-kalman-filter-eskf">5. Error-state Kalman filter (ESKF)<a class="headerlink" href="#5-error-state-kalman-filter-eskf" title="Permanent link">&para;</a></h2>
+<p>All from [SOLA ErrorState.tex / Noise.tex / ESKF_global.tex] unless noted. State decomposition:
+true = nominal ⊕ error, <span class="arithmatex">\(\mathbf{x}_t = \mathbf{x}\oplus\delta\mathbf{x}\)</span> [SOLA <code>tab:errorstatevar</code>].</p>
+<h3 id="51-state-inputs-error-state">5.1 State, inputs, error state<a class="headerlink" href="#51-state-inputs-error-state" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[\mathbf{x} = \begin{bmatrix}\mathbf{p}\\\mathbf{v}\\\mathbf{q}\\\mathbf{a}_b\\\boldsymbol\omega_b\\\mathbf{g}\end{bmatrix},\qquad
+\delta\mathbf{x} = \begin{bmatrix}\delta\mathbf{p}\\\delta\mathbf{v}\\\delta\boldsymbol\theta\\\delta\mathbf{a}_b\\\delta\boldsymbol\omega_b\\\delta\mathbf{g}\end{bmatrix}\in\mathbb{R}^{18},\qquad
+\mathbf{u}_m=\begin{bmatrix}\mathbf{a}_m\\\boldsymbol\omega_m\end{bmatrix}\]</div>
+<p>Local (right) error: <span class="arithmatex">\(\mathbf{q}_t=\mathbf{q}\otimes\delta\mathbf{q}\)</span>,
+<span class="arithmatex">\(\delta\mathbf{q}=e^{\delta\boldsymbol\theta/2}\approx[1,\tfrac12\delta\boldsymbol\theta]^\top\)</span>;
+<span class="arithmatex">\(\mathbf{R}_t=\mathbf{R}\,\delta\mathbf{R}\)</span>, <span class="arithmatex">\(\delta\mathbf{R}\approx\mathbf{I}+[\delta\boldsymbol\theta]_\times\)</span>.</p>
+<h3 id="52-true-nominal-error-kinematics-continuous-time">5.2 True / nominal / error kinematics (continuous time)<a class="headerlink" href="#52-true-nominal-error-kinematics-continuous-time" title="Permanent link">&para;</a></h3>
+<p>True [SOLA <code>equ:pos</code>–<code>equ:grav</code>]:</p>
+<div class="arithmatex">\[\dot{\mathbf{p}}_t=\mathbf{v}_t,\quad
+\dot{\mathbf{v}}_t=\mathbf{R}_t(\mathbf{a}_m-\mathbf{a}_{bt}-\mathbf{a}_n)+\mathbf{g}_t,\quad
+\dot{\mathbf{q}}_t=\tfrac12\mathbf{q}_t\otimes(\boldsymbol\omega_m-\boldsymbol\omega_{bt}-\boldsymbol\omega_n),\quad
+\dot{\mathbf{a}}_{bt}=\mathbf{a}_w,\ \dot{\boldsymbol\omega}_{bt}=\boldsymbol\omega_w,\ \dot{\mathbf{g}}_t=0\]</div>
+<p>Nominal: same without noises/biases-walk. Error (local <span class="arithmatex">\(\delta\boldsymbol\theta\)</span>)
+[SOLA <code>equ:efull</code>]:</p>
+<div class="arithmatex">\[\dot{\delta\mathbf{p}} = \delta\mathbf{v}$$
+$$\dot{\delta\mathbf{v}} = -\mathbf{R}[\mathbf{a}_m-\mathbf{a}_b]_\times\delta\boldsymbol\theta - \mathbf{R}\delta\mathbf{a}_b + \delta\mathbf{g} - \mathbf{R}\mathbf{a}_n$$
+$$\dot{\delta\boldsymbol\theta} = -[\boldsymbol\omega_m-\boldsymbol\omega_b]_\times\delta\boldsymbol\theta - \delta\boldsymbol\omega_b - \boldsymbol\omega_n$$
+$$\dot{\delta\mathbf{a}}_b = \mathbf{a}_w,\qquad \dot{\delta\boldsymbol\omega}_b = \boldsymbol\omega_w,\qquad \dot{\delta\mathbf{g}}=0\]</div>
+<p>(For isotropic accel noise, <span class="arithmatex">\(\mathbf{R}\mathbf{a}_n\)</span> may be replaced by <span class="arithmatex">\(\mathbf{a}_n\)</span>.)</p>
+<h3 id="53-discrete-nominal-propagation">5.3 Discrete nominal propagation<a class="headerlink" href="#53-discrete-nominal-propagation" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[\mathbf{p}\gets\mathbf{p}+\mathbf{v}\Delta t+\tfrac12(\mathbf{R}(\mathbf{a}_m-\mathbf{a}_b)+\mathbf{g})\Delta t^2,\quad
+\mathbf{v}\gets\mathbf{v}+(\mathbf{R}(\mathbf{a}_m-\mathbf{a}_b)+\mathbf{g})\Delta t,\quad
+\mathbf{q}\gets\mathbf{q}\otimes\mathbf{q}\{(\boldsymbol\omega_m-\boldsymbol\omega_b)\Delta t\}\]</div>
+<p>[SOLA ErrorState.tex "nominal state kinematics" (discrete)].</p>
+<h3 id="54-discrete-error-state-propagation-f_x-f_i-q_i">5.4 Discrete error-state propagation, <span class="arithmatex">\(F_x\)</span>, <span class="arithmatex">\(F_i\)</span>, <span class="arithmatex">\(Q_i\)</span><a class="headerlink" href="#54-discrete-error-state-propagation-f_x-f_i-q_i" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[\hat{\delta\mathbf{x}}\gets\mathbf{F_x}\hat{\delta\mathbf{x}}\ (=0\text{, skip in code}),\qquad
+\mathbf{P}\gets\mathbf{F_x}\mathbf{P}\mathbf{F_x}^\top + \mathbf{F_i}\mathbf{Q_i}\mathbf{F_i}^\top\]</div>
+<p>[SOLA <code>equ:errorMeanPred</code>, <code>equ:errorCovPred</code>]. With local error, Euler form
+[SOLA <code>equ:Fx_local_euler</code>]:</p>
+<div class="arithmatex">\[\mathbf{F_x}=\begin{bmatrix}
+\mathbf{I}&amp;\mathbf{I}\Delta t&amp;0&amp;0&amp;0&amp;0\\
+0&amp;\mathbf{I}&amp;-\mathbf{R}[\mathbf{a}_m{-}\mathbf{a}_b]_\times\Delta t&amp;-\mathbf{R}\Delta t&amp;0&amp;\mathbf{I}\Delta t\\
+0&amp;0&amp;\mathbf{R}^\top\{(\boldsymbol\omega_m{-}\boldsymbol\omega_b)\Delta t\}&amp;0&amp;-\mathbf{I}\Delta t&amp;0\\
+0&amp;0&amp;0&amp;\mathbf{I}&amp;0&amp;0\\
+0&amp;0&amp;0&amp;0&amp;\mathbf{I}&amp;0\\
+0&amp;0&amp;0&amp;0&amp;0&amp;\mathbf{I}\end{bmatrix}\]</div>
+<div class="arithmatex">\[\mathbf{F_i}=\begin{bmatrix}0&amp;0&amp;0&amp;0\\\mathbf{I}&amp;0&amp;0&amp;0\\0&amp;\mathbf{I}&amp;0&amp;0\\0&amp;0&amp;\mathbf{I}&amp;0\\0&amp;0&amp;0&amp;\mathbf{I}\\0&amp;0&amp;0&amp;0\end{bmatrix},\qquad
+\mathbf{Q_i}=\mathrm{diag}\big(\sigma_{\tilde a}^2\Delta t^2\mathbf{I},\ \sigma_{\tilde\omega}^2\Delta t^2\mathbf{I},\ \sigma_{a_w}^2\Delta t\,\mathbf{I},\ \sigma_{\omega_w}^2\Delta t\,\mathbf{I}\big)\]</div>
+<p>Noise-impulse covariances: <span class="arithmatex">\(\mathbf{V_i}=\sigma_{\tilde a_n}^2\Delta t^2\mathbf{I}\)</span> [m²/s²],
+<span class="arithmatex">\(\Theta_\mathbf{i}=\sigma_{\tilde\omega_n}^2\Delta t^2\mathbf{I}\)</span> [rad²],
+<span class="arithmatex">\(\mathbf{A_i}=\sigma_{a_w}^2\Delta t\,\mathbf{I}\)</span> [m²/s⁴],
+<span class="arithmatex">\(\boldsymbol\Omega_\mathbf{i}=\sigma_{\omega_w}^2\Delta t\,\mathbf{I}\)</span> [rad²/s²]
+[SOLA ErrorState.tex + Noise.tex <code>sec:pertImpulses</code>].</p>
+<p>General continuous→discrete noise rule [SOLA Noise.tex <code>equ:NoisePertCovUpdate</code>]:</p>
+<div class="arithmatex">\[\mathbf{P}_{n+1} = e^{\mathbf{A}\Delta t}\mathbf{P}_n e^{\mathbf{A}^\top\Delta t}
++ \Delta t^2\,\mathbf{B}\mathbf{U}^c\mathbf{B}^\top + \Delta t\,\mathbf{C}\mathbf{W}^c\mathbf{C}^\top\]</div>
+<p>— sampled measurement (control) noise integrates <strong>quadratically</strong> (<span class="arithmatex">\(\Delta t^2\)</span>), continuous
+random-walk perturbations integrate <strong>linearly</strong> (<span class="arithmatex">\(\Delta t\)</span>) [SOLA Noise.tex <code>tab:IntEffects</code>].</p>
+<h3 id="55-measurement-update-correction">5.5 Measurement update (correction)<a class="headerlink" href="#55-measurement-update-correction" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[\mathbf{K}=\mathbf{P}\mathbf{H}^\top(\mathbf{H}\mathbf{P}\mathbf{H}^\top+\mathbf{V})^{-1},\qquad
+\hat{\delta\mathbf{x}}\gets\mathbf{K}(\mathbf{y}-h(\hat{\mathbf{x}}_t)),\qquad
+\mathbf{P}\gets(\mathbf{I}-\mathbf{K}\mathbf{H})\mathbf{P}\]</div>
+<p>(Joseph form <span class="arithmatex">\((\mathbf{I}-\mathbf{K}\mathbf{H})\mathbf{P}(\mathbf{I}-\mathbf{K}\mathbf{H})^\top+\mathbf{K}\mathbf{V}\mathbf{K}^\top\)</span>
+recommended for numerical stability) [SOLA ErrorState.tex §"Observation of the error state"].
+Jacobian chain rule: <span class="arithmatex">\(\mathbf{H}=\mathbf{H_x}\,\mathbf{X}_{\delta\mathbf{x}}\)</span>, where the only
+non-identity block is</p>
+<div class="arithmatex">\[\mathbf{Q}_{\delta\boldsymbol\theta} = \frac{\partial(\mathbf{q}\otimes\delta\mathbf{q})}{\partial\delta\boldsymbol\theta}
+= [\mathbf{q}]_L\,\frac12\begin{bmatrix}0&amp;0&amp;0\\1&amp;0&amp;0\\0&amp;1&amp;0\\0&amp;0&amp;1\end{bmatrix}
+= \frac12\begin{bmatrix}-q_x&amp;-q_y&amp;-q_z\\ q_w&amp;-q_z&amp;q_y\\ q_z&amp;q_w&amp;-q_x\\ -q_y&amp;q_x&amp;q_w\end{bmatrix}\]</div>
+<p>[SOLA ErrorState.tex "Jacobian computation for the filter correction"].</p>
+<h3 id="56-injection-and-reset">5.6 Injection and reset<a class="headerlink" href="#56-injection-and-reset" title="Permanent link">&para;</a></h3>
+<p>Injection: <span class="arithmatex">\(\mathbf{p}\gets\mathbf{p}+\hat{\delta\mathbf{p}}\)</span>, …,
+<span class="arithmatex">\(\mathbf{q}\gets\mathbf{q}\otimes\mathbf{q}\{\hat{\delta\boldsymbol\theta}\}\)</span>
+[SOLA <code>equ:errorInjection</code>, <code>equ:quatErrorInjection</code>]. Reset:
+<span class="arithmatex">\(\hat{\delta\mathbf{x}}\gets 0\)</span>, <span class="arithmatex">\(\mathbf{P}\gets\mathbf{G}\mathbf{P}\mathbf{G}^\top\)</span>, with</p>
+<div class="arithmatex">\[\mathbf{G} = \mathrm{blkdiag}\Big(\mathbf{I}_6,\ \ \mathbf{I}-\big[\tfrac12\hat{\delta\boldsymbol\theta}\big]_\times,\ \ \mathbf{I}_9\Big)\]</div>
+<p>(often approximated <span class="arithmatex">\(\mathbf{G}=\mathbf{I}\)</span>) [SOLA ErrorState.tex §"ESKF reset"].</p>
+<h3 id="57-global-error-eskf-left-error-differences">5.7 Global-error ESKF (left error) — differences<a class="headerlink" href="#57-global-error-eskf-left-error-differences" title="Permanent link">&para;</a></h3>
+<p>With <span class="arithmatex">\(\mathbf{q}_t = \delta\mathbf{q}\otimes\mathbf{q}\)</span> [SOLA ESKF_global.tex <code>equ:efullglobal</code>,
+<code>tab:local_to_global</code>]:</p>
+<table>
+<thead>
+<tr>
+<th>item</th>
+<th>local error</th>
+<th>global error</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(\dot{\delta\boldsymbol\theta}\)</span></td>
+<td><span class="arithmatex">\(-[\boldsymbol\omega_m{-}\boldsymbol\omega_b]_\times\delta\boldsymbol\theta - \delta\boldsymbol\omega_b - \boldsymbol\omega_n\)</span></td>
+<td><span class="arithmatex">\(-\mathbf{R}\delta\boldsymbol\omega_b - \mathbf{R}\boldsymbol\omega_n\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\partial\delta\mathbf{v}^+/\partial\delta\boldsymbol\theta\)</span></td>
+<td><span class="arithmatex">\(-\mathbf{R}[\mathbf{a}_m{-}\mathbf{a}_b]_\times\Delta t\)</span></td>
+<td><span class="arithmatex">\(-[\mathbf{R}(\mathbf{a}_m{-}\mathbf{a}_b)]_\times\Delta t\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\partial\delta\boldsymbol\theta^+/\partial\delta\boldsymbol\theta\)</span></td>
+<td><span class="arithmatex">\(\mathbf{R}^\top\{(\boldsymbol\omega_m{-}\boldsymbol\omega_b)\Delta t\}\)</span></td>
+<td><span class="arithmatex">\(\mathbf{I}\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\partial\delta\boldsymbol\theta^+/\partial\delta\boldsymbol\omega_b\)</span></td>
+<td><span class="arithmatex">\(-\mathbf{I}\Delta t\)</span></td>
+<td><span class="arithmatex">\(-\mathbf{R}\Delta t\)</span></td>
+</tr>
+<tr>
+<td>injection</td>
+<td><span class="arithmatex">\(\mathbf{q}\gets\mathbf{q}\otimes\mathbf{q}\{\hat{\delta\boldsymbol\theta}\}\)</span></td>
+<td><span class="arithmatex">\(\mathbf{q}\gets\mathbf{q}\{\hat{\delta\boldsymbol\theta}\}\otimes\mathbf{q}\)</span></td>
+</tr>
+<tr>
+<td>reset Jacobian</td>
+<td><span class="arithmatex">\(\mathbf{I}-[\tfrac12\hat{\delta\boldsymbol\theta}]_\times\)</span></td>
+<td><span class="arithmatex">\(\mathbf{I}+[\tfrac12\hat{\delta\boldsymbol\theta}]_\times\)</span></td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(\mathbf{Q}_{\delta\boldsymbol\theta}\)</span></td>
+<td><span class="arithmatex">\([\mathbf{q}]_L\tfrac12\,[\mathbf{e}]\)</span></td>
+<td><span class="arithmatex">\([\mathbf{q}]_R\tfrac12\,[\mathbf{e}]\)</span></td>
+</tr>
+</tbody>
+</table>
+<h3 id="58-kok-hol-schon-ekf-smoothing-variants">5.8 Kok-Hol-Schön EKF / smoothing variants<a class="headerlink" href="#58-kok-hol-schon-ekf-smoothing-variants" title="Permanent link">&para;</a></h3>
+<p>Quaternion-EKF and orientation-deviation ("multiplicative"/linearization-point) EKF:
+<span class="arithmatex">\(q^{nb}_t = \exp_q(\tfrac{\rho^n_t}{2})\odot\tilde q^{nb}_t\)</span> — <strong>global/left deviation</strong>, unlike
+SOLA's default local/right error [KOK <code>eq:models-oriDev</code>]. MAP smoothing:
+<span class="arithmatex">\(\min\sum\|e_{\omega,t}\|^2_{\Sigma_\omega^{-1}}+\sum(\|e_{a,t}\|^2_{\Sigma_a^{-1}}+\|e_{m,t}\|^2_{\Sigma_m^{-1}})\)</span>
+[KOK <code>eq:oriEst-oriSmoothing</code>]; standard EKF time/measurement updates [KOK ch.4].
+Discrete-time error-state KF in NED with tilt errors <span class="arithmatex">\(\psi^n\)</span> also in [SURV <code>eq_statevector</code>,
+<code>eq_disc2</code>, <code>eq_delta_anmoddisc</code>] (13-state: 3 gyro bias, 1 accel bias, 3 tilt, 3 vel, 3 pos).</p>
+<hr />
+<h2 id="6-vector-observation-attitude-determination">6. Vector-observation attitude determination<a class="headerlink" href="#6-vector-observation-attitude-determination" title="Permanent link">&para;</a></h2>
+<p>The corpus covers these only lightly; equations from [KOK §3.6] plus standard formulations
+implied by it. (TRIAD/QUEST/Davenport derivations should additionally be traced to Markley &amp;
+Crassidis / Shuster when implementing <code>determination/</code>.)</p>
+<h3 id="61-wahba-problem">6.1 Wahba problem<a class="headerlink" href="#61-wahba-problem" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[\min_{\mathbf{R}\in SO(3)}\ \tfrac12\sum_i w_i\,\|\mathbf{v}_i^n - \mathbf{R}\,\mathbf{v}_i^b\|^2\]</div>
+<p>Quaternion form used by [KOK <code>eq:models-oriAccMag</code>] with the two vector pairs (gravity, magnetic
+field):</p>
+<div class="arithmatex">\[\hat q^{nb} = \arg\min_{\|q\|=1}\ \|\bar{\hat g}^n - q\odot\bar{\hat g}^b\odot q^c\|_2^2
++ \|\bar{\hat m}^n - q\odot\bar{\hat m}^b\odot q^c\|_2^2\]</div>
+<h3 id="62-davenport-q-method-eigenvalue-form">6.2 Davenport q-method (eigenvalue form)<a class="headerlink" href="#62-davenport-q-method-eigenvalue-form" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[\hat q = \arg\max_{\|q\|=1} q^\top \mathbf{A}\, q \quad\Rightarrow\quad
+\mathbf{A}\hat q = \lambda_{\max}\hat q\]</div>
+<p>[KOK <code>eq:models-oriAccMagReform</code> — <span class="arithmatex">\(\mathbf{A}\)</span> built from quaternion left/right product
+matrices of the paired vectors; this is exactly the Davenport K-matrix construction].
+QUEST = characteristic-polynomial solution of the same eigenproblem; SVD method = direct
+solution <span class="arithmatex">\(\mathbf{R}=\mathbf{U}\,\mathrm{diag}(1,1,\det(\mathbf{U}\mathbf{V}^\top))\,\mathbf{V}^\top\)</span>
+of Wahba via <span class="arithmatex">\(\mathbf{B}=\sum w_i \mathbf{v}_i^n (\mathbf{v}_i^b)^\top = \mathbf{U}\mathbf{S}\mathbf{V}^\top\)</span>
+(standard results; not derived in the corpus).</p>
+<h3 id="63-triad-style-orthogonalized-pair-initialization">6.3 TRIAD-style orthogonalized pair (initialization)<a class="headerlink" href="#63-triad-style-orthogonalized-pair-initialization" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[\hat g^n = [0,0,1]^\top,\quad \hat g^b = \frac{y_{a,1}}{\|y_{a,1}\|},\qquad
+\hat m^n = [1,0,0]^\top,\quad \hat m^b = \hat g^b\times\Big(\frac{y_{m,1}}{\|y_{m,1}\|}\times\hat g^b\Big)\]</div>
+<p>[KOK <code>eq:models-oriAccMagVectors</code>] — the magnetometer reading is projected orthogonal to
+gravity before solving, i.e. the heading reference is decoupled from tilt. (Note KOK's <span class="arithmatex">\(\hat g^n
+= +e_3\)</span> with accelerometer measuring <span class="arithmatex">\(-R^{bn}g^n\)</span>; sign bookkeeping depends on the gravity-sign
+convention, see §7.)</p>
+<hr />
+<h2 id="7-tilt-and-heading-from-accelerometermagnetometer">7. Tilt and heading from accelerometer/magnetometer<a class="headerlink" href="#7-tilt-and-heading-from-accelerometermagnetometer" title="Permanent link">&para;</a></h2>
+<h3 id="71-accelerometer-measurement-of-gravity-quasi-static">7.1 Accelerometer measurement of gravity (quasi-static)<a class="headerlink" href="#71-accelerometer-measurement-of-gravity-quasi-static" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[\mathbf{y}_a = -\mathbf{R}^{bn}\mathbf{g}^n + \delta_a + e_a
+\qquad\text{(zero-acceleration model)}\]</div>
+<p>[KOK <code>eq:models-accMeasModelZeroAcc</code>]. In ENU with <span class="arithmatex">\(\mathbf{g}^n=[0,0,-g]^\top\)</span> a static sensor
+reads <span class="arithmatex">\(\mathbf{y}_a \approx +g\,\mathbf{R}^{bn}\hat{\mathbf{z}}\)</span>, i.e. the body-frame "up"
+direction; equivalently the predicted body gravity direction is
+<span class="arithmatex">\(\hat{\mathbf{g}}_b = \mathbf{R}(\mathbf{q})^\top\hat{\mathbf{z}}\)</span> [MATH §5].</p>
+<h3 id="72-rollpitch-from-accelerometer-ned-z-y-x">7.2 Roll/pitch from accelerometer (NED, Z-Y'-X'')<a class="headerlink" href="#72-rollpitch-from-accelerometer-ned-z-y-x" title="Permanent link">&para;</a></h3>
+<p>With <span class="arithmatex">\(f^b=[f_x,f_y,f_z]^\top\)</span> the static specific force in body axes (NED, <span class="arithmatex">\(g\)</span> down):</p>
+<div class="arithmatex">\[\phi = \mathrm{atan2}(f_y,\ f_z)\ \big(\text{tilt-error form: } \mathrm{atan2}(-f_y,-f_z)\ \text{dep. sign conv.}\big),
+\qquad
+\theta = \mathrm{atan2}\big({-f_x},\ \sqrt{f_y^2+f_z^2}\,\big)\]</div>
+<p>[SURV: roll/pitch extracted via DCM elements <span class="arithmatex">\(\phi=\mathrm{atan2}(c_{32},c_{33})\)</span>,
+<span class="arithmatex">\(\theta=\mathrm{atan2}(-c_{31},\sqrt{1-c_{31}^2})\)</span> with <span class="arithmatex">\(c_{3j}\)</span> reconstructed from the
+normalized accelerometer reading; KOK §3.6 equivalently through the gravity direction. Sign of
+<span class="arithmatex">\(f\)</span> vs <span class="arithmatex">\(g\)</span> depends on whether the accelerometer output is modeled as specific force
+(<span class="arithmatex">\(-R^{bn}g\)</span>) — qnav <code>sensors/</code> must fix the sign at the model level.]</p>
+<h3 id="73-tilt-compensated-magnetic-heading">7.3 Tilt-compensated magnetic heading<a class="headerlink" href="#73-tilt-compensated-magnetic-heading" title="Permanent link">&para;</a></h3>
+<p>De-rotate the body magnetometer reading by roll and pitch, then:</p>
+<div class="arithmatex">\[\begin{aligned}
+m_x' &amp;= m_x\cos\theta + m_y\sin\phi\sin\theta + m_z\cos\phi\sin\theta\\
+m_y' &amp;= m_y\cos\phi - m_z\sin\phi\\
+\psi_{mag} &amp;= \mathrm{atan2}(-m_y',\ m_x')\quad(\text{NED, heading from magnetic north})
+\end{aligned}\]</div>
+<p>True heading: <span class="arithmatex">\(\psi = \psi_{mag} + D\)</span> with <span class="arithmatex">\(D\)</span> the local magnetic declination. Earth-field
+model with dip (inclination) angle <span class="arithmatex">\(\delta\)</span>:
+<span class="arithmatex">\(m^n = [\cos\delta,\ 0,\ \sin\delta]^\top\)</span> (unit norm, NED-style, north/vertical components
+only) and <span class="arithmatex">\(y_m = R^{bn}m^n + e_m\)</span> [KOK <code>eq:models-localMagField</code>, <code>eq:models-magMeasModel</code>].
+[SURV treats heading via the DCM elements <span class="arithmatex">\(\psi=\mathrm{atan2}(c_{21},c_{11})\)</span>; the explicit
+tilt-compensation identity above follows from §2.6 and is the standard implementation form for
+qnav <code>heading/</code>.]</p>
+<h3 id="74-yaw-invariant-tilt-metric-qnav-metric-baseline">7.4 Yaw-invariant tilt metric (qnav metric baseline)<a class="headerlink" href="#74-yaw-invariant-tilt-metric-qnav-metric-baseline" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[\mathbf{q}_{err} = \hat{\mathbf{q}}\otimes\mathbf{q}_{gt}^{-1},\qquad
+e_\alpha = 2\arccos\Big(\min\big(1,\ \sqrt{w_{err}^2+z_{err}^2}\big)\Big)\]</div>
+<p>Pure-yaw errors give <span class="arithmatex">\(e_\alpha=0\)</span>; pure pitch by <span class="arithmatex">\(\theta\)</span> gives <span class="arithmatex">\(e_\alpha=\theta\)</span> exactly
+[MATH §2 "RIANN tilt metric"]. <strong>Note:</strong> with world-z the yaw axis this metric assumes ENU
+(z-up); in NED the yaw-invariant combination is the same (<span class="arithmatex">\(w^2+z^2\)</span>) since yaw is still about
+world z. Gravity-alignment cosine loss (bounded gradient, preferred over arccos near
+convergence): <span class="arithmatex">\(\ell_{grav} = 1-\hat{\mathbf{a}}\cdot\mathbf{R}(\hat{\mathbf{q}})^\top\hat{\mathbf{z}}\)</span>
+[MATH §5].</p>
+<hr />
+<h2 id="8-complementary-mahony-madgwick-filters">8. Complementary / Mahony / Madgwick filters<a class="headerlink" href="#8-complementary-mahony-madgwick-filters" title="Permanent link">&para;</a></h2>
+<h3 id="81-complementary-filter">8.1 Complementary filter<a class="headerlink" href="#81-complementary-filter" title="Permanent link">&para;</a></h3>
+<p>Frequency-domain split: low-pass the accelerometer/magnetometer attitude, high-pass the
+gyro-integrated attitude, combined with complementary gains summing to 1
+[KOK ch.4 "complementary filter"; SURV "Other Attitude Filters" intro]. Classical scalar form
+per tilt axis: <span class="arithmatex">\(\hat\theta = \alpha(\hat\theta + \omega\Delta t) + (1-\alpha)\,\theta_{acc}\)</span>.</p>
+<h3 id="82-mahony-filter-explicit-complementary-filter-pi-feedback">8.2 Mahony filter (explicit complementary filter, PI feedback)<a class="headerlink" href="#82-mahony-filter-explicit-complementary-filter-pi-feedback" title="Permanent link">&para;</a></h3>
+<p>Error from vector cross products (body frame) [SURV <code>eq_hjl</code> and around]:</p>
+<div class="arithmatex">\[\mathbf{e}^b = \sum_i k_i\, \hat{\mathbf{v}}_i^b \times (\hat{C}^b_{ned}\,\mathbf{v}_i^{ref}),\qquad
+\text{e.g. } \mathbf{e}_g^b = \frac{\mathbf{g}^b_{ref}}{\|\mathbf{g}^b_{ref}\|}\times\big(\hat C^b_{ned}[0,0,1]^\top\big),\quad
+\mathbf{e}_\psi^b \text{ analogous from heading reference}\]</div>
+<p>PI correction of the gyro before integration:</p>
+<div class="arithmatex">\[\boldsymbol\omega_{corr} = \boldsymbol\omega_m + k_P\,\mathbf{e}^b + k_I\!\int\mathbf{e}^b\,dt,
+\qquad \dot{\hat{\mathbf{q}}} = \tfrac12\,\hat{\mathbf{q}}\otimes\boldsymbol\omega_{corr}\]</div>
+<p>with the integral term acting as the gyro-bias estimate
+[SURV §"Mahony Filter (feedback controller, PI compensator)"]. Mahony's gravity reference also
+uses the velocity-aided form <span class="arithmatex">\(\mathbf{g}^b_{ref}=\boldsymbol\omega^b_{gyro}\times\mathbf{V}^b_{ref}-\mathbf{f}^b_{accel}\)</span>
+[SURV <code>eq_spec_force</code>].</p>
+<h3 id="83-madgwick-filter-gradient-descent">8.3 Madgwick filter (gradient descent)<a class="headerlink" href="#83-madgwick-filter-gradient-descent" title="Permanent link">&para;</a></h3>
+<p>Objective (align rotated reference <span class="arithmatex">\(d\)</span> with measurement <span class="arithmatex">\(s\)</span>) [SURV <code>eq_madg3/4</code>]:</p>
+<div class="arithmatex">\[\min_{\hat{\mathbf{q}}}\ \mathbf{f}(\hat{\mathbf{q}},\mathbf{d},\mathbf{s})
+= \hat{\mathbf{q}}^*\otimes\mathbf{d}\otimes\hat{\mathbf{q}} - \mathbf{s}\]</div>
+<p>Gradient step and fusion:</p>
+<div class="arithmatex">\[\nabla f = J^\top(\hat{\mathbf{q}})\,\mathbf{f},\qquad
+\dot{\hat{\mathbf{q}}} = \tfrac12\hat{\mathbf{q}}\otimes\boldsymbol\omega_m
+\;-\;\beta\,\frac{\nabla f}{\|\nabla f\|},\qquad
+\hat{\mathbf{q}}_t = \hat{\mathbf{q}}_{t-1} + \dot{\hat{\mathbf{q}}}_t\,\Delta t,\ \ \text{normalize}\]</div>
+<p>[SURV <code>eq_madg</code>, <code>eq_madg2</code>; gain <span class="arithmatex">\(\beta\)</span> trades gyro trust vs accel/mag trust.]</p>
+<hr />
+<h2 id="9-sensor-error-models">9. Sensor error models<a class="headerlink" href="#9-sensor-error-models" title="Permanent link">&para;</a></h2>
+<h3 id="91-gyroscope">9.1 Gyroscope<a class="headerlink" href="#91-gyroscope" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[\mathbf{y}_\omega = \boldsymbol\omega^b_{nb} + \delta^b_\omega + \mathbf{e}^b_\omega,
+\qquad \mathbf{e}_\omega\sim\mathcal{N}(0,\Sigma_\omega),\qquad
+\delta_{\omega,t+1} = \delta_{\omega,t} + e_{\delta_\omega,t}\ \text{(random walk)}\]</div>
+<p>[KOK <code>eq:models-gyrMeasModel</code>; SOLA <code>equ:gyroModel</code>
+<span class="arithmatex">\(\boldsymbol\omega_m=\boldsymbol\omega_t+\boldsymbol\omega_{bt}+\boldsymbol\omega_n\)</span>,
+<span class="arithmatex">\(\dot{\boldsymbol\omega}_{bt}=\boldsymbol\omega_w\)</span>]. Full model includes the earth rate:
+<span class="arithmatex">\(\omega^b_{ib} = R^{bn}(\omega^n_{ie}+\omega^n_{en}) + \omega^b_{nb}\)</span>,
+<span class="arithmatex">\(\|\omega_{ie}\| \approx 7.29\times10^{-5}\)</span> rad/s — negligible for MEMS, not for high-end IMUs
+[KOK ch.2; SOLA ErrorState.tex footnote with the same caution, <span class="arithmatex">\(\omega_E = 15^\circ/h\)</span>].</p>
+<h3 id="92-accelerometer">9.2 Accelerometer<a class="headerlink" href="#92-accelerometer" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[\mathbf{y}_a = \mathbf{R}^{bn}(\mathbf{a}^n_{nn}-\mathbf{g}^n) + \delta_a^b + \mathbf{e}_a^b,
+\qquad
+a^n_{ii} = a^n_{nn} + 2\,\omega^n_{ie}\times v^n + \omega^n_{ie}\times\omega^n_{ie}\times p^n\]</div>
+<p>[KOK <code>eq:models-accMeasModel</code>, <code>eq:sensors-aii-ann</code> — Coriolis (~1e-4 m/s² for human motion)
+and centrifugal (≤0.034 m/s², absorbed into local gravity) terms; SOLA equivalent
+<span class="arithmatex">\(\mathbf{a}_m=\mathbf{R}_t^\top(\mathbf{a}_t-\mathbf{g}_t)+\mathbf{a}_{bt}+\mathbf{a}_n\)</span>].</p>
+<h3 id="93-magnetometer">9.3 Magnetometer<a class="headerlink" href="#93-magnetometer" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[\mathbf{y}_m = \mathbf{R}^{bn}\,\mathbf{m}^n + \mathbf{e}_m,\qquad
+\mathbf{m}^n = [\cos\delta,\ 0,\ \sin\delta]^\top\]</div>
+<p>[KOK <code>eq:models-magMeasModel</code>, <code>eq:models-localMagField</code>]. Hard/soft-iron calibration
+(ellipsoid fit) discussed in [KOK ch.5].</p>
+<h3 id="94-allan-variance">9.4 Allan variance<a class="headerlink" href="#94-allan-variance" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[\sigma_A(T_c)=\sqrt{\tfrac12\big\langle(\bar y_{k+1}-\bar y_k)^2\big\rangle}\]</div>
+<p>white-noise region: slope −1/2 in log-log (<span class="arithmatex">\(\sigma_A = \sigma/\sqrt{n}\)</span>); bias-instability
+flattening at longer cluster times [KOK ch.2]. Continuous→discrete noise mapping for filters:
+white measurement noise → <span class="arithmatex">\(\sigma^2\Delta t^2\)</span> impulses, random-walk drivers → <span class="arithmatex">\(\sigma^2\Delta t\)</span>
+impulses [SOLA Noise.tex, §5.4 above]; datasheet units
+<span class="arithmatex">\(\sigma_{\tilde a}\,[m/s^2]\)</span>, <span class="arithmatex">\(\sigma_{\tilde\omega}\,[rad/s]\)</span>,
+<span class="arithmatex">\(\sigma_{a_w}\,[m/s^2\sqrt{s}]\)</span>, <span class="arithmatex">\(\sigma_{\omega_w}\,[rad/s\sqrt{s}]\)</span> [SOLA Noise.tex].</p>
+<h3 id="95-mounting-virtual-rotation-equivariance-data-augmentation">9.5 Mounting / virtual-rotation equivariance (data augmentation)<a class="headerlink" href="#95-mounting-virtual-rotation-equivariance-data-augmentation" title="Permanent link">&para;</a></h3>
+<div class="arithmatex">\[\mathbf{a}' = \mathbf{R}(\mathbf{q}_{rand})\mathbf{a},\quad
+\boldsymbol\omega' = \mathbf{R}(\mathbf{q}_{rand})\boldsymbol\omega,\quad
+\mathbf{q}_{gt}' = \mathbf{q}_{gt}\otimes\mathbf{q}_{rand}^{-1}\]</div>
+<p>with sensor-to-world quaternion <span class="arithmatex">\(\mathbf{q}_{sensor}=\mathbf{q}_{body}\otimes\mathbf{q}_{rand}^{-1}\)</span>
+[MATH §6]. Useful for <code>simulation/</code> and for validating frame bookkeeping.</p>
+<hr />
+<h2 id="10-rigid-body-rotational-dynamics-eulers-equations">10. Rigid-body rotational dynamics (Euler's equations)<a class="headerlink" href="#10-rigid-body-rotational-dynamics-eulers-equations" title="Permanent link">&para;</a></h2>
+<p>Body-frame angular momentum <span class="arithmatex">\(\mathbf{h}=\mathbf{I}\boldsymbol\omega\)</span>; Euler's rotational
+equations of motion:</p>
+<div class="arithmatex">\[\mathbf{I}\,\dot{\boldsymbol\omega} + \boldsymbol\omega\times(\mathbf{I}\boldsymbol\omega) = \boldsymbol\tau\]</div>
+<p>principal-axis component form:</p>
+<div class="arithmatex">\[I_1\dot\omega_1 = (I_2-I_3)\,\omega_2\omega_3 + \tau_1,\qquad
+I_2\dot\omega_2 = (I_3-I_1)\,\omega_3\omega_1 + \tau_2,\qquad
+I_3\dot\omega_3 = (I_1-I_2)\,\omega_1\omega_2 + \tau_3\]</div>
+<p>[SATD — satellite dynamics notes (attitude dynamics chapter); the kinematic side
+<span class="arithmatex">\(\dot{\mathbf{R}}=\mathbf{R}[\boldsymbol\omega]_\times\)</span>, <span class="arithmatex">\(\dot{\mathbf{q}}=\tfrac12\mathbf{q}\otimes\boldsymbol\omega\)</span>
+matches §4.1 of this catalog]. Torque-free special cases (axisymmetric body precession) and
+gravity-gradient torques are covered in [SATD] and <code>__data/Lesson2.pdf</code> (spacecraft attitude
+lecture); use them for <code>simulation/</code> truth models.</p>
+<hr />
+<h2 id="11-attitude-error-metrics">11. Attitude error metrics<a class="headerlink" href="#11-attitude-error-metrics" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>metric</th>
+<th>definition</th>
+<th>range</th>
+<th>source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Geodesic angle</td>
+<td><span class="arithmatex">\(\theta_{err} = \|\mathrm{Log}(\mathbf{q}_1^*\otimes\mathbf{q}_2)\| = 2\arccos\lvert\mathbf{q}_1^\top\mathbf{q}_2\rvert\)</span></td>
+<td><span class="arithmatex">\([0,\pi]\)</span></td>
+<td>[SOLA <span class="arithmatex">\(\ominus\)</span> operator]; abs() enforces sign invariance [MATH §1.6]</td>
+</tr>
+<tr>
+<td>DCM geodesic</td>
+<td><span class="arithmatex">\(\theta_{err}=\arccos\big(\tfrac{\mathrm{Tr}(\mathbf{R}_1^\top\mathbf{R}_2)-1}{2}\big)\)</span></td>
+<td><span class="arithmatex">\([0,\pi]\)</span></td>
+<td>[SOLA Log map; HASH <code>eq:OVERVIEW_att_ang_alpha</code>]</td>
+</tr>
+<tr>
+<td>Normalized Euclidean</td>
+<td><span class="arithmatex">\(\|\tilde{\mathbf{R}}\|_I=\tfrac14\mathrm{Tr}(\mathbf{I}-\tilde{\mathbf{R}})=\sin^2(\theta_{err}/2)=1-q_{w,err}^2\)</span></td>
+<td><span class="arithmatex">\([0,1]\)</span></td>
+<td>[HASH <code>eq:OVERVIEW_SO3_Ecul_Dist</code>, Lemmas 2,6]</td>
+</tr>
+<tr>
+<td>Quaternion inner-product distance</td>
+<td><span class="arithmatex">\(d=1-\lvert\mathbf{q}_1^\top\mathbf{q}_2\rvert\)</span></td>
+<td><span class="arithmatex">\([0,1]\)</span></td>
+<td>sign-invariant per [MATH §1.6]</td>
+</tr>
+<tr>
+<td>Yaw-invariant tilt error</td>
+<td><span class="arithmatex">\(e_\alpha = 2\arccos(\min(1,\sqrt{w_{err}^2+z_{err}^2}))\)</span></td>
+<td><span class="arithmatex">\([0,\pi]\)</span></td>
+<td>[MATH §2]</td>
+</tr>
+<tr>
+<td>Gravity cosine loss</td>
+<td><span class="arithmatex">\(1-\hat{\mathbf a}\cdot\mathbf{R}(\hat{\mathbf q})^\top\hat{\mathbf z}\approx\theta^2/2\)</span></td>
+<td><span class="arithmatex">\([0,2]\)</span></td>
+<td>[MATH §5]</td>
+</tr>
+</tbody>
+</table>
+<p>All quaternion metrics must satisfy <span class="arithmatex">\(d(\mathbf{q}_1,\mathbf{q}_2)=d(\mathbf{q}_1,-\mathbf{q}_2)\)</span>
+(double cover) [MATH §1.6].</p>
+<hr />
+<h2 id="known-inter-source-discrepancies-summary">Known inter-source discrepancies (summary)<a class="headerlink" href="#known-inter-source-discrepancies-summary" title="Permanent link">&para;</a></h2>
+<ol>
+<li><strong>Axis-angle quaternion sign</strong> — KOK uses <span class="arithmatex">\(q=[\cos\frac\alpha2,\,-n\sin\frac\alpha2]\)</span> and
+   Rodrigues with <span class="arithmatex">\(-\sin\alpha[n\times]\)</span>; SOLA/MATH/HASH/SURV/PARW use <span class="arithmatex">\(+\)</span>. Same physics,
+   opposite angle-sign bookkeeping. <strong>qnav: positive sign (SOLA form).</strong></li>
+<li><strong>Error-state side</strong> — SOLA default: local/right error <span class="arithmatex">\(\mathbf{q}_t=\mathbf{q}\otimes\delta\mathbf{q}\)</span>;
+   KOK orientation deviation and SOLA ESKF_global: global/left <span class="arithmatex">\(\,q=\exp(\rho/2)\odot\tilde q\)</span>.
+   Both fully documented in §5.7; <strong>qnav <code>filters/eskf</code> exposes both, default local.</strong></li>
+<li><strong>Quaternion log formula</strong> — KOK <code>arccos</code> form vs SOLA <code>atan2</code> form. <strong>qnav: atan2.</strong></li>
+<li><strong>Euler-angle direction</strong> — HASH composes body→inertial <span class="arithmatex">\(R_zR_yR_x\)</span>; SURV/KOK write the
+   nav→body (transposed) matrix with the same Z-Y-X sequence. PARW additionally analyzes the
+   1-2-3 (XYZ) sequence. <strong>qnav: intrinsic Z-Y'-X'' producing <span class="arithmatex">\(\mathbf{R}_{nb}\)</span> (body→nav).</strong></li>
+<li><strong>Gravity sign / frame</strong> — MATH baseline is ENU (<span class="arithmatex">\(+z\)</span> up, <span class="arithmatex">\(\hat g^n=+\hat z\)</span> as "up");
+   SURV is NED (z down); KOK uses a local n-frame with either choice noted. <strong>qnav: NED and ENU
+   both first-class; gravity vector sign is owned by <code>frames/</code>, never hard-coded in filters.</strong></li>
+<li><strong>Rotation-rate frame</strong> — gyro rates are body/local in all sources; SOLA additionally gives
+   the global-rate forms (<span class="arithmatex">\(\dot q=\frac12\omega_G\otimes q\)</span>). PARW writes both and is the only
+   source using the world-rate form as primary in places — take care when porting.</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../heading/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Heading and Tilt">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Heading and Tilt
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../../design/api_principles/" class="md-footer__link md-footer__link--next" aria-label="Next: API Principles">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                API Principles
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/armanasq/qnav" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.expand", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.tabs.link", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
