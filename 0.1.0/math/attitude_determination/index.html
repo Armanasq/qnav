@@ -798,6 +798,28 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#flae" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FLAE
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#closed-form-accelerometermagnetometer-solvers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Closed-form accelerometer/magnetometer solvers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#algorithm-selection" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1450,6 +1472,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../api/geomag/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    geomag
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../api/simulation/" class="md-nav__link">
         
   
@@ -1621,6 +1671,28 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#flae" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FLAE
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#closed-form-accelerometermagnetometer-solvers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Closed-form accelerometer/magnetometer solvers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#algorithm-selection" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1721,6 +1793,26 @@ L(\mathbf{R}) = \lambda_{\text{total}} - \text{tr}(\mathbf{R}^\top \mathbf{B})
 \]</div>
 <p>(where <span class="arithmatex">\([\mathbf{v}]_L, [\mathbf{v}]_R \in \mathbb{R}^{4\times4}\)</span> are the left/right quaternion multiplication matrices of the pure quaternion <span class="arithmatex">\([0, \mathbf{v}]\)</span>). The optimal quaternion is the dominant eigenvector of <span class="arithmatex">\(\mathbf{M}\)</span>.</p>
 <p>OLEQ is useful for overdetermined systems with many observations of the same type (e.g. star trackers with many star pairs) and is easily extended to include prior information.</p>
+<h2 id="flae">FLAE<a class="headerlink" href="#flae" title="Permanent link">&para;</a></h2>
+<p>FLAE (Fast Linear Attitude Estimator) recasts Davenport's eigenproblem as a <strong>quartic characteristic polynomial</strong>. Because the 4×4 data matrix <span class="arithmatex">\(\mathbf{W}\)</span> is traceless, its characteristic polynomial has no cubic term:</p>
+<div class="arithmatex">\[
+\lambda^4 + \tau_1\lambda^2 + \tau_2\lambda + \tau_3 = 0
+\]</div>
+<p>with coefficients computed directly from the 3×3 matrix <span class="arithmatex">\(\mathbf{H} = \sum w_i \hat{\mathbf{b}}_i \hat{\mathbf{r}}_i^\top\)</span>:</p>
+<div class="arithmatex">\[
+\tau_1 = -2\,\text{tr}(\mathbf{H}\mathbf{H}^\top), \quad \tau_2 = -8\det\mathbf{H}, \quad \tau_3 = \det\mathbf{W}
+\]</div>
+<p>The optimal quaternion is the null vector of <span class="arithmatex">\(\mathbf{W} - \lambda_{\max}\mathbf{I}\)</span>.</p>
+<p>qnav deliberately departs from the original's closed-form (Ferrari) quartic solution: the resolvent cubic is numerically fragile exactly when the data is <em>clean</em> (near-equal roots produce NaN). qnav finds <span class="arithmatex">\(\lambda_{\max}\)</span> from companion-matrix roots followed by two Newton polish steps, and extracts the null vector by SVD — uniformly stable, identical optimum. The test suite verifies FLAE agrees with QUEST to <span class="arithmatex">\(10^{-10}\)</span> degrees under noise.</p>
+<h2 id="closed-form-accelerometermagnetometer-solvers">Closed-form accelerometer/magnetometer solvers<a class="headerlink" href="#closed-form-accelerometermagnetometer-solvers" title="Permanent link">&para;</a></h2>
+<p>For the specific gravity + magnetic-field pair in NED, the references have special structure: gravity is purely vertical, and the magnetic reference can be written <span class="arithmatex">\([m_N, 0, m_D]\)</span>. Crucially, the vertical fraction is recoverable <strong>from the measurements themselves</strong>:</p>
+<div class="arithmatex">\[
+m_D = \hat{\mathbf{g}}_b \cdot \hat{\mathbf{m}}_b, \quad m_N = \sqrt{1 - m_D^2}
+\]</div>
+<p>(the dot product of two vectors is frame-invariant). This means <em>no a-priori magnetic dip angle is required</em> — the algorithms self-calibrate their reference. Three solvers exploit this:</p>
+<p><strong>SAAM</strong> — one square root, a handful of multiplications, a fully closed-form quaternion. Solves the same optimality conditions as QUEST for this two-vector problem at ~10× the speed. The default choice for initialization at scale (it is fully vectorized over batches in qnav).</p>
+<p><strong>FAMC</strong> — the same problem via an analytic three-pivot elimination of the Davenport system. Numerically equivalent to SAAM; its intermediate pivots degrade detectably when the two observations approach collinearity, which makes it the variant to prefer when you want degeneracy diagnostics.</p>
+<p><strong>FQA</strong> — a <em>factored</em> solution <span class="arithmatex">\(q = q_{\text{yaw}} \otimes q_{\text{pitch}} \otimes q_{\text{roll}}\)</span> computed with half-angle square-root identities (no trig). Its distinguishing property is structural: roll and pitch come entirely from the accelerometer, so <strong>magnetic disturbances provably cannot affect tilt</strong> — a property the optimal solvers (which mix all observations) do not have. The cost: a singularity at pitch = ±90° (handled with a warning + deterministic recovery) and slight sub-optimality under noise.</p>
 <h2 id="algorithm-selection">Algorithm selection<a class="headerlink" href="#algorithm-selection" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -1768,9 +1860,37 @@ L(\mathbf{R}) = \lambda_{\text{total}} - \text{tr}(\mathbf{R}^\top \mathbf{B})
 <td>Accumulative</td>
 <td>Good for many observations</td>
 </tr>
+<tr>
+<td>FLAE</td>
+<td>≥ 2</td>
+<td>Fast</td>
+<td>Companion + Newton</td>
+<td>Fastest optimal N-vector</td>
+</tr>
+<tr>
+<td>SAAM</td>
+<td>acc+mag</td>
+<td>Fastest closed-form</td>
+<td>Needs valid gravity</td>
+<td>Batch-vectorized</td>
+</tr>
+<tr>
+<td>FAMC</td>
+<td>acc+mag</td>
+<td>Fast closed-form</td>
+<td>Pivot diagnostics</td>
+<td>Same optimum as SAAM</td>
+</tr>
+<tr>
+<td>FQA</td>
+<td>acc+mag</td>
+<td>Fast</td>
+<td>Tilt immune to mag</td>
+<td>Singular at pitch ±90°</td>
+</tr>
 </tbody>
 </table>
-<p>For the standard AHRS use case (gravity + magnetic field), QUEST is the recommended choice. For initialization or batch processing, SVD is safer.</p>
+<p>For the standard AHRS use case (gravity + magnetic field), QUEST or SAAM are the recommended choices. For initialization or batch processing, SVD is safest; in magnetically hostile environments, FQA protects tilt.</p>
 <p><em>Source: attitudesurvey.tex §Wahba, §QUEST, §Davenport; Kok/Hol/Schön §3.6 (Davenport K reformulation); Markley &amp; Crassidis ch.5–6.</em></p>
 
 

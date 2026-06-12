@@ -876,6 +876,61 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#aquafilter-algebraic-quaternion-complementary-filter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AquaFilter (algebraic quaternion complementary filter)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fouratifilter-levenberg-marquardt-observer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FouratiFilter (Levenberg-Marquardt observer)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fastkalmanfilter-linear-quaternion-kf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FastKalmanFilter (linear quaternion KF)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#roleqfilter-recursive-linear-quaternion-estimator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RoleqFilter (recursive linear quaternion estimator)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ukfattitude-unscented-filter-on-so3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UkfAttitude (unscented filter on SO(3))
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#filter-comparison" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1500,6 +1555,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../api/geomag/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    geomag
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../api/simulation/" class="md-nav__link">
         
   
@@ -1721,6 +1804,61 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#aquafilter-algebraic-quaternion-complementary-filter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AquaFilter (algebraic quaternion complementary filter)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fouratifilter-levenberg-marquardt-observer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FouratiFilter (Levenberg-Marquardt observer)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fastkalmanfilter-linear-quaternion-kf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FastKalmanFilter (linear quaternion KF)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#roleqfilter-recursive-linear-quaternion-estimator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RoleqFilter (recursive linear quaternion estimator)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ukfattitude-unscented-filter-on-so3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UkfAttitude (unscented filter on SO(3))
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#filter-comparison" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1912,6 +2050,41 @@
 </table>
 <p>The Allan variance tools in <code>qnav.sensors.allan</code> identify these parameters directly from recorded gyro data.</p>
 <hr />
+<h2 id="aquafilter-algebraic-quaternion-complementary-filter">AquaFilter (algebraic quaternion complementary filter)<a class="headerlink" href="#aquafilter-algebraic-quaternion-complementary-filter" title="Permanent link">&para;</a></h2>
+<p>AQUA's contribution is <strong>structural decoupling</strong>: the accelerometer correction is a zero-yaw (tilt-only) delta quaternion, the magnetometer correction is a yaw-only delta. Both are closed-form shortest-arc constructions computed in the navigation frame:</p>
+<div class="arithmatex">\[
+\Delta q_{\text{acc}} = \begin{bmatrix} \sqrt{\tfrac{1+g_z}{2}} \\ g_y / \sqrt{2(1+g_z)} \\ -g_x / \sqrt{2(1+g_z)} \\ 0 \end{bmatrix}, \qquad
+\Delta q_{\text{mag}} = f(\ell_x, \ell_y) \text{ — yaw-only, from the horizontal field}
+\]</div>
+<p>where <span class="arithmatex">\(\mathbf{g} = R(\bar{q})(-\hat{\mathbf{f}})\)</span> is the measured gravity direction expressed in nav axes and <span class="arithmatex">\(\boldsymbol{\ell}\)</span> the de-tilted field. A magnetic disturbance can corrupt heading but <strong>cannot touch roll/pitch</strong> — by construction, not by tuning. Each delta is scaled toward identity (LERP for small deltas, SLERP for large) with gains α, β; an optional adaptive gate suspends accelerometer trust when <span class="arithmatex">\(|\,\|\mathbf{f}\| - g\,|\)</span> indicates a maneuver.</p>
+<h2 id="fouratifilter-levenberg-marquardt-observer">FouratiFilter (Levenberg-Marquardt observer)<a class="headerlink" href="#fouratifilter-levenberg-marquardt-observer" title="Permanent link">&para;</a></h2>
+<p>Corrects gyro integration with one damped Gauss-Newton step on the stacked gravity/magnetic alignment residual. The analytic Jacobian of the predicted body-frame directions with respect to a right (body-side) perturbation is <span class="arithmatex">\(2[\hat{\mathbf{y}}]_\times\)</span> per observation, so:</p>
+<div class="arithmatex">\[
+\boldsymbol{\varepsilon} = (\mathbf{X}^\top\mathbf{X} + \lambda\mathbf{I}_3)^{-1}\mathbf{X}^\top(\mathbf{y} - \hat{\mathbf{y}}), \qquad
+q \leftarrow q \otimes [1, k\,dt\,\boldsymbol{\varepsilon}]
+\]</div>
+<p>The LM step scales the correction per error axis by its observability — faster transients than fixed-step gradient methods when one reference vector is nearly parallel to the error.</p>
+<div class="admonition note">
+<p class="admonition-title">Deviation from the circulating transcription</p>
+<p>The widely-copied formulation multiplies the correction into <span class="arithmatex">\(\dot{q}\)</span>, which makes corrections vanish whenever ω ≈ 0 — a stationary platform never corrects. qnav applies the LM step to the state, preserving the published observer's intent at all rates. This is intentional and covered by a static-convergence test.</p>
+</div>
+<h2 id="fastkalmanfilter-linear-quaternion-kf">FastKalmanFilter (linear quaternion KF)<a class="headerlink" href="#fastkalmanfilter-linear-quaternion-kf" title="Permanent link">&para;</a></h2>
+<p>A Kalman filter whose state is the quaternion itself — valid because both models are exactly linear in q: the process is the first-order transition <span class="arithmatex">\(\Phi = \mathbf{I}_4 + \tfrac{1}{2}\Omega(\omega)dt\)</span> with noise mapped through <span class="arithmatex">\(\Xi(q) = \tfrac{1}{2}[q]_L[:, 1{:}]\)</span>, and the measurement is a <strong>full closed-form attitude observation</strong> (qnav uses its SAAM solver) with covariance <span class="arithmatex">\(J\Sigma_{am}J^\top\)</span> from the numerically evaluated measurement Jacobian. The double-cover sign of each measurement is resolved against the prediction. Cheapest covariance-bearing filter; no bias state.</p>
+<h2 id="roleqfilter-recursive-linear-quaternion-estimator">RoleqFilter (recursive linear quaternion estimator)<a class="headerlink" href="#roleqfilter-recursive-linear-quaternion-estimator" title="Permanent link">&para;</a></h2>
+<p>Each observation pair yields a symmetric involution <span class="arithmatex">\(W = -L([0,\mathbf{v}_r])\,R([0,\mathbf{v}_b])\)</span> satisfying <span class="arithmatex">\(Wq = q\)</span> exactly for the true attitude (derivation: right-multiply the alignment constraint by <span class="arithmatex">\([0,\mathbf{v}_b]\)</span>). One fixed-point iteration of the projector average per sample, seeded by gyro propagation:</p>
+<div class="arithmatex">\[
+q \leftarrow \text{normalize}\!\left(\tfrac{1}{2}\bigl(\mathbf{I}_4 + \textstyle\sum_i w_i W_i\bigr)\, q_{\text{gyro}}\right)
+\]</div>
+<p>Converges to the batch OLEQ optimum while tracking. No tuning parameters beyond the observation weights.</p>
+<h2 id="ukfattitude-unscented-filter-on-so3">UkfAttitude (unscented filter on SO(3))<a class="headerlink" href="#ukfattitude-unscented-filter-on-so3" title="Permanent link">&para;</a></h2>
+<p>The textbook UKF cannot be applied to quaternions: additive sigma points leave the unit sphere and their barycentric mean is not a rotation average. qnav's formulation (USQUE-style) runs the unscented transform on the <strong>3D right-tangent error</strong>:</p>
+<ul>
+<li>sigma attitudes <span class="arithmatex">\(q_i = \hat{q} \otimes \text{Exp}(\delta\chi_i)\)</span> from the scaled Cholesky columns of P;</li>
+<li>propagation through the exact gyro exponential map; the predicted mean is the <strong>Markley eigenvector mean</strong> (not a normalized arithmetic mean), covariance rebuilt from <span class="arithmatex">\(\text{Log}(\bar{q}^{-1} \otimes q_i)\)</span>;</li>
+<li>direction measurements mapped through the <strong>exact</strong> measurement function — no Jacobian linearization anywhere.</li>
+</ul>
+<p>P's spectrum is clamped to <span class="arithmatex">\([10^{-14}, (\pi/2)^2]\)</span>: the upper clamp keeps sigma tangents inside the injectivity radius of Exp, the lower keeps Cholesky alive. The honest trade against the ESKF: ~7× per-step cost, no linearization error — decisive when initial uncertainty exceeds ~20° (the test suite verifies recovery from a 115° initial error that breaks ESKF linearization).</p>
+<hr />
 <h2 id="filter-comparison">Filter comparison<a class="headerlink" href="#filter-comparison" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -1920,8 +2093,13 @@
 <th style="text-align: center;">Complementary</th>
 <th style="text-align: center;">Mahony</th>
 <th style="text-align: center;">Madgwick</th>
+<th style="text-align: center;">AQUA</th>
+<th style="text-align: center;">Fourati</th>
+<th style="text-align: center;">ROLEQ</th>
+<th style="text-align: center;">FKF</th>
 <th style="text-align: center;">QuaternionEkf</th>
 <th style="text-align: center;">ESKF</th>
+<th style="text-align: center;">UKF</th>
 </tr>
 </thead>
 <tbody>
@@ -1931,15 +2109,25 @@
 <td style="text-align: center;">Integral</td>
 <td style="text-align: center;">—</td>
 <td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
 <td style="text-align: center;">✓ statistical</td>
+<td style="text-align: center;">—</td>
 </tr>
 <tr>
 <td>Uncertainty (P)</td>
 <td style="text-align: center;">—</td>
 <td style="text-align: center;">—</td>
 <td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">✓ 4×4</td>
 <td style="text-align: center;">✓ total-state</td>
 <td style="text-align: center;">✓ error-state</td>
+<td style="text-align: center;">✓ tangent</td>
 </tr>
 <tr>
 <td>NEES-consistent P</td>
@@ -1947,23 +2135,51 @@
 <td style="text-align: center;">—</td>
 <td style="text-align: center;">—</td>
 <td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
 <td style="text-align: center;">✓</td>
+<td style="text-align: center;">—</td>
 </tr>
 <tr>
-<td>Real-time @ 1 kHz</td>
+<td>Tilt immune to mag</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">✓</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+</tr>
+<tr>
+<td>Large-error recovery</td>
 <td style="text-align: center;">✓</td>
 <td style="text-align: center;">✓</td>
 <td style="text-align: center;">✓</td>
 <td style="text-align: center;">✓</td>
+<td style="text-align: center;">✓</td>
+<td style="text-align: center;">✓</td>
+<td style="text-align: center;">✓</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
 <td style="text-align: center;">✓</td>
 </tr>
 <tr>
 <td>Parameters</td>
-<td style="text-align: center;">1 (gain)</td>
-<td style="text-align: center;">2 (kp, ki)</td>
-<td style="text-align: center;">1 (β)</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">2–3</td>
+<td style="text-align: center;">1–2</td>
+<td style="text-align: center;">weights</td>
+<td style="text-align: center;">3</td>
 <td style="text-align: center;">2</td>
 <td style="text-align: center;">2 (σg, σbw)</td>
+<td style="text-align: center;">1–4</td>
 </tr>
 </tbody>
 </table>

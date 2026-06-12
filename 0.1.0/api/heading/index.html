@@ -1491,6 +1491,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../geomag/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    geomag
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../simulation/" class="md-nav__link">
         
   
@@ -2385,10 +2413,10 @@ are versioned, licensed datasets with expiry dates). It provides:</p>
 </span><span id="__span-0-33"><a id="__codelineno-0-33" name="__codelineno-0-33"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 </span><span id="__span-0-34"><a id="__codelineno-0-34" name="__codelineno-0-34"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Local field vector from (D, I, B). Radians; intensity in caller&#39;s units.&quot;&quot;&quot;</span>
 </span><span id="__span-0-35"><a id="__codelineno-0-35" name="__codelineno-0-35"></a>    <span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">declination</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
-</span><span id="__span-0-36"><a id="__codelineno-0-36" name="__codelineno-0-36"></a>    <span class="n">I</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">inclination</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+</span><span id="__span-0-36"><a id="__codelineno-0-36" name="__codelineno-0-36"></a>    <span class="n">inc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">inclination</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
 </span><span id="__span-0-37"><a id="__codelineno-0-37" name="__codelineno-0-37"></a>    <span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">intensity</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
 </span><span id="__span-0-38"><a id="__codelineno-0-38" name="__codelineno-0-38"></a>    <span class="n">m_ned</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span>
-</span><span id="__span-0-39"><a id="__codelineno-0-39" name="__codelineno-0-39"></a>        <span class="p">[</span><span class="n">B</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">I</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">D</span><span class="p">),</span> <span class="n">B</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">I</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">D</span><span class="p">),</span> <span class="n">B</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">I</span><span class="p">)],</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span>
+</span><span id="__span-0-39"><a id="__codelineno-0-39" name="__codelineno-0-39"></a>        <span class="p">[</span><span class="n">B</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">inc</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">D</span><span class="p">),</span> <span class="n">B</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">inc</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">D</span><span class="p">),</span> <span class="n">B</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">inc</span><span class="p">)],</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span>
 </span><span id="__span-0-40"><a id="__codelineno-0-40" name="__codelineno-0-40"></a>    <span class="p">)</span>
 </span><span id="__span-0-41"><a id="__codelineno-0-41" name="__codelineno-0-41"></a>    <span class="k">if</span> <span class="n">frame</span> <span class="o">==</span> <span class="s2">&quot;NED&quot;</span><span class="p">:</span>
 </span><span id="__span-0-42"><a id="__codelineno-0-42" name="__codelineno-0-42"></a>        <span class="k">return</span> <span class="n">m_ned</span>
@@ -2438,8 +2466,8 @@ are versioned, licensed datasets with expiry dates). It provides:</p>
 </span><span id="__span-0-54"><a id="__codelineno-0-54" name="__codelineno-0-54"></a>        <span class="k">raise</span> <span class="n">ConventionError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;frame must be &#39;NED&#39; or &#39;ENU&#39;, got </span><span class="si">{</span><span class="n">frame</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span>
 </span><span id="__span-0-55"><a id="__codelineno-0-55" name="__codelineno-0-55"></a>    <span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
 </span><span id="__span-0-56"><a id="__codelineno-0-56" name="__codelineno-0-56"></a>    <span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">m</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
-</span><span id="__span-0-57"><a id="__codelineno-0-57" name="__codelineno-0-57"></a>    <span class="n">I</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">hypot</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">m</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">1</span><span class="p">]))</span>
-</span><span id="__span-0-58"><a id="__codelineno-0-58" name="__codelineno-0-58"></a>    <span class="k">return</span> <span class="n">D</span><span class="p">,</span> <span class="n">I</span><span class="p">,</span> <span class="n">B</span>
+</span><span id="__span-0-57"><a id="__codelineno-0-57" name="__codelineno-0-57"></a>    <span class="n">inc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">hypot</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">m</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">1</span><span class="p">]))</span>
+</span><span id="__span-0-58"><a id="__codelineno-0-58" name="__codelineno-0-58"></a>    <span class="k">return</span> <span class="n">D</span><span class="p">,</span> <span class="n">inc</span><span class="p">,</span> <span class="n">B</span>
 </span></code></pre></div></td></tr></table></div>
             </details>
     </div>

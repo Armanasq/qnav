@@ -1428,6 +1428,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../api/geomag/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    geomag
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../api/simulation/" class="md-nav__link">
         
   
@@ -1653,15 +1681,28 @@ m_y^h = m_y \cos\phi - m_z \sin\phi
 \psi_{\text{true}} = \psi_{\text{mag}} + D
 \]</div>
 <p>Declination varies by location (±30° in extreme cases) and changes slowly over time (~0.1°/year). For navigation, the local declination must be applied. qnav provides <code>apply_declination</code> and <code>remove_declination</code> to convert between magnetic and true headings.</p>
-<p>For precise work, use the World Magnetic Model (WMM) or IGRF to get <span class="arithmatex">\(D\)</span> at your location. qnav's <code>dipole_field</code> provides a simple dipole model for simulation:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">qnav.heading.magnetic_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">field_from_elements</span><span class="p">,</span> <span class="n">dipole_field</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="c1"># Field from IGRF-style elements: declination, inclination, magnitude</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="n">M_NED</span> <span class="o">=</span> <span class="n">field_from_elements</span><span class="p">(</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="n">declination</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="o">-</span><span class="mf">3.0</span><span class="p">),</span>      <span class="c1"># 3° west</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="n">inclination</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="mf">67.0</span><span class="p">),</span>      <span class="c1"># 67° dip (UK typical)</span>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="n">magnitude</span><span class="o">=</span><span class="mf">50e-6</span><span class="p">,</span>                   <span class="c1"># ~50 µT</span>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="p">)</span>
+<p>For precise work, qnav ships a full <strong>World Magnetic Model</strong> implementation (<code>qnav.geomag</code>): degree-12 spherical-harmonic synthesis with the WMM2025 coefficients, geodetic→geocentric conversion on the WGS-84 ellipsoid, Schmidt semi-normalized Legendre recursion, and linear secular variation. It is validated against the official NOAA/NCEI test values to &lt; 0.1 nT per component:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">qnav.geomag</span><span class="w"> </span><span class="kn">import</span> <span class="n">wmm_field</span><span class="p">,</span> <span class="n">wmm_elements</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="n">est</span> <span class="o">=</span> <span class="n">wmm_field</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="mf">48.1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="mf">11.6</span><span class="p">),</span> <span class="n">h</span><span class="o">=</span><span class="mf">520.0</span><span class="p">,</span> <span class="n">year</span><span class="o">=</span><span class="mf">2026.4</span><span class="p">)</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="n">est</span><span class="o">.</span><span class="n">ned</span>           <span class="c1"># field vector [X, Y, Z] in NED, Tesla</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="n">est</span><span class="o">.</span><span class="n">declination</span>   <span class="c1"># D [rad], positive east — feed apply_declination</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="n">est</span><span class="o">.</span><span class="n">inclination</span>   <span class="c1"># I [rad], positive down — feed the dip disturbance gate</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="n">est</span><span class="o">.</span><span class="n">ned_sv</span>        <span class="c1"># secular variation, T/year</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="c1"># Or directly in the form the heading stack consumes:</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="n">d</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">f</span> <span class="o">=</span> <span class="n">wmm_elements</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="mf">48.1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="mf">11.6</span><span class="p">),</span> <span class="mf">520.0</span><span class="p">,</span> <span class="mf">2026.4</span><span class="p">)</span>
+</span></code></pre></div>
+<p>For quick simulation work without geographic fidelity, <code>dipole_field</code> provides a simple dipole model:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">qnav.heading.magnetic_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">field_from_elements</span><span class="p">,</span> <span class="n">dipole_field</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="c1"># Field from IGRF-style elements: declination, inclination, magnitude</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="n">M_NED</span> <span class="o">=</span> <span class="n">field_from_elements</span><span class="p">(</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="n">declination</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="o">-</span><span class="mf">3.0</span><span class="p">),</span>      <span class="c1"># 3° west</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="n">inclination</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="mf">67.0</span><span class="p">),</span>      <span class="c1"># 67° dip (UK typical)</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    <span class="n">magnitude</span><span class="o">=</span><span class="mf">50e-6</span><span class="p">,</span>                   <span class="c1"># ~50 µT</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="p">)</span>
 </span></code></pre></div>
 <h2 id="heading-conventions-magnetic-heading-vs-yaw">Heading conventions: magnetic heading vs yaw<a class="headerlink" href="#heading-conventions-magnetic-heading-vs-yaw" title="Permanent link">&para;</a></h2>
 <p>These are different things and must not be interchanged:</p>
@@ -1713,18 +1754,18 @@ m_y^h = m_y \cos\phi - m_z \sin\phi
 \left|\arcsin\!\left(\frac{m_z^b}{\|\mathbf{m}^b\|}\right) - I\right| &lt; \alpha_{\text{dip}}
 \]</div>
 <p>A reading that passes both gates is trustworthy for a heading update. A reading that fails either should be excluded — do not fuse it, do not set it to zero, simply skip the magnetometer update for this timestep.</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">qnav.heading.disturbance</span><span class="w"> </span><span class="kn">import</span> <span class="n">is_field_trustworthy</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="k">if</span> <span class="n">is_field_trustworthy</span><span class="p">(</span><span class="n">m_body</span><span class="p">,</span> <span class="n">m_nav_reference</span><span class="p">,</span> <span class="n">mag_tol</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">dip_tol</span><span class="o">=</span><span class="mf">0.15</span><span class="p">):</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="n">f</span><span class="o">.</span><span class="n">update_magnetometer</span><span class="p">(</span><span class="n">M_NAV</span><span class="p">,</span> <span class="n">m_body</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">0.02</span><span class="p">)</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="c1"># else: skip the update, let the gyro propagate</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">qnav.heading.disturbance</span><span class="w"> </span><span class="kn">import</span> <span class="n">is_field_trustworthy</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="k">if</span> <span class="n">is_field_trustworthy</span><span class="p">(</span><span class="n">m_body</span><span class="p">,</span> <span class="n">m_nav_reference</span><span class="p">,</span> <span class="n">mag_tol</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">dip_tol</span><span class="o">=</span><span class="mf">0.15</span><span class="p">):</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="n">f</span><span class="o">.</span><span class="n">update_magnetometer</span><span class="p">(</span><span class="n">M_NAV</span><span class="p">,</span> <span class="n">m_body</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">0.02</span><span class="p">)</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="c1"># else: skip the update, let the gyro propagate</span>
 </span></code></pre></div>
 <p>The <code>HeadingMonitor</code> class accumulates statistics on disturbance frequency:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">qnav.heading.disturbance</span><span class="w"> </span><span class="kn">import</span> <span class="n">HeadingMonitor</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">monitor</span> <span class="o">=</span> <span class="n">HeadingMonitor</span><span class="p">(</span><span class="n">m_nav</span><span class="o">=</span><span class="n">M_NAV</span><span class="p">)</span>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="k">for</span> <span class="n">m_body</span> <span class="ow">in</span> <span class="n">mag_stream</span><span class="p">:</span>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="n">monitor</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">m_body</span><span class="p">)</span>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;disturbance fraction: </span><span class="si">{</span><span class="n">monitor</span><span class="o">.</span><span class="n">disturbance_fraction</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">qnav.heading.disturbance</span><span class="w"> </span><span class="kn">import</span> <span class="n">HeadingMonitor</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="n">monitor</span> <span class="o">=</span> <span class="n">HeadingMonitor</span><span class="p">(</span><span class="n">m_nav</span><span class="o">=</span><span class="n">M_NAV</span><span class="p">)</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="k">for</span> <span class="n">m_body</span> <span class="ow">in</span> <span class="n">mag_stream</span><span class="p">:</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    <span class="n">monitor</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">m_body</span><span class="p">)</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;disturbance fraction: </span><span class="si">{</span><span class="n">monitor</span><span class="o">.</span><span class="n">disturbance_fraction</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </span></code></pre></div>
 <h2 id="heading-uncertainty">Heading uncertainty<a class="headerlink" href="#heading-uncertainty" title="Permanent link">&para;</a></h2>
 <p>The heading variance from tilt-compensated compass:</p>

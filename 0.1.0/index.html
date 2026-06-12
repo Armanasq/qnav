@@ -1390,6 +1390,34 @@
   
   
     <li class="md-nav__item">
+      <a href="api/geomag/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    geomag
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="api/simulation/" class="md-nav__link">
         
   
@@ -1565,12 +1593,12 @@
 </li>
 <li>
 <p><strong>Attitude determination</strong></p>
-<p>Wahba problem (1965) formulation, TRIAD, Davenport q-method, QUEST Newton solver, SVD method, OLEQ. All share the same attitude-profile-matrix interface; algorithm selection depends on accuracy, speed, and degeneracy requirements.</p>
+<p>Wahba problem (1965) formulation, TRIAD, Davenport q-method, QUEST, SVD, OLEQ, FLAE (quartic characteristic polynomial), plus closed-form accelerometer/magnetometer solvers — SAAM, FAMC, FQA — that need no eigendecomposition and no a-priori dip angle.</p>
 <p><a href="math/attitude_determination/">:octicons-arrow-right-24: Determination</a></p>
 </li>
 <li>
 <p><strong>Filtering</strong></p>
-<p>Complementary, Mahony (PI feedback), Madgwick (gradient descent), quaternion EKF, and the error-state Kalman filter (ESKF). The ESKF is the only filter with a statistically-tested covariance: NEES bounds are verified by Monte-Carlo in the test suite.</p>
+<p>Ten estimators spanning the complexity spectrum: complementary, Mahony, Madgwick, AQUA (decoupled tilt/yaw corrections), Fourati (LM observer), ROLEQ, Fast KF, quaternion EKF, the error-state Kalman filter (NEES-verified covariance), and an unscented filter on the SO(3) tangent for large-uncertainty regimes.</p>
 <p><a href="math/filtering/">:octicons-arrow-right-24: Filters</a></p>
 </li>
 <li>
@@ -1580,7 +1608,7 @@
 </li>
 <li>
 <p><strong>Heading and tilt</strong></p>
-<p>Roll/pitch from accelerometer, tilt-compensated compass, magnetic field model (NED declination/inclination), disturbance detection (magnitude + dip gates), declination correction.</p>
+<p>Roll/pitch from accelerometer, tilt-compensated compass, disturbance detection (magnitude + dip gates), declination correction, and a full World Magnetic Model (WMM2025) — spherical-harmonic synthesis validated against the official test values to &lt; 0.1 nT.</p>
 <p><a href="math/heading/">:octicons-arrow-right-24: Heading</a></p>
 </li>
 </ul>

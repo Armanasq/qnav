@@ -1362,6 +1362,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../geomag/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    geomag
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../simulation/" class="md-nav__link">
         
   
@@ -1597,7 +1625,7 @@ adapted to the right perturbation).</p>
 
         <p>∂(R(q)·v)/∂q — raw 3×4 Jacobian w.r.t. the quaternion components.</p>
 <p>Solà eq. (174b): with <code>q = [w, u]</code>,
-<code>∂(q⊗v⊗q*)/∂q = 2·[ w·v + u×v | uᵀv·I + u·vᵀ − v·uᵀ − w·[v]× ]</code>.
+<code>∂(q⊗v⊗q*)/∂q = 2·[ w·v + u×v | uᵀv·eye3 + u·vᵀ − v·uᵀ − w·[v]× ]</code>.
 This is the Jacobian of the <em>sandwich product</em> without the unit-norm
 constraint (off-manifold variations are included). Useful for
 full-quaternion EKFs; for minimal-state filters prefer
@@ -1633,7 +1661,7 @@ full-quaternion EKFs; for minimal-state filters prefer
 </span><span id="__span-0-39"><a id="__codelineno-0-39" name="__codelineno-0-39"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;∂(R(q)·v)/∂q — raw 3×4 Jacobian w.r.t. the quaternion components.</span>
 </span><span id="__span-0-40"><a id="__codelineno-0-40" name="__codelineno-0-40"></a>
 </span><span id="__span-0-41"><a id="__codelineno-0-41" name="__codelineno-0-41"></a><span class="sd">    Solà eq. (174b): with ``q = [w, u]``,</span>
-</span><span id="__span-0-42"><a id="__codelineno-0-42" name="__codelineno-0-42"></a><span class="sd">    ``∂(q⊗v⊗q*)/∂q = 2·[ w·v + u×v | uᵀv·I + u·vᵀ − v·uᵀ − w·[v]× ]``.</span>
+</span><span id="__span-0-42"><a id="__codelineno-0-42" name="__codelineno-0-42"></a><span class="sd">    ``∂(q⊗v⊗q*)/∂q = 2·[ w·v + u×v | uᵀv·eye3 + u·vᵀ − v·uᵀ − w·[v]× ]``.</span>
 </span><span id="__span-0-43"><a id="__codelineno-0-43" name="__codelineno-0-43"></a><span class="sd">    This is the Jacobian of the *sandwich product* without the unit-norm</span>
 </span><span id="__span-0-44"><a id="__codelineno-0-44" name="__codelineno-0-44"></a><span class="sd">    constraint (off-manifold variations are included). Useful for</span>
 </span><span id="__span-0-45"><a id="__codelineno-0-45" name="__codelineno-0-45"></a><span class="sd">    full-quaternion EKFs; for minimal-state filters prefer</span>
@@ -1645,9 +1673,9 @@ full-quaternion EKFs; for minimal-state filters prefer
 </span><span id="__span-0-51"><a id="__codelineno-0-51" name="__codelineno-0-51"></a>    <span class="n">u</span> <span class="o">=</span> <span class="n">q</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">1</span><span class="p">:]</span>
 </span><span id="__span-0-52"><a id="__codelineno-0-52" name="__codelineno-0-52"></a>    <span class="n">col0</span> <span class="o">=</span> <span class="n">w</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">v</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
 </span><span id="__span-0-53"><a id="__codelineno-0-53" name="__codelineno-0-53"></a>    <span class="n">uv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">u</span> <span class="o">*</span> <span class="n">v</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
-</span><span id="__span-0-54"><a id="__codelineno-0-54" name="__codelineno-0-54"></a>    <span class="n">I</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">broadcast_to</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">col0</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+</span><span id="__span-0-54"><a id="__codelineno-0-54" name="__codelineno-0-54"></a>    <span class="n">eye3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">broadcast_to</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">col0</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
 </span><span id="__span-0-55"><a id="__codelineno-0-55" name="__codelineno-0-55"></a>    <span class="n">block</span> <span class="o">=</span> <span class="p">(</span>
-</span><span id="__span-0-56"><a id="__codelineno-0-56" name="__codelineno-0-56"></a>        <span class="n">uv</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">I</span>
+</span><span id="__span-0-56"><a id="__codelineno-0-56" name="__codelineno-0-56"></a>        <span class="n">uv</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">eye3</span>
 </span><span id="__span-0-57"><a id="__codelineno-0-57" name="__codelineno-0-57"></a>        <span class="o">+</span> <span class="n">u</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="p">:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">v</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:]</span>
 </span><span id="__span-0-58"><a id="__codelineno-0-58" name="__codelineno-0-58"></a>        <span class="o">-</span> <span class="n">v</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="p">:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">u</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:]</span>
 </span><span id="__span-0-59"><a id="__codelineno-0-59" name="__codelineno-0-59"></a>        <span class="o">-</span> <span class="n">w</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">so3</span><span class="o">.</span><span class="n">hat</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
@@ -1764,7 +1792,7 @@ full-quaternion EKFs; for minimal-state filters prefer
 
     <div class="doc doc-contents ">
 
-        <p>∂Log(Ra·(Rb ⊞ δ) ⊟ (Ra·Rb))/∂δ = I.</p>
+        <p>∂Log(Ra·(Rb ⊞ δ) ⊟ (Ra·Rb))/∂δ = eye3.</p>
 
 
             <details class="mkdocstrings-source">
@@ -1773,7 +1801,7 @@ full-quaternion EKFs; for minimal-state filters prefer
 <span class="normal"><a href="#__codelineno-0-82">82</a></span>
 <span class="normal"><a href="#__codelineno-0-83">83</a></span>
 <span class="normal"><a href="#__codelineno-0-84">84</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-81"><a id="__codelineno-0-81" name="__codelineno-0-81"></a><span class="k">def</span><span class="w"> </span><span class="nf">dcomposition_right</span><span class="p">(</span><span class="n">R_a</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">R_b</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-</span><span id="__span-0-82"><a id="__codelineno-0-82" name="__codelineno-0-82"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;∂Log(Ra·(Rb ⊞ δ) ⊟ (Ra·Rb))/∂δ = I.&quot;&quot;&quot;</span>
+</span><span id="__span-0-82"><a id="__codelineno-0-82" name="__codelineno-0-82"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;∂Log(Ra·(Rb ⊞ δ) ⊟ (Ra·Rb))/∂δ = eye3.&quot;&quot;&quot;</span>
 </span><span id="__span-0-83"><a id="__codelineno-0-83" name="__codelineno-0-83"></a>    <span class="n">R_a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">R_a</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
 </span><span id="__span-0-84"><a id="__codelineno-0-84" name="__codelineno-0-84"></a>    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">broadcast_to</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">R_a</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 </span></code></pre></div></td></tr></table></div>
