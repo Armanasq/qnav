@@ -25,7 +25,7 @@ from __future__ import annotations
 import numpy as np
 
 from qnav.attitude import quaternion as quat
-from qnav.determination.davenport import davenport, davenport_matrix
+from qnav.determination.davenport import davenport
 from qnav.determination.wahba import attitude_profile
 
 __all__ = ["quest"]

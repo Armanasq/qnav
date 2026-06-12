@@ -18,7 +18,6 @@ from __future__ import annotations
 import numpy as np
 
 from qnav.determination.wahba import normalize_observations
-from qnav.errors import DegenerateGeometryWarning
 
 __all__ = ["triad"]
 

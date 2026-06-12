@@ -37,3 +37,33 @@ Attitude filters: Complementary, Mahony (PI feedback), Madgwick (gradient descen
 ::: qnav.filters.base
     options:
       show_source: true
+
+## filters.ukf
+
+::: qnav.filters.ukf
+    options:
+      show_source: true
+
+## filters.aqua
+
+::: qnav.filters.aqua
+    options:
+      show_source: true
+
+## filters.fourati
+
+::: qnav.filters.fourati
+    options:
+      show_source: true
+
+## filters.fkf
+
+::: qnav.filters.fkf
+    options:
+      show_source: true
+
+## filters.roleq
+
+::: qnav.filters.roleq
+    options:
+      show_source: true

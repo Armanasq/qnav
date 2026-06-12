@@ -7,7 +7,6 @@ from qnav.attitude import dcm, quaternion as quat
 from qnav.determination import davenport_q, oleq_q, quest_q, svd_attitude, triad_dcm
 from qnav.determination.wahba import attitude_profile, check_observability, loss
 from qnav.errors import DegenerateGeometryWarning
-from tests.conftest import TOL_NUM
 
 SOLVERS_Q = {"davenport": davenport_q, "quest": quest_q, "oleq": oleq_q}
 

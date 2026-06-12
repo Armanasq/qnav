@@ -3,7 +3,7 @@
 import numpy as np
 import pytest
 
-from qnav.attitude import dcm, quaternion as quat
+from qnav.attitude import quaternion as quat
 from qnav.errors import FrameGraphError, FrameMismatchError
 from qnav.frames import FrameGraph, FrameTransform, conventions as fconv, earth
 from tests.conftest import TOL_ALG, TOL_NUM
@@ -51,7 +51,6 @@ class TestFrameTransform:
         d = rng.standard_normal((n, 6)) @ L.T
         # perturbed transforms, inverted, errors measured in [dtheta, dt]
         errs = np.empty((n, 6))
-        R = dcm.from_quaternion(q)
         for i in range(n):
             q_p = quat.mul(q, quat.exp(d[i, :3]))
             t_p = t + d[i, 3:]

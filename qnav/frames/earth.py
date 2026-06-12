@@ -23,6 +23,7 @@ __all__ = [
     "dcm_ecef_to_ned", "dcm_ecef_to_enu", "dcm_ned_to_ecef", "dcm_enu_to_ecef",
     "DCM_ENU_NED", "DCM_NED_ENU", "dcm_eci_to_ecef",
     "normal_gravity", "gravity_vector", "earth_rate_ned",
+    "meridian_radius", "transverse_radius", "gaussian_radius", "transport_rate_ned",
 ]
 
 # WGS-84 defining/derived parameters (NIMA TR8350.2)
@@ -161,4 +162,52 @@ def earth_rate_ned(lat: np.ndarray) -> np.ndarray:
     lat = np.asarray(lat, dtype=float)
     return WGS84_OMEGA * np.stack(
         [np.cos(lat), np.zeros_like(lat), -np.sin(lat)], axis=-1
+    )
+
+
+def meridian_radius(lat: np.ndarray) -> np.ndarray:
+    """Meridian (north-south) radius of curvature ``M = a(1−e²)/(1−e²sin²φ)^{3/2}``.
+
+    The radius governing latitude rate: ``φ̇ = v_N / (M + h)``.
+    """
+    lat = np.asarray(lat, dtype=float)
+    s2 = np.sin(lat) ** 2
+    return WGS84_A * (1.0 - WGS84_E2) / (1.0 - WGS84_E2 * s2) ** 1.5
+
+
+def transverse_radius(lat: np.ndarray) -> np.ndarray:
+    """Transverse (east-west / prime-vertical) radius ``N = a/√(1−e²sin²φ)``.
+
+    Governs longitude rate: ``λ̇ = v_E / ((N + h) cos φ)``.
+    """
+    lat = np.asarray(lat, dtype=float)
+    return WGS84_A / np.sqrt(1.0 - WGS84_E2 * np.sin(lat) ** 2)
+
+
+def gaussian_radius(lat: np.ndarray) -> np.ndarray:
+    """Gaussian mean radius of curvature ``√(M·N)`` — the single-radius
+    spherical approximation that matches the ellipsoid locally."""
+    return np.sqrt(meridian_radius(lat) * transverse_radius(lat))
+
+
+def transport_rate_ned(lat: np.ndarray, v_ned: np.ndarray, h: np.ndarray = 0.0) -> np.ndarray:
+    """Transport rate ``ω_EN`` in NED: rotation of the local-level frame due
+    to vehicle motion over the curved Earth.
+
+    ``ω_EN = [v_E/(N+h), −v_N/(M+h), −v_E·tanφ/(N+h)]`` — required (with the
+    Earth rate) for inertial navigation above MEMS grade; omitting it causes
+    a velocity-proportional attitude drift (~v/R rad/s ≈ 0.5°/hr at 250 m/s).
+    """
+    lat = np.asarray(lat, dtype=float)
+    v = np.asarray(v_ned, dtype=float)
+    h = np.asarray(h, dtype=float)
+    M = meridian_radius(lat)
+    N = transverse_radius(lat)
+    return np.stack(
+        [
+            v[..., 1] / (N + h),
+            -v[..., 0] / (M + h),
+            -v[..., 1] * np.tan(lat) / (N + h),
+        ],
+        axis=-1,
     )

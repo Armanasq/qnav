@@ -1,0 +1,9 @@
+__data/ahrs/
+.hypothesis/
+.pytest_cache/
+__pycache__/
+*.pyc
+site/
+*.egg-info/
+dist/
+build/

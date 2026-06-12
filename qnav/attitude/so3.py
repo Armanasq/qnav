@@ -34,11 +34,11 @@ def hat(omega: np.ndarray) -> np.ndarray:
     """Skew-symmetric matrix ``[ω]× ∈ so(3)`` with ``hat(ω) @ v = ω × v``."""
     omega = np.asarray(omega, dtype=float)
     x, y, z = omega[..., 0], omega[..., 1], omega[..., 2]
-    O = np.zeros(omega.shape[:-1] + (3, 3))
-    O[..., 0, 1], O[..., 0, 2] = -z, y
-    O[..., 1, 0], O[..., 1, 2] = z, -x
-    O[..., 2, 0], O[..., 2, 1] = -y, x
-    return O
+    S = np.zeros(omega.shape[:-1] + (3, 3))
+    S[..., 0, 1], S[..., 0, 2] = -z, y
+    S[..., 1, 0], S[..., 1, 2] = z, -x
+    S[..., 2, 0], S[..., 2, 1] = -y, x
+    return S
 
 
 def vee(Omega: np.ndarray) -> np.ndarray:
@@ -69,8 +69,8 @@ def exp(phi: np.ndarray) -> np.ndarray:
     A, B = _sin_cos_coeffs(theta)
     K = hat(phi)
     K2 = K @ K
-    I = np.broadcast_to(np.eye(3), K.shape)
-    return I + A[..., None, None] * K + B[..., None, None] * K2
+    eye3 = np.broadcast_to(np.eye(3), K.shape)
+    return eye3 + A[..., None, None] * K + B[..., None, None] * K2
 
 
 def log(R: np.ndarray) -> np.ndarray:
@@ -122,8 +122,8 @@ def left_jacobian(phi: np.ndarray) -> np.ndarray:
     B = np.where(small, 0.5 - theta**2 / 24.0, (1.0 - np.cos(safe)) / safe**2)
     C = np.where(small, 1.0 / 6.0 - theta**2 / 120.0, (safe - np.sin(safe)) / safe**3)
     K = hat(phi)
-    I = np.broadcast_to(np.eye(3), K.shape)
-    return I + B[..., None, None] * K + C[..., None, None] * (K @ K)
+    eye3 = np.broadcast_to(np.eye(3), K.shape)
+    return eye3 + B[..., None, None] * K + C[..., None, None] * (K @ K)
 
 
 def right_jacobian(phi: np.ndarray) -> np.ndarray:
@@ -150,8 +150,8 @@ def left_jacobian_inverse(phi: np.ndarray) -> np.ndarray:
             (1.0 - half * np.cos(half) / np.sin(half)) / safe**2,
         )
     K = hat(phi)
-    I = np.broadcast_to(np.eye(3), K.shape)
-    return I - 0.5 * K + D[..., None, None] * (K @ K)
+    eye3 = np.broadcast_to(np.eye(3), K.shape)
+    return eye3 - 0.5 * K + D[..., None, None] * (K @ K)
 
 
 def right_jacobian_inverse(phi: np.ndarray) -> np.ndarray:

@@ -35,6 +35,8 @@ __all__ = ["MahonyFilter", "NonlinearComplementaryFilter"]
 class MahonyFilter(AttitudeFilter):
     """Nonlinear complementary filter with bias estimation.
 
+    Use :meth:`step` with reference/measured direction pairs each sample.
+
     Parameters
     ----------
     kp, ki:
@@ -42,8 +44,6 @@ class MahonyFilter(AttitudeFilter):
         bias estimation.
     q0, nav_frame:
         See :class:`~qnav.filters.base.AttitudeFilter`.
-
-    Use :meth:`step` with reference/measured direction pairs each sample.
     """
 
     def __init__(

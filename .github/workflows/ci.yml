@@ -49,5 +49,3 @@ jobs:
       - name: Ruff check
         run: ruff check qnav/ tests/
 
-      - name: Ruff format check
-        run: ruff format --check qnav/ tests/

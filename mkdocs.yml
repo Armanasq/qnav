@@ -119,5 +119,6 @@ nav:
     - calibration: api/calibration.md
     - determination: api/determination.md
     - filters: api/filters.md
+    - geomag: api/geomag.md
     - simulation: api/simulation.md
     - metrics: api/metrics.md

@@ -218,15 +218,67 @@ The Allan variance tools in `qnav.sensors.allan` identify these parameters direc
 
 ---
 
+## AquaFilter (algebraic quaternion complementary filter)
+
+AQUA's contribution is **structural decoupling**: the accelerometer correction is a zero-yaw (tilt-only) delta quaternion, the magnetometer correction is a yaw-only delta. Both are closed-form shortest-arc constructions computed in the navigation frame:
+
+\[
+\Delta q_{\text{acc}} = \begin{bmatrix} \sqrt{\tfrac{1+g_z}{2}} \\ g_y / \sqrt{2(1+g_z)} \\ -g_x / \sqrt{2(1+g_z)} \\ 0 \end{bmatrix}, \qquad
+\Delta q_{\text{mag}} = f(\ell_x, \ell_y) \text{ — yaw-only, from the horizontal field}
+\]
+
+where \(\mathbf{g} = R(\bar{q})(-\hat{\mathbf{f}})\) is the measured gravity direction expressed in nav axes and \(\boldsymbol{\ell}\) the de-tilted field. A magnetic disturbance can corrupt heading but **cannot touch roll/pitch** — by construction, not by tuning. Each delta is scaled toward identity (LERP for small deltas, SLERP for large) with gains α, β; an optional adaptive gate suspends accelerometer trust when \(|\,\|\mathbf{f}\| - g\,|\) indicates a maneuver.
+
+## FouratiFilter (Levenberg-Marquardt observer)
+
+Corrects gyro integration with one damped Gauss-Newton step on the stacked gravity/magnetic alignment residual. The analytic Jacobian of the predicted body-frame directions with respect to a right (body-side) perturbation is \(2[\hat{\mathbf{y}}]_\times\) per observation, so:
+
+\[
+\boldsymbol{\varepsilon} = (\mathbf{X}^\top\mathbf{X} + \lambda\mathbf{I}_3)^{-1}\mathbf{X}^\top(\mathbf{y} - \hat{\mathbf{y}}), \qquad
+q \leftarrow q \otimes [1, k\,dt\,\boldsymbol{\varepsilon}]
+\]
+
+The LM step scales the correction per error axis by its observability — faster transients than fixed-step gradient methods when one reference vector is nearly parallel to the error.
+
+!!! note "Deviation from the circulating transcription"
+    The widely-copied formulation multiplies the correction into \(\dot{q}\), which makes corrections vanish whenever ω ≈ 0 — a stationary platform never corrects. qnav applies the LM step to the state, preserving the published observer's intent at all rates. This is intentional and covered by a static-convergence test.
+
+## FastKalmanFilter (linear quaternion KF)
+
+A Kalman filter whose state is the quaternion itself — valid because both models are exactly linear in q: the process is the first-order transition \(\Phi = \mathbf{I}_4 + \tfrac{1}{2}\Omega(\omega)dt\) with noise mapped through \(\Xi(q) = \tfrac{1}{2}[q]_L[:, 1{:}]\), and the measurement is a **full closed-form attitude observation** (qnav uses its SAAM solver) with covariance \(J\Sigma_{am}J^\top\) from the numerically evaluated measurement Jacobian. The double-cover sign of each measurement is resolved against the prediction. Cheapest covariance-bearing filter; no bias state.
+
+## RoleqFilter (recursive linear quaternion estimator)
+
+Each observation pair yields a symmetric involution \(W = -L([0,\mathbf{v}_r])\,R([0,\mathbf{v}_b])\) satisfying \(Wq = q\) exactly for the true attitude (derivation: right-multiply the alignment constraint by \([0,\mathbf{v}_b]\)). One fixed-point iteration of the projector average per sample, seeded by gyro propagation:
+
+\[
+q \leftarrow \text{normalize}\!\left(\tfrac{1}{2}\bigl(\mathbf{I}_4 + \textstyle\sum_i w_i W_i\bigr)\, q_{\text{gyro}}\right)
+\]
+
+Converges to the batch OLEQ optimum while tracking. No tuning parameters beyond the observation weights.
+
+## UkfAttitude (unscented filter on SO(3))
+
+The textbook UKF cannot be applied to quaternions: additive sigma points leave the unit sphere and their barycentric mean is not a rotation average. qnav's formulation (USQUE-style) runs the unscented transform on the **3D right-tangent error**:
+
+- sigma attitudes \(q_i = \hat{q} \otimes \text{Exp}(\delta\chi_i)\) from the scaled Cholesky columns of P;
+- propagation through the exact gyro exponential map; the predicted mean is the **Markley eigenvector mean** (not a normalized arithmetic mean), covariance rebuilt from \(\text{Log}(\bar{q}^{-1} \otimes q_i)\);
+- direction measurements mapped through the **exact** measurement function — no Jacobian linearization anywhere.
+
+P's spectrum is clamped to \([10^{-14}, (\pi/2)^2]\): the upper clamp keeps sigma tangents inside the injectivity radius of Exp, the lower keeps Cholesky alive. The honest trade against the ESKF: ~7× per-step cost, no linearization error — decisive when initial uncertainty exceeds ~20° (the test suite verifies recovery from a 115° initial error that breaks ESKF linearization).
+
+---
+
 ## Filter comparison
 
-| | Complementary | Mahony | Madgwick | QuaternionEkf | ESKF |
-|---|:---:|:---:|:---:|:---:|:---:|
-| Bias estimation | — | Integral | — | — | ✓ statistical |
-| Uncertainty (P) | — | — | — | ✓ total-state | ✓ error-state |
-| NEES-consistent P | — | — | — | — | ✓ |
-| Real-time @ 1 kHz | ✓ | ✓ | ✓ | ✓ | ✓ |
-| Parameters | 1 (gain) | 2 (kp, ki) | 1 (β) | 2 | 2 (σg, σbw) |
+| | Complementary | Mahony | Madgwick | AQUA | Fourati | ROLEQ | FKF | QuaternionEkf | ESKF | UKF |
+|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| Bias estimation | — | Integral | — | — | — | — | — | — | ✓ statistical | — |
+| Uncertainty (P) | — | — | — | — | — | — | ✓ 4×4 | ✓ total-state | ✓ error-state | ✓ tangent |
+| NEES-consistent P | — | — | — | — | — | — | — | — | ✓ | — |
+| Tilt immune to mag | — | — | — | ✓ | — | — | — | — | — | — |
+| Large-error recovery | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | — | — | ✓ |
+| Parameters | 1 | 2 | 1 | 2–3 | 1–2 | weights | 3 | 2 | 2 (σg, σbw) | 1–4 |
 
 The ESKF parameter count is deceptively low: the noise densities \(\sigma_g\) and \(\sigma_{bw}\) are physical parameters that can be read from the IMU datasheet or estimated from Allan variance analysis. They are not tuning knobs — they have correct values.
 

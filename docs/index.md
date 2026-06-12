@@ -37,13 +37,13 @@ qnav eliminates this class of bug through architecture:
 
 -   **Attitude determination**
 
-    Wahba problem (1965) formulation, TRIAD, Davenport q-method, QUEST Newton solver, SVD method, OLEQ. All share the same attitude-profile-matrix interface; algorithm selection depends on accuracy, speed, and degeneracy requirements.
+    Wahba problem (1965) formulation, TRIAD, Davenport q-method, QUEST, SVD, OLEQ, FLAE (quartic characteristic polynomial), plus closed-form accelerometer/magnetometer solvers — SAAM, FAMC, FQA — that need no eigendecomposition and no a-priori dip angle.
 
     [:octicons-arrow-right-24: Determination](math/attitude_determination.md)
 
 -   **Filtering**
 
-    Complementary, Mahony (PI feedback), Madgwick (gradient descent), quaternion EKF, and the error-state Kalman filter (ESKF). The ESKF is the only filter with a statistically-tested covariance: NEES bounds are verified by Monte-Carlo in the test suite.
+    Ten estimators spanning the complexity spectrum: complementary, Mahony, Madgwick, AQUA (decoupled tilt/yaw corrections), Fourati (LM observer), ROLEQ, Fast KF, quaternion EKF, the error-state Kalman filter (NEES-verified covariance), and an unscented filter on the SO(3) tangent for large-uncertainty regimes.
 
     [:octicons-arrow-right-24: Filters](math/filtering.md)
 
@@ -55,7 +55,7 @@ qnav eliminates this class of bug through architecture:
 
 -   **Heading and tilt**
 
-    Roll/pitch from accelerometer, tilt-compensated compass, magnetic field model (NED declination/inclination), disturbance detection (magnitude + dip gates), declination correction.
+    Roll/pitch from accelerometer, tilt-compensated compass, disturbance detection (magnitude + dip gates), declination correction, and a full World Magnetic Model (WMM2025) — spherical-harmonic synthesis validated against the official test values to < 0.1 nT.
 
     [:octicons-arrow-right-24: Heading](math/heading.md)
 

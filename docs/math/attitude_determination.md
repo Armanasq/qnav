@@ -115,6 +115,40 @@ OLEQ (Optimal Linear Attitude Estimator from Quaternions) accumulates observatio
 
 OLEQ is useful for overdetermined systems with many observations of the same type (e.g. star trackers with many star pairs) and is easily extended to include prior information.
 
+## FLAE
+
+FLAE (Fast Linear Attitude Estimator) recasts Davenport's eigenproblem as a **quartic characteristic polynomial**. Because the 4×4 data matrix \(\mathbf{W}\) is traceless, its characteristic polynomial has no cubic term:
+
+\[
+\lambda^4 + \tau_1\lambda^2 + \tau_2\lambda + \tau_3 = 0
+\]
+
+with coefficients computed directly from the 3×3 matrix \(\mathbf{H} = \sum w_i \hat{\mathbf{b}}_i \hat{\mathbf{r}}_i^\top\):
+
+\[
+\tau_1 = -2\,\text{tr}(\mathbf{H}\mathbf{H}^\top), \quad \tau_2 = -8\det\mathbf{H}, \quad \tau_3 = \det\mathbf{W}
+\]
+
+The optimal quaternion is the null vector of \(\mathbf{W} - \lambda_{\max}\mathbf{I}\).
+
+qnav deliberately departs from the original's closed-form (Ferrari) quartic solution: the resolvent cubic is numerically fragile exactly when the data is *clean* (near-equal roots produce NaN). qnav finds \(\lambda_{\max}\) from companion-matrix roots followed by two Newton polish steps, and extracts the null vector by SVD — uniformly stable, identical optimum. The test suite verifies FLAE agrees with QUEST to \(10^{-10}\) degrees under noise.
+
+## Closed-form accelerometer/magnetometer solvers
+
+For the specific gravity + magnetic-field pair in NED, the references have special structure: gravity is purely vertical, and the magnetic reference can be written \([m_N, 0, m_D]\). Crucially, the vertical fraction is recoverable **from the measurements themselves**:
+
+\[
+m_D = \hat{\mathbf{g}}_b \cdot \hat{\mathbf{m}}_b, \quad m_N = \sqrt{1 - m_D^2}
+\]
+
+(the dot product of two vectors is frame-invariant). This means *no a-priori magnetic dip angle is required* — the algorithms self-calibrate their reference. Three solvers exploit this:
+
+**SAAM** — one square root, a handful of multiplications, a fully closed-form quaternion. Solves the same optimality conditions as QUEST for this two-vector problem at ~10× the speed. The default choice for initialization at scale (it is fully vectorized over batches in qnav).
+
+**FAMC** — the same problem via an analytic three-pivot elimination of the Davenport system. Numerically equivalent to SAAM; its intermediate pivots degrade detectably when the two observations approach collinearity, which makes it the variant to prefer when you want degeneracy diagnostics.
+
+**FQA** — a *factored* solution \(q = q_{\text{yaw}} \otimes q_{\text{pitch}} \otimes q_{\text{roll}}\) computed with half-angle square-root identities (no trig). Its distinguishing property is structural: roll and pitch come entirely from the accelerometer, so **magnetic disturbances provably cannot affect tilt** — a property the optimal solvers (which mix all observations) do not have. The cost: a singularity at pitch = ±90° (handled with a warning + deterministic recovery) and slight sub-optimality under noise.
+
 ## Algorithm selection
 
 | Algorithm | Vectors | Speed | Robustness | Notes |
@@ -124,7 +158,11 @@ OLEQ is useful for overdetermined systems with many observations of the same typ
 | QUEST | ≥ 2 | Fast | Falls back near π | Best for real-time 2-vector |
 | SVD | ≥ 2 | Medium | Best for degenerate | Handles reflections |
 | OLEQ | ≥ 2 | Medium | Accumulative | Good for many observations |
+| FLAE | ≥ 2 | Fast | Companion + Newton | Fastest optimal N-vector |
+| SAAM | acc+mag | Fastest closed-form | Needs valid gravity | Batch-vectorized |
+| FAMC | acc+mag | Fast closed-form | Pivot diagnostics | Same optimum as SAAM |
+| FQA | acc+mag | Fast | Tilt immune to mag | Singular at pitch ±90° |
 
-For the standard AHRS use case (gravity + magnetic field), QUEST is the recommended choice. For initialization or batch processing, SVD is safer.
+For the standard AHRS use case (gravity + magnetic field), QUEST or SAAM are the recommended choices. For initialization or batch processing, SVD is safest; in magnetically hostile environments, FQA protects tilt.
 
 *Source: attitudesurvey.tex §Wahba, §QUEST, §Davenport; Kok/Hol/Schön §3.6 (Davenport K reformulation); Markley & Crassidis ch.5–6.*

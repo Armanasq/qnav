@@ -1,7 +1,6 @@
 """SO(3): exp/log, Jacobians (vs finite differences), box operators."""
 
 import numpy as np
-import pytest
 
 from qnav.attitude import so3
 from tests.conftest import TOL_ALG, TOL_FD, TOL_NUM
@@ -77,9 +76,9 @@ class TestJacobians:
 
     def test_inverses(self, rng):
         phi = rng.uniform(-2.5, 2.5, (20, 3))
-        I = np.broadcast_to(np.eye(3), (20, 3, 3))
-        assert np.allclose(so3.left_jacobian(phi) @ so3.left_jacobian_inverse(phi), I, atol=1e-9)
-        assert np.allclose(so3.right_jacobian(phi) @ so3.right_jacobian_inverse(phi), I, atol=1e-9)
+        eye3 = np.broadcast_to(np.eye(3), (20, 3, 3))
+        assert np.allclose(so3.left_jacobian(phi) @ so3.left_jacobian_inverse(phi), eye3, atol=1e-9)
+        assert np.allclose(so3.right_jacobian(phi) @ so3.right_jacobian_inverse(phi), eye3, atol=1e-9)
 
     def test_small_angle_jacobians(self):
         phi = 1e-10 * np.array([1.0, -2.0, 0.5])

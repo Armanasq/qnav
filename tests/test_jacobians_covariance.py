@@ -3,7 +3,6 @@
 import numpy as np
 
 from qnav.attitude import covariance as cov, dcm, jacobians as jac, quaternion as quat, so3
-from qnav.metrics import average_nees
 from tests.conftest import TOL_FD
 
 

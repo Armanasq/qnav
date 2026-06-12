@@ -33,10 +33,10 @@ def field_from_elements(
 ) -> np.ndarray:
     """Local field vector from (D, I, B). Radians; intensity in caller's units."""
     D = np.asarray(declination, dtype=float)
-    I = np.asarray(inclination, dtype=float)
+    inc = np.asarray(inclination, dtype=float)
     B = np.asarray(intensity, dtype=float)
     m_ned = np.stack(
-        [B * np.cos(I) * np.cos(D), B * np.cos(I) * np.sin(D), B * np.sin(I)], axis=-1
+        [B * np.cos(inc) * np.cos(D), B * np.cos(inc) * np.sin(D), B * np.sin(inc)], axis=-1
     )
     if frame == "NED":
         return m_ned
@@ -54,8 +54,8 @@ def elements_from_field(m: np.ndarray, frame: str = "NED"):
         raise ConventionError(f"frame must be 'NED' or 'ENU', got {frame!r}")
     B = np.linalg.norm(m, axis=-1)
     D = np.arctan2(m[..., 1], m[..., 0])
-    I = np.arctan2(m[..., 2], np.hypot(m[..., 0], m[..., 1]))
-    return D, I, B
+    inc = np.arctan2(m[..., 2], np.hypot(m[..., 0], m[..., 1]))
+    return D, inc, B
 
 
 def dipole_field(lat_mag: np.ndarray, r: np.ndarray = 6371008.8) -> np.ndarray:

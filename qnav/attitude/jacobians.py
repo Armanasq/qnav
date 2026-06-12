@@ -39,7 +39,7 @@ def drotate_dq(q: np.ndarray, v: np.ndarray) -> np.ndarray:
     """∂(R(q)·v)/∂q — raw 3×4 Jacobian w.r.t. the quaternion components.
 
     Solà eq. (174b): with ``q = [w, u]``,
-    ``∂(q⊗v⊗q*)/∂q = 2·[ w·v + u×v | uᵀv·I + u·vᵀ − v·uᵀ − w·[v]× ]``.
+    ``∂(q⊗v⊗q*)/∂q = 2·[ w·v + u×v | uᵀv·eye3 + u·vᵀ − v·uᵀ − w·[v]× ]``.
     This is the Jacobian of the *sandwich product* without the unit-norm
     constraint (off-manifold variations are included). Useful for
     full-quaternion EKFs; for minimal-state filters prefer
@@ -51,9 +51,9 @@ def drotate_dq(q: np.ndarray, v: np.ndarray) -> np.ndarray:
     u = q[..., 1:]
     col0 = w[..., None] * v + np.cross(u, v)
     uv = np.sum(u * v, axis=-1)
-    I = np.broadcast_to(np.eye(3), col0.shape[:-1] + (3, 3))
+    eye3 = np.broadcast_to(np.eye(3), col0.shape[:-1] + (3, 3))
     block = (
-        uv[..., None, None] * I
+        uv[..., None, None] * eye3
         + u[..., :, None] * v[..., None, :]
         - v[..., :, None] * u[..., None, :]
         - w[..., None, None] * so3.hat(v)
@@ -79,7 +79,7 @@ def dcomposition_left(R_a: np.ndarray, R_b: np.ndarray) -> np.ndarray:
 
 
 def dcomposition_right(R_a: np.ndarray, R_b: np.ndarray) -> np.ndarray:
-    """∂Log(Ra·(Rb ⊞ δ) ⊟ (Ra·Rb))/∂δ = I."""
+    """∂Log(Ra·(Rb ⊞ δ) ⊟ (Ra·Rb))/∂δ = eye3."""
     R_a = np.asarray(R_a, dtype=float)
     return np.broadcast_to(np.eye(3), R_a.shape).copy()
 
