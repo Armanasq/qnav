@@ -1,0 +1,35 @@
+/* Tighter math display in tables */
+.md-typeset .arithmatex {
+  overflow-x: auto;
+}
+
+/* Convention boxes */
+.md-typeset .admonition.convention {
+  border-left-color: #7c4dff;
+}
+.md-typeset .admonition.convention > .admonition-title {
+  background-color: rgba(124, 77, 255, 0.1);
+}
+.md-typeset .admonition.convention > .admonition-title::before {
+  background-color: #7c4dff;
+  -webkit-mask-image: var(--md-admonition-icon--note);
+  mask-image: var(--md-admonition-icon--note);
+}
+
+/* API signature style */
+.md-typeset .doc-heading {
+  font-family: "JetBrains Mono", monospace;
+}
+
+/* Formula catalog references */
+.md-typeset .source-ref {
+  font-size: 0.75em;
+  color: var(--md-default-fg-color--light);
+  font-style: italic;
+}
+
+/* Wide tables for formula catalogs */
+.md-typeset .wide-table {
+  overflow-x: auto;
+  display: block;
+}
