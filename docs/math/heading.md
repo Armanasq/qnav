@@ -72,7 +72,23 @@ Magnetic north differs from geographic north by the **declination angle** \(D\) 
 
 Declination varies by location (±30° in extreme cases) and changes slowly over time (~0.1°/year). For navigation, the local declination must be applied. qnav provides `apply_declination` and `remove_declination` to convert between magnetic and true headings.
 
-For precise work, use the World Magnetic Model (WMM) or IGRF to get \(D\) at your location. qnav's `dipole_field` provides a simple dipole model for simulation:
+For precise work, qnav ships a full **World Magnetic Model** implementation (`qnav.geomag`): degree-12 spherical-harmonic synthesis with the WMM2025 coefficients, geodetic→geocentric conversion on the WGS-84 ellipsoid, Schmidt semi-normalized Legendre recursion, and linear secular variation. It is validated against the official NOAA/NCEI test values to < 0.1 nT per component:
+
+```python
+from qnav.geomag import wmm_field, wmm_elements
+import numpy as np
+
+est = wmm_field(np.deg2rad(48.1), np.deg2rad(11.6), h=520.0, year=2026.4)
+est.ned           # field vector [X, Y, Z] in NED, Tesla
+est.declination   # D [rad], positive east — feed apply_declination
+est.inclination   # I [rad], positive down — feed the dip disturbance gate
+est.ned_sv        # secular variation, T/year
+
+# Or directly in the form the heading stack consumes:
+d, i, f = wmm_elements(np.deg2rad(48.1), np.deg2rad(11.6), 520.0, 2026.4)
+```
+
+For quick simulation work without geographic fidelity, `dipole_field` provides a simple dipole model:
 
 ```python
 from qnav.heading.magnetic_model import field_from_elements, dipole_field

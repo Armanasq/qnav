@@ -12,7 +12,6 @@ from dataclasses import dataclass
 
 import numpy as np
 
-from qnav.attitude import kinematics as kin
 from qnav.attitude import quaternion as quat
 
 __all__ = ["Trajectory", "static_pose", "constant_rate", "sinusoidal_euler", "coning"]

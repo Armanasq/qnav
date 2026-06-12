@@ -12,7 +12,7 @@ from qnav.calibration.soft_hard_iron import calibrate, quality_report
 from qnav.errors import CalibrationError
 from qnav.sensors import GyroModel, ImuModel, MagnetometerModel, NoiseModel
 from qnav.sensors.accelerometer import AccelerometerModel
-from qnav.sensors.alignment import SensorAlignment, lever_arm_acceleration
+from qnav.sensors.alignment import lever_arm_acceleration
 from qnav.sensors.allan import allan_deviation, identify_noise
 from qnav.simulation import RigidBody, constant_rate, coning, synthesize
 from qnav.simulation.imu_synthesis import ImuDataset

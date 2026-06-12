@@ -62,7 +62,6 @@ def fit_ellipsoid(m: np.ndarray, min_points: int = 12) -> MagCalibration:
     D = np.column_stack([x*x, y*y, z*z, x*y, x*z, y*z, x, y, z, np.ones_like(x)])
     # solve D p = 0: smallest right singular vector
     _, s, Vt = np.linalg.svd(D, full_matrices=False)
-    cond = s[0] / max(s[-2], 1e-300)
     p = Vt[-1]
     M = np.array([
         [p[0], p[3] / 2, p[4] / 2],

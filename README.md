@@ -37,8 +37,12 @@ qnav/
 │                      gyro/accel/magnetometer models, sensor alignment, lever-arm correction
 ├── calibration/       Gyro static bias estimation, magnetometer ellipsoid fit (hard/soft-iron),
 │                      accelerometer 6-position calibration, frame alignment from vector pairs
-├── determination/     Wahba problem, TRIAD, Davenport q-method, QUEST, SVD method, OLEQ
-├── filters/           Complementary, Mahony, Madgwick-style, ESKF (6-state δθ+bias), quaternion EKF
+├── determination/     Wahba problem, TRIAD, Davenport q-method, QUEST, SVD, OLEQ, FLAE,
+│                      and closed-form acc+mag solvers: SAAM, FAMC, FQA
+├── filters/           Complementary, Mahony, Madgwick-style, AQUA, Fourati (LM observer),
+│                      ROLEQ, Fast KF, quaternion EKF, ESKF (6-state δθ+bias), UKF on SO(3)
+├── geomag/            World Magnetic Model (WMM2025): spherical-harmonic field synthesis,
+│                      declination/inclination/intensity + secular variation
 ├── simulation/        Rigid-body dynamics (RK4 Euler equations), IMU synthesis, trajectory
 │                      generators, noise injection (dropout, outliers, jitter), vehicle state
 ├── metrics/           Attitude error (geodesic, RMSE), NEES/χ² consistency bounds (SciPy-free),
@@ -213,9 +217,13 @@ corrected = cal.correct(raw_data)            # maps sphere, compensates soft+har
 |---|---|---|
 | Exactly 2 reference vectors, no noise weighting needed | `triad` | O(1), deterministic, closes analytically |
 | ≥ 2 vectors, weighted, real-time embedded | `quest` | Newton iteration on the characteristic polynomial; ~5 µs |
+| ≥ 2 vectors, fastest optimal solver | `flae` | Quartic characteristic polynomial; companion roots + Newton polish |
 | ≥ 2 vectors, batch, numerical robustness paramount | `svd` | SVD-based; handles near-degenerate configs gracefully |
 | Online alignment with N vectors and covariance output | `davenport` | Full 4×4 eigensystem; straightforward to extend |
 | Overdetermined system, stacked observations | `oleq` | Left/right matrix accumulation; no eigendecomposition |
+| Acc+mag pair, maximum throughput (batched) | `saam` | One square root; closed form; vectorized; no dip angle needed |
+| Acc+mag pair, degeneracy diagnostics | `famc` | Analytic Davenport elimination; pivots expose collinearity |
+| Acc+mag pair, magnetically hostile environment | `fqa` | Factored form: magnetic disturbance provably cannot affect tilt |
 
 ---
 
@@ -226,10 +234,15 @@ corrected = cal.correct(raw_data)            # maps sphere, compensates soft+har
 | `ComplementaryFilter` | q | ✗ | ✗ | Prototype; dead-reckoning not needed |
 | `MahonyFilter` | q + integral bias | integral (not statistical) | ✗ | Low-resource embedded; PI tuning is intuitive |
 | `MadgwickStyleFilter` | q | ✗ | ✗ | Single gain β; good default for slowly-moving platforms |
+| `AquaFilter` | q | ✗ | ✗ | Magnetic disturbances must not touch roll/pitch (structural decoupling) |
+| `FouratiFilter` | q | ✗ | ✗ | Fast transients; observability-scaled LM corrections |
+| `RoleqFilter` | q | ✗ | ✗ | Zero tuning; linear fixed-point correction |
+| `FastKalmanFilter` | q ∈ ℝ⁴ | ✗ | 4×4 P | Cheapest covariance-bearing option; algebraic measurements |
 | `QuaternionEkf` | q (total state) | ✗ | Total-state P | When you need uncertainty without bias state |
 | `Eskf` | q + gyro bias δθ∈ℝ⁶ | ✓ statistical | Error-state 6×6 P | Production; use when you need NEES-consistent uncertainty |
+| `UkfAttitude` | q, 3×3 tangent P | ✗ | Error-state 3×3 P | Initial uncertainty > 20°; no linearization in updates |
 
-`Eskf` is the only filter whose covariance has a documented, tested statistical meaning (right/local tangent, NEES bounds verified by Monte-Carlo in the test suite).
+`Eskf` is the only filter whose covariance has a documented, tested statistical meaning (right/local tangent, NEES bounds verified by Monte-Carlo in the test suite). `UkfAttitude` recovers from a 115° initial error — verified in the test suite — where ESKF linearization fails.
 
 ---
 

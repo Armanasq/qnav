@@ -121,11 +121,11 @@ def from_dcm(R: np.ndarray, seq: str = "ZYX", gimbal_tol: float = 1e-7) -> np.nd
             # proper sequence R = Ri(a) Rj(b) Ri(c)
             cb = np.clip(m[i, i], -1.0, 1.0)
             b = np.arccos(cb)
-            l = 3 - i - j  # the unused axis
+            ax_l = 3 - i - j  # the unused axis
             locked = min(b, np.pi - b) <= gimbal_tol
             if not locked:
-                a = np.arctan2(m[j, i], -eps * m[l, i])
-                c = np.arctan2(m[i, j], eps * m[i, l])
+                a = np.arctan2(m[j, i], -eps * m[ax_l, i])
+                c = np.arctan2(m[i, j], eps * m[i, ax_l])
         if locked:
             # only (a ± c) is observable; assign it all to a by fixing c = 0,
             # then R ≈ Ri(a)·Rj(b)  ⇒  Ri(a) = R·Rj(b)ᵀ  (generic, axis-safe)

@@ -27,7 +27,6 @@ from __future__ import annotations
 import numpy as np
 
 from qnav.attitude import quaternion as quat
-from qnav.attitude import so3
 
 __all__ = [
     "qdot", "omega_matrix", "integrate_first_order", "integrate_exponential",
@@ -44,12 +43,12 @@ def omega_matrix(omega: np.ndarray) -> np.ndarray:
     """
     omega = np.asarray(omega, dtype=float)
     x, y, z = omega[..., 0], omega[..., 1], omega[..., 2]
-    O = np.zeros(omega.shape[:-1] + (4, 4))
-    O[..., 0, 1], O[..., 0, 2], O[..., 0, 3] = -x, -y, -z
-    O[..., 1, 0], O[..., 1, 2], O[..., 1, 3] = x, z, -y
-    O[..., 2, 0], O[..., 2, 1], O[..., 2, 3] = y, -z, x
-    O[..., 3, 0], O[..., 3, 1], O[..., 3, 2] = z, y, -x
-    return O
+    W = np.zeros(omega.shape[:-1] + (4, 4))
+    W[..., 0, 1], W[..., 0, 2], W[..., 0, 3] = -x, -y, -z
+    W[..., 1, 0], W[..., 1, 2], W[..., 1, 3] = x, z, -y
+    W[..., 2, 0], W[..., 2, 1], W[..., 2, 3] = y, -z, x
+    W[..., 3, 0], W[..., 3, 1], W[..., 3, 2] = z, y, -x
+    return W
 
 
 def qdot(q: np.ndarray, omega_body: np.ndarray) -> np.ndarray:

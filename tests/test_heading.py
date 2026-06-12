@@ -98,10 +98,10 @@ class TestDeclination:
 
 class TestMagneticModel:
     def test_elements_roundtrip(self, rng):
-        D, I, B = 0.2, 1.1, 48.0
-        m = magmod.field_from_elements(D, I, B)
+        D, inc, B = 0.2, 1.1, 48.0
+        m = magmod.field_from_elements(D, inc, B)
         D2, I2, B2 = magmod.elements_from_field(m)
-        assert abs(D - D2) < TOL_NUM and abs(I - I2) < TOL_NUM and abs(B - B2) < TOL_NUM
+        assert abs(D - D2) < TOL_NUM and abs(inc - I2) < TOL_NUM and abs(B - B2) < TOL_NUM
 
     def test_ned_enu(self):
         m_ned = magmod.field_from_elements(0.1, 0.9, 1.0, frame="NED")

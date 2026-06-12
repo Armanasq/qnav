@@ -37,3 +37,27 @@ Wahba problem solvers: TRIAD, Davenport q-method, QUEST, SVD, OLEQ. All share th
 ::: qnav.determination.oleq
     options:
       show_source: true
+
+## determination.flae
+
+::: qnav.determination.flae
+    options:
+      show_source: true
+
+## determination.saam
+
+::: qnav.determination.saam
+    options:
+      show_source: true
+
+## determination.famc
+
+::: qnav.determination.famc
+    options:
+      show_source: true
+
+## determination.fqa
+
+::: qnav.determination.fqa
+    options:
+      show_source: true

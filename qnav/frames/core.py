@@ -8,7 +8,7 @@ checked against frame names at runtime, eliminating the classic
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 from qnav.errors import ConventionError
 
