@@ -1,0 +1,123 @@
+site_name: qnav
+site_description: Convention-safe attitude, heading, frame-transform, and navigation math for robotics, aerospace, and sensor fusion.
+site_url: https://armanasq.github.io/qnav/
+repo_url: https://github.com/armanasq/qnav
+repo_name: armanasq/qnav
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  palette:
+    - scheme: slate
+      primary: indigo
+      accent: cyan
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+    - scheme: default
+      primary: indigo
+      accent: cyan
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+  font:
+    text: Inter
+    code: JetBrains Mono
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - navigation.footer
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.code.annotate
+    - content.tabs.link
+    - toc.follow
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            docstring_style: numpy
+            show_source: true
+            show_root_heading: true
+            show_category_heading: true
+            heading_level: 3
+            members_order: source
+            group_by_category: true
+            show_signature_annotations: true
+            separate_signature: true
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.arithmatex:
+      generic: true
+  - attr_list
+  - def_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+      toc_depth: 3
+
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
+extra_css:
+  - stylesheets/extra.css
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/armanasq/qnav
+  version:
+    provider: mike
+
+nav:
+  - Home: index.md
+  - Getting Started: getting_started.md
+  - Conventions: conventions.md
+  - Math:
+    - Quaternion Algebra: math/quaternions.md
+    - SO(3) Lie Group: math/so3.md
+    - Euler Angles: math/euler_angles.md
+    - Coordinate Frames: math/frames.md
+    - Attitude Determination: math/attitude_determination.md
+    - Filtering: math/filtering.md
+    - Heading and Tilt: math/heading.md
+    - Formula Catalog: math/formula_catalog.md
+  - Design:
+    - API Principles: design/api_principles.md
+    - Performance: design/performance.md
+  - API Reference:
+    - attitude.quaternion: api/quaternion.md
+    - attitude.so3: api/so3.md
+    - attitude.dcm: api/dcm.md
+    - attitude.euler: api/euler.md
+    - attitude.kinematics: api/kinematics.md
+    - attitude.jacobians: api/jacobians.md
+    - attitude.covariance: api/covariance.md
+    - frames: api/frames.md
+    - heading: api/heading.md
+    - sensors: api/sensors.md
+    - calibration: api/calibration.md
+    - determination: api/determination.md
+    - filters: api/filters.md
+    - simulation: api/simulation.md
+    - metrics: api/metrics.md
