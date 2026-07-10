@@ -58,9 +58,9 @@ def to_quaternion(R: np.ndarray) -> np.ndarray:
     trace-only formula near θ = π. Output is canonicalized (``w ≥ 0``).
     """
     R = np.asarray(R, dtype=float)
-    batch = R.shape[:-2]
+    batch: tuple[int, ...] = R.shape[:-2]
     Rf = R.reshape((-1, 3, 3))
-    n = Rf.shape[0]
+    n = int(Rf.shape[0])
     q = np.empty((n, 4))
     for i in range(n):
         m = Rf[i]
@@ -116,10 +116,11 @@ def to_quaternion_robust(R: np.ndarray) -> np.ndarray:
     rotation matrix", JGCD 23(6), 2000.
     """
     R = np.asarray(R, dtype=float)
-    batch = R.shape[:-2]
+    batch: tuple[int, ...] = R.shape[:-2]
     Rf = R.reshape((-1, 3, 3))
-    q = np.empty((Rf.shape[0], 4))
-    for i in range(Rf.shape[0]):
+    n = int(Rf.shape[0])
+    q = np.empty((n, 4))
+    for i in range(n):
         m = Rf[i]
         K = np.array([
             [m[0, 0] + m[1, 1] + m[2, 2], m[2, 1] - m[1, 2], m[0, 2] - m[2, 0], m[1, 0] - m[0, 1]],

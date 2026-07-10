@@ -84,14 +84,15 @@ def log(R: np.ndarray) -> np.ndarray:
       with sign fixed by the off-diagonal skew part.
     """
     R = np.asarray(R, dtype=float)
-    batch = R.shape[:-2]
+    batch: tuple[int, ...] = R.shape[:-2]
     Rf = R.reshape((-1, 3, 3))
-    out = np.empty((Rf.shape[0], 3))
+    n = int(Rf.shape[0])
+    out = np.empty((n, 3))
     tr = np.trace(Rf, axis1=-2, axis2=-1)
     cos_t = np.clip((tr - 1.0) / 2.0, -1.0, 1.0)
     theta = np.arccos(cos_t)
     w = vee(Rf - np.swapaxes(Rf, -1, -2))  # = 2 sinθ · u
-    for i in range(Rf.shape[0]):
+    for i in range(n):
         t = theta[i]
         if t < SMALL_ANGLE:
             out[i] = 0.5 * (1.0 + t * t / 6.0) * w[i]

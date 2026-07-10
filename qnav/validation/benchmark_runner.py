@@ -67,6 +67,10 @@ def environment() -> dict:
     try:
         sha = subprocess.run(["git", "rev-parse", "--short", "HEAD"],
                              capture_output=True, text=True, timeout=5).stdout.strip() or "unknown"
+        dirty = subprocess.run(["git", "status", "--porcelain"],
+                               capture_output=True, text=True, timeout=10).stdout.strip()
+        if sha != "unknown" and dirty:
+            sha += "-dirty"  # results generated from uncommitted changes
     except (OSError, subprocess.SubprocessError):
         pass
     cpu = platform.processor() or platform.machine()

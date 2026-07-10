@@ -64,6 +64,6 @@ def inject_outliers(
     """Replace a fraction ``rate`` of samples with ``x + U(−mag, mag)`` spikes."""
     x = np.asarray(x, dtype=float).copy()
     n = x.shape[0]
-    hit = rng.random(n) < rate
+    hit: np.ndarray = rng.random(n) < rate
     x[hit] += rng.uniform(-magnitude, magnitude, size=(int(hit.sum()),) + x.shape[1:])
     return x

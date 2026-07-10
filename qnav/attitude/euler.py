@@ -94,11 +94,12 @@ def from_dcm(R: np.ndarray, seq: str = "ZYX", gimbal_tol: float = 1e-7) -> np.nd
         rev = from_dcm(R, up[::-1], gimbal_tol=gimbal_tol)
         return rev[..., ::-1]
 
-    batch = R.shape[:-2]
+    batch: tuple[int, ...] = R.shape[:-2]
     Rf = R.reshape((-1, 3, 3))
+    n_flat = int(Rf.shape[0])
     i, j, k = (_AXES[ch] for ch in up)
     tait_bryan = up[0] != up[2]
-    out = np.empty((Rf.shape[0], 3))
+    out = np.empty((n_flat, 3))
     # parity of the axis pair (i, j): +1 if (i, j) is a cyclic step
     eps = 1.0 if (j - i) % 3 == 1 else -1.0
     Rj_principal = _PRINCIPAL[up[1]]
@@ -106,7 +107,7 @@ def from_dcm(R: np.ndarray, seq: str = "ZYX", gimbal_tol: float = 1e-7) -> np.nd
     p, qx = (i + 1) % 3, (i + 2) % 3
 
     locked_any = False
-    for n in range(Rf.shape[0]):
+    for n in range(n_flat):
         m = Rf[n]
         if tait_bryan:
             # R = Ri(a) Rj(b) Rk(c), all axes distinct

@@ -5,8 +5,8 @@ Usage::
 
     python benchmarks/run_dataset_eval.py \
         --limit-per-collection 5 \
-        --init ground_truth \
-        --mag-reference oracle \
+        --init accel_tilt \
+        --mag-reference calibration \
         --config universal \
         --max-failure-rate 0.05 \
         --output-dir benchmarks/results
@@ -20,11 +20,19 @@ Experiment axes (reported separately — never mixed):
 ``--init``
     ``ground_truth``  oracle-initialized tracking evaluation (labeled as
                       such; measures steady-state tracking only),
-    ``accel_mag``     deployable: FQA-style init from the first accel/mag
-                      sample (tilt-only when no magnetometer),
+    ``accel_tilt``    deployable default: tilt-only init from the first
+                      accelerometer sample (heading left at the yaw gauge),
+    ``accel_mag``     deployable tilt+heading init: tilt from the first
+                      accelerometer sample, heading from the first
+                      magnetometer sample aligned against the
+                      calibration-derived magnetic reference (falls back to
+                      tilt-only when no magnetometer, no calibration
+                      reference, or a near-vertical field),
     ``identity``      worst-case unknown initial attitude,
     ``perturbed_10 / _45 / _90 / _150``
-                      ground truth rotated by a fixed angle (convergence
+                      ground truth rotated by a fixed angle around a
+                      deterministic per-dataset axis (SHA-256 of the dataset
+                      name; reproducible across processes — convergence
                       studies).
 
 ``--mag-reference``
@@ -44,6 +52,18 @@ the error metrics.
     ``per-dataset``   collection-specific values (documented approximations
                       from the sensor classes used by each benchmark).
 
+Each per-trial report records its own effective ``noise_values``; the
+top-level ``configuration.noise_values`` is the universal dict for
+``--config universal`` and a ``{collection: config}`` mapping over every
+evaluated collection for ``--config per-dataset``.
+
+Heading observability is labeled per trial: ``heading_observable`` is True
+only when a magnetic reference was used, ``heading_reference`` is
+``"mag"``/``"none"``, and ``heading_metric_interpretation`` is
+``"aligned-absolute"`` (observable) or ``"drift-only"``. Aggregate heading
+medians are computed over heading-observable trials only and reported as
+``"n/a"`` when a collection has none.
+
 Exit status: 0 only when the failure rate is within ``--max-failure-rate``
 and every ``--require-collection`` has at least one successful trial.
 Writes ``attitude-real-data.json`` (full report), ``attitude-real-data.md``
@@ -54,6 +74,7 @@ paths are recorded.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import sys
 from collections import defaultdict
@@ -93,7 +114,7 @@ PER_DATASET = {
     "Myon": {"gyro_nd": 0.003, "gyro_bw": 1e-5, "acc_sigma": 0.05, "mag_sigma": 0.1},
 }
 
-INIT_MODES = ("ground_truth", "accel_mag", "identity",
+INIT_MODES = ("ground_truth", "accel_tilt", "accel_mag", "identity",
               "perturbed_10", "perturbed_45", "perturbed_90", "perturbed_150")
 MAG_MODES = ("oracle", "calibration", "none")
 
@@ -118,19 +139,37 @@ def _tilt_quaternion(f_body: np.ndarray) -> np.ndarray:
     return quat.exp(axis / s * np.arctan2(s, c))
 
 
-def _initial_attitude(ds, mode: str) -> np.ndarray | None:
+def _initial_attitude(ds, mode: str, calib_seconds: float = 5.0) -> np.ndarray | None:
     first = int(np.flatnonzero(ds.valid)[0])
     if mode == "ground_truth":
         return ds.q_ref[first]
     if mode == "identity":
         return None
-    if mode == "accel_mag":
+    if mode == "accel_tilt":
         # deployable tilt initialization from the first accelerometer sample;
         # heading stays at the yaw gauge (absorbed by the aligned metric)
         return _tilt_quaternion(ds.accel[0])
+    if mode == "accel_mag":
+        # deployable tilt+heading initialization: level the first mag sample
+        # with the accel tilt, then yaw it onto the calibration-derived
+        # magnetic reference. Falls back to tilt-only when no magnetometer,
+        # no reference, or a near-vertical field (heading unobservable).
+        q_tilt = _tilt_quaternion(ds.accel[0])
+        if ds.mag is None:
+            return q_tilt
+        m_ref = _mag_reference(ds, "calibration", calib_seconds)
+        if m_ref is None:
+            return q_tilt
+        m_lev = quat.rotate_vector(q_tilt, ds.mag[0])
+        if (np.hypot(m_lev[0], m_lev[1]) < 0.05 * np.linalg.norm(m_lev)
+                or np.hypot(m_ref[0], m_ref[1]) < 0.05 * np.linalg.norm(m_ref)):
+            return q_tilt
+        dpsi = np.arctan2(m_ref[1], m_ref[0]) - np.arctan2(m_lev[1], m_lev[0])
+        return quat.normalize(quat.mul(quat.exp(np.array([0.0, 0.0, dpsi])), q_tilt))
     if mode.startswith("perturbed_"):
         deg = float(mode.split("_")[1])
-        rng = np.random.default_rng(abs(hash(ds.name)) % 2**32)
+        seed = int.from_bytes(hashlib.sha256(ds.name.encode()).digest()[:8], "little")
+        rng = np.random.default_rng(seed)
         axis = rng.standard_normal(3)
         axis /= np.linalg.norm(axis)
         return quat.normalize(quat.mul(ds.q_ref[first], quat.exp(np.deg2rad(deg) * axis)))
@@ -169,7 +208,7 @@ def evaluate_trial(path: Path, args) -> tuple[dict, dict]:
     if args.config == "per-dataset":
         cfg.update(PER_DATASET.get(path.parent.name, {}))
 
-    q0 = _initial_attitude(ds, args.init)
+    q0 = _initial_attitude(ds, args.init, args.calib_seconds)
     m_ref = _mag_reference(ds, args.mag_reference, args.calib_seconds)
 
     def make(d):
@@ -188,6 +227,11 @@ def evaluate_trial(path: Path, args) -> tuple[dict, dict]:
     report = replay_attitude(ds, make, update, settle_s=args.calib_seconds)
     out = asdict(report)
     out["mag_aided"] = m_ref is not None
+    out["noise_values"] = cfg
+    out["heading_observable"] = m_ref is not None
+    out["heading_reference"] = "mag" if m_ref is not None else "none"
+    out["heading_metric_interpretation"] = (
+        "aligned-absolute" if m_ref is not None else "drift-only")
     out["conventions"] = conventions
     return out, cfg
 
@@ -197,7 +241,7 @@ def main(argv=None) -> int:
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--limit-per-collection", type=int, default=None,
                     help="evaluate at most N trials per collection")
-    ap.add_argument("--init", choices=INIT_MODES, default="ground_truth")
+    ap.add_argument("--init", choices=INIT_MODES, default="accel_tilt")
     ap.add_argument("--mag-reference", choices=MAG_MODES, default="calibration")
     ap.add_argument("--config", choices=("universal", "per-dataset"), default="universal")
     ap.add_argument("--calib-seconds", type=float, default=5.0)
@@ -225,13 +269,14 @@ def main(argv=None) -> int:
         paths = [p for group in by_dir.values() for p in group[: args.limit_per_collection]]
 
     reports, failures = [], []
-    cfg_used: dict = {}
+    noise_by_collection: dict = {}
     for p in paths:
         rel = str(p.relative_to(root))
         try:
-            out, cfg_used = evaluate_trial(p, args)
+            out, cfg = evaluate_trial(p, args)
             out["path"] = rel
             out["collection"] = collection_of(p)
+            noise_by_collection[out["collection"]] = cfg
             reports.append(out)
             print(f"{out['collection']:15s} {out['dataset'][:36]:36s} "
                   f"rmse={out['rmse_deg']:6.2f}° tilt={out['tilt_rmse_deg']:5.2f}° "
@@ -249,11 +294,15 @@ def main(argv=None) -> int:
     for r in reports:
         by_coll[r["collection"]].append(r)
     for coll, rs in sorted(by_coll.items()):
+        # heading medians only over trials where heading is observable (mag
+        # reference in use); "n/a" when the collection has none.
+        heading = [r["heading_rmse_deg"] for r in rs if r["heading_observable"]]
         agg[coll] = {
             "trials": len(rs),
             "median_rmse_deg": float(np.median([r["rmse_deg"] for r in rs])),
             "median_tilt_rmse_deg": float(np.median([r["tilt_rmse_deg"] for r in rs])),
-            "median_heading_rmse_deg": float(np.median([r["heading_rmse_deg"] for r in rs])),
+            "median_heading_rmse_deg": float(np.median(heading)) if heading else "n/a",
+            "heading_observable_trials": len(heading),
             "median_realtime_factor": float(np.median([r["realtime_factor"] for r in rs])),
             "mag_aided_trials": int(sum(r["mag_aided"] for r in rs)),
         }
@@ -267,7 +316,8 @@ def main(argv=None) -> int:
             "mag_reference_mode": args.mag_reference,
             "mag_reference_is_oracle": args.mag_reference == "oracle",
             "noise_config": args.config,
-            "noise_values": cfg_used or UNIVERSAL,
+            "noise_values": (dict(UNIVERSAL) if args.config == "universal"
+                             else noise_by_collection),
             "calibration_segment_s": args.calib_seconds,
             "aggregation": "median over trials per collection",
             "metrics_exclude": "calibration segment and ground-truth gaps",
@@ -324,13 +374,20 @@ def _write_markdown(path: Path, payload: dict) -> None:
         f"(rate {s['failure_rate']:.3f})",
         "",
         "| collection | trials | median RMSE [°] | median tilt [°] | "
-        "median heading [°] | mag-aided | median RTF |",
-        "|---|---|---|---|---|---|---|",
+        "median heading [°] | heading status | mag-aided | median RTF |",
+        "|---|---|---|---|---|---|---|---|",
     ]
     for coll, a in sorted(payload["aggregate"].items()):
+        h = a["median_heading_rmse_deg"]
+        if h == "n/a":
+            h_cell, h_status = "n/a", "unobservable (drift-only)"
+        else:
+            h_cell = f"{h:.2f}"
+            h_status = (f"aligned-absolute "
+                        f"({a['heading_observable_trials']}/{a['trials']} trials)")
         lines.append(
             f"| {coll} | {a['trials']} | {a['median_rmse_deg']:.2f} | "
-            f"{a['median_tilt_rmse_deg']:.2f} | {a['median_heading_rmse_deg']:.2f} | "
+            f"{a['median_tilt_rmse_deg']:.2f} | {h_cell} | {h_status} | "
             f"{a['mag_aided_trials']}/{a['trials']} | "
             f"{a['median_realtime_factor']:.0f}x |")
     if payload["failures"]:
