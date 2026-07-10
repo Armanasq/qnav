@@ -30,9 +30,11 @@ from __future__ import annotations
 
 import numpy as np
 
+from qnav._validate import ensure_covariance, ensure_nonnegative, ensure_positive, ensure_vector3
 from qnav.attitude import quaternion as quat
 from qnav.attitude import so3
 from qnav.filters.base import AttitudeFilter
+from qnav.types import ArrayLike
 
 __all__ = ["Eskf"]
 
@@ -62,19 +64,17 @@ class Eskf(AttitudeFilter):
         nav_frame: str = "NED",
     ) -> None:
         super().__init__(q0=q0, nav_frame=nav_frame)
-        self.bias = np.zeros(3) if b0 is None else np.asarray(b0, dtype=float).copy()
-        self.sigma_g = float(gyro_noise_density)
-        self.sigma_bw = float(gyro_bias_walk)
+        self.bias = np.zeros(3) if b0 is None else ensure_vector3(b0, "b0").copy()
+        self.sigma_g = ensure_nonnegative(gyro_noise_density, "gyro_noise_density")
+        self.sigma_bw = ensure_nonnegative(gyro_bias_walk, "gyro_bias_walk")
         if P0 is None:
             P0 = np.diag([0.1**2] * 3 + [0.01**2] * 3)
-        self.P = np.asarray(P0, dtype=float).copy()
-        if self.P.shape != (6, 6):
-            raise ValueError("P0 must be 6×6 over [δθ, δb]")
+        self.P = ensure_covariance(P0, 6, "P0").copy()
 
     # -- prediction --------------------------------------------------------
-    def predict(self, omega_meas: np.ndarray, dt: float) -> np.ndarray:
+    def _predict(self, omega_body: np.ndarray, dt: float) -> np.ndarray:
         """Propagate nominal state and error covariance with one gyro sample."""
-        w_hat = np.asarray(omega_meas, dtype=float) - self.bias
+        w_hat = omega_body - self.bias
         phi = w_hat * dt
         self.q = quat.normalize(quat.mul(self.q, quat.exp(phi)))
 
@@ -92,7 +92,7 @@ class Eskf(AttitudeFilter):
 
     # -- updates -----------------------------------------------------------
     def update_direction(
-        self, v_nav: np.ndarray, v_body_meas: np.ndarray, sigma: float
+        self, v_nav: ArrayLike, v_body_meas: ArrayLike, sigma: float
     ) -> np.ndarray:
         """Fuse a unit-direction measurement (e.g. gravity or magnetic field).
 
@@ -102,12 +102,16 @@ class Eskf(AttitudeFilter):
 
         Returns the innovation (3-vector) for monitoring.
         """
-        vn = np.asarray(v_nav, dtype=float)
-        vn = vn / np.linalg.norm(vn)
-        vb = np.asarray(v_body_meas, dtype=float)
+        sigma = ensure_positive(sigma, "sigma")
+        vn = ensure_vector3(v_nav, "v_nav")
+        nn = np.linalg.norm(vn)
+        if nn < 1e-12:
+            raise ValueError("v_nav must have non-zero norm")
+        vn = vn / nn
+        vb = ensure_vector3(v_body_meas, "v_body_meas")
         nb = np.linalg.norm(vb)
         if nb < 1e-12:
-            raise ValueError("zero-norm body measurement")
+            raise ValueError("v_body_meas must have non-zero norm")
         vb = vb / nb
 
         v_hat = quat.rotate_frame(self.q, vn)  # R̂ᵀ v_nav
@@ -126,14 +130,14 @@ class Eskf(AttitudeFilter):
         self._inject(dx)
         return innov
 
-    def update_gravity(self, f_body: np.ndarray, sigma: float) -> np.ndarray:
+    def update_gravity(self, f_body: ArrayLike, sigma: float) -> np.ndarray:
         """Accelerometer update assuming low dynamics: the measured specific
         force direction equals the body-frame "up" direction
         (``−g_nav`` normalized: ``[0,0,−1]`` NED, ``[0,0,+1]`` ENU)."""
         up = np.array([0.0, 0.0, -1.0]) if self.nav_frame == "NED" else np.array([0.0, 0.0, 1.0])
         return self.update_direction(up, f_body, sigma)
 
-    def update_magnetometer(self, m_nav: np.ndarray, m_body: np.ndarray, sigma: float) -> np.ndarray:
+    def update_magnetometer(self, m_nav: ArrayLike, m_body: ArrayLike, sigma: float) -> np.ndarray:
         """Magnetometer update against the known local field direction
         ``m_nav`` (gate disturbances upstream — see ``qnav.heading.disturbance``)."""
         return self.update_direction(m_nav, m_body, sigma)

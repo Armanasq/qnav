@@ -8,6 +8,8 @@ from __future__ import annotations
 
 import numpy as np
 
+from qnav.types import ScalarOrArray
+
 from qnav.attitude import quaternion as quat
 
 __all__ = ["slerp", "nlerp", "slerp_series"]
@@ -22,7 +24,7 @@ def _align(q0: np.ndarray, q1: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
     return q0, np.where(d < 0, -q1, q1)
 
 
-def slerp(q0: np.ndarray, q1: np.ndarray, t: np.ndarray) -> np.ndarray:
+def slerp(q0: np.ndarray, q1: np.ndarray, t: ScalarOrArray) -> np.ndarray:
     """Spherical linear interpolation ``q(t) = q0 ⊗ Exp(t·Log(q0* ⊗ q1))``.
 
     Constant angular velocity along the geodesic; ``t`` may be scalar or

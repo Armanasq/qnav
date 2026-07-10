@@ -22,6 +22,8 @@ import warnings
 
 import numpy as np
 
+from qnav.types import ScalarOrArray
+
 from qnav.errors import DegenerateGeometryWarning
 from qnav.heading.tilt_compensation import detilt, roll_pitch_from_accel
 
@@ -37,7 +39,7 @@ def wrap_heading(psi: np.ndarray) -> np.ndarray:
     return np.mod(np.asarray(psi, dtype=float), 2.0 * np.pi)
 
 
-def heading_difference(psi1: np.ndarray, psi2: np.ndarray) -> np.ndarray:
+def heading_difference(psi1: ScalarOrArray, psi2: ScalarOrArray) -> np.ndarray:
     """Signed smallest difference ``psi1 − psi2`` in ``(−π, π]``."""
     d = np.asarray(psi1, dtype=float) - np.asarray(psi2, dtype=float)
     return np.pi - np.mod(np.pi - d, 2.0 * np.pi)
@@ -63,7 +65,7 @@ def magnetic_heading(
     return wrap_heading(np.where(bad, 0.0, np.arctan2(-my, mx)))
 
 
-def true_heading(psi_mag: np.ndarray, declination: np.ndarray) -> np.ndarray:
+def true_heading(psi_mag: ScalarOrArray, declination: ScalarOrArray) -> np.ndarray:
     """True heading = magnetic heading + declination (declination positive east)."""
     return wrap_heading(np.asarray(psi_mag, dtype=float) + np.asarray(declination, dtype=float))
 

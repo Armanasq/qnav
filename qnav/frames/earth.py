@@ -15,6 +15,8 @@ from __future__ import annotations
 
 import numpy as np
 
+from qnav.types import ScalarOrArray
+
 from qnav.errors import ConventionError
 
 __all__ = [
@@ -39,7 +41,7 @@ DCM_ENU_NED = np.array([[0.0, 1.0, 0.0], [1.0, 0.0, 0.0], [0.0, 0.0, -1.0]])
 DCM_NED_ENU = DCM_ENU_NED  # involutory
 
 
-def geodetic_to_ecef(lat: np.ndarray, lon: np.ndarray, h: np.ndarray) -> np.ndarray:
+def geodetic_to_ecef(lat: ScalarOrArray, lon: ScalarOrArray, h: ScalarOrArray) -> np.ndarray:
     """ECEF position from geodetic ``(lat, lon, h)`` (radians, meters).
 
     ``N = a/√(1 − e² sin²lat)``;
@@ -82,7 +84,7 @@ def ecef_to_geodetic(r_ecef: np.ndarray, max_iter: int = 10, tol: float = 1e-12)
     return lat, lon, h
 
 
-def dcm_ecef_to_ned(lat: np.ndarray, lon: np.ndarray) -> np.ndarray:
+def dcm_ecef_to_ned(lat: ScalarOrArray, lon: ScalarOrArray) -> np.ndarray:
     """``R_NED_ECEF``: rows are the N, E, D unit vectors in ECEF coordinates."""
     lat = np.asarray(lat, dtype=float)
     lon = np.asarray(lon, dtype=float)
@@ -95,17 +97,17 @@ def dcm_ecef_to_ned(lat: np.ndarray, lon: np.ndarray) -> np.ndarray:
     return R
 
 
-def dcm_ned_to_ecef(lat: np.ndarray, lon: np.ndarray) -> np.ndarray:
+def dcm_ned_to_ecef(lat: ScalarOrArray, lon: ScalarOrArray) -> np.ndarray:
     """``R_ECEF_NED = R_NED_ECEFᵀ``."""
     return np.swapaxes(dcm_ecef_to_ned(lat, lon), -1, -2)
 
 
-def dcm_ecef_to_enu(lat: np.ndarray, lon: np.ndarray) -> np.ndarray:
+def dcm_ecef_to_enu(lat: ScalarOrArray, lon: ScalarOrArray) -> np.ndarray:
     """``R_ENU_ECEF = DCM_ENU_NED @ R_NED_ECEF``."""
     return DCM_ENU_NED @ dcm_ecef_to_ned(lat, lon)
 
 
-def dcm_enu_to_ecef(lat: np.ndarray, lon: np.ndarray) -> np.ndarray:
+def dcm_enu_to_ecef(lat: ScalarOrArray, lon: ScalarOrArray) -> np.ndarray:
     """``R_ECEF_ENU = R_ENU_ECEFᵀ``."""
     return np.swapaxes(dcm_ecef_to_enu(lat, lon), -1, -2)
 
@@ -126,7 +128,7 @@ def dcm_eci_to_ecef(gst: np.ndarray) -> np.ndarray:
     return R
 
 
-def normal_gravity(lat: np.ndarray, h: np.ndarray = 0.0) -> np.ndarray:
+def normal_gravity(lat: ScalarOrArray, h: ScalarOrArray = 0.0) -> np.ndarray:
     """Somigliana normal gravity magnitude [m/s²] with free-air correction.
 
     ``γ = γ_e (1 + k sin²φ)/√(1 − e² sin²φ)`` with WGS-84 constants
@@ -146,7 +148,7 @@ def normal_gravity(lat: np.ndarray, h: np.ndarray = 0.0) -> np.ndarray:
     )
 
 
-def gravity_vector(lat: np.ndarray, h: np.ndarray = 0.0, frame: str = "NED") -> np.ndarray:
+def gravity_vector(lat: ScalarOrArray, h: ScalarOrArray = 0.0, frame: str = "NED") -> np.ndarray:
     """Gravity vector in the local tangent frame: ``[0,0,+γ]`` NED, ``[0,0,−γ]`` ENU."""
     g = normal_gravity(lat, h)
     z = np.zeros_like(g)
@@ -157,7 +159,7 @@ def gravity_vector(lat: np.ndarray, h: np.ndarray = 0.0, frame: str = "NED") -> 
     raise ConventionError(f"frame must be 'NED' or 'ENU', got {frame!r}")
 
 
-def earth_rate_ned(lat: np.ndarray) -> np.ndarray:
+def earth_rate_ned(lat: ScalarOrArray) -> np.ndarray:
     """Earth rotation rate expressed in NED: ``ω_ie = Ω[cosφ, 0, −sinφ]``."""
     lat = np.asarray(lat, dtype=float)
     return WGS84_OMEGA * np.stack(
@@ -165,7 +167,7 @@ def earth_rate_ned(lat: np.ndarray) -> np.ndarray:
     )
 
 
-def meridian_radius(lat: np.ndarray) -> np.ndarray:
+def meridian_radius(lat: ScalarOrArray) -> np.ndarray:
     """Meridian (north-south) radius of curvature ``M = a(1−e²)/(1−e²sin²φ)^{3/2}``.
 
     The radius governing latitude rate: ``φ̇ = v_N / (M + h)``.
@@ -175,7 +177,7 @@ def meridian_radius(lat: np.ndarray) -> np.ndarray:
     return WGS84_A * (1.0 - WGS84_E2) / (1.0 - WGS84_E2 * s2) ** 1.5
 
 
-def transverse_radius(lat: np.ndarray) -> np.ndarray:
+def transverse_radius(lat: ScalarOrArray) -> np.ndarray:
     """Transverse (east-west / prime-vertical) radius ``N = a/√(1−e²sin²φ)``.
 
     Governs longitude rate: ``λ̇ = v_E / ((N + h) cos φ)``.
@@ -184,13 +186,13 @@ def transverse_radius(lat: np.ndarray) -> np.ndarray:
     return WGS84_A / np.sqrt(1.0 - WGS84_E2 * np.sin(lat) ** 2)
 
 
-def gaussian_radius(lat: np.ndarray) -> np.ndarray:
+def gaussian_radius(lat: ScalarOrArray) -> np.ndarray:
     """Gaussian mean radius of curvature ``√(M·N)`` — the single-radius
     spherical approximation that matches the ellipsoid locally."""
     return np.sqrt(meridian_radius(lat) * transverse_radius(lat))
 
 
-def transport_rate_ned(lat: np.ndarray, v_ned: np.ndarray, h: np.ndarray = 0.0) -> np.ndarray:
+def transport_rate_ned(lat: ScalarOrArray, v_ned: np.ndarray, h: ScalarOrArray = 0.0) -> np.ndarray:
     """Transport rate ``ω_EN`` in NED: rotation of the local-level frame due
     to vehicle motion over the curved Earth.
 

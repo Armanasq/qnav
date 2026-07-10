@@ -17,6 +17,8 @@ from __future__ import annotations
 
 import numpy as np
 
+from qnav.types import ScalarOrArray
+
 from qnav.errors import ConventionError
 from qnav.frames.earth import DCM_ENU_NED
 
@@ -28,7 +30,7 @@ _MU0_4PI = 1e-7  # [T·m/A]
 
 
 def field_from_elements(
-    declination: np.ndarray, inclination: np.ndarray, intensity: np.ndarray = 1.0,
+    declination: ScalarOrArray, inclination: ScalarOrArray, intensity: ScalarOrArray = 1.0,
     frame: str = "NED",
 ) -> np.ndarray:
     """Local field vector from (D, I, B). Radians; intensity in caller's units."""
@@ -58,7 +60,7 @@ def elements_from_field(m: np.ndarray, frame: str = "NED"):
     return D, inc, B
 
 
-def dipole_field(lat_mag: np.ndarray, r: np.ndarray = 6371008.8) -> np.ndarray:
+def dipole_field(lat_mag: ScalarOrArray, r: ScalarOrArray = 6371008.8) -> np.ndarray:
     """Centered-dipole field in NED at geomagnetic latitude ``lat_mag`` [rad].
 
     ``B_N = −(µ0 m / 4π r³)·cos λ_m``? — explicit standard result:

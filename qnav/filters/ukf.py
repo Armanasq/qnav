@@ -103,7 +103,7 @@ class UkfAttitude(AttitudeFilter):
         return q_mean, d
 
     # -- prediction ----------------------------------------------------------
-    def predict(self, omega_body: np.ndarray, dt: float) -> np.ndarray:
+    def _predict(self, omega_body: np.ndarray, dt: float) -> np.ndarray:
         """Unscented propagation through the gyro exponential map."""
         qs = self._sigma_quaternions()
         dq = quat.exp(np.asarray(omega_body, dtype=float) * dt)

@@ -89,5 +89,5 @@ class MadgwickStyleFilter(AttitudeFilter):
         self.q = quat.normalize(self.q + qd * dt)
         return self.q
 
-    def predict(self, omega_body: np.ndarray, dt: float) -> np.ndarray:
+    def _predict(self, omega_body: np.ndarray, dt: float) -> np.ndarray:
         return self.step(omega_body, dt)

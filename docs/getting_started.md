@@ -15,7 +15,7 @@ Development install from source:
 git clone https://github.com/armanasq/qnav
 cd qnav
 pip install -e ".[dev]"
-pytest -q                            # 248 tests
+pytest -q
 ```
 
 ---
@@ -83,8 +83,10 @@ q_half = quat.power(quat.relative(q_WB, q_WL), 0.5)
 ### DCM (Direction Cosine Matrix)
 
 ```python
+import numpy as np
 from qnav.attitude import dcm as dcm_mod, quaternion as quat
 
+q = quat.exp(np.array([0.0, 0.0, np.pi / 2]))
 R = dcm_mod.from_quaternion(q)     # shape (3, 3), R ∈ SO(3)
 q_back = dcm_mod.to_quaternion(R)  # Shepperd's method, 4-branch stable
 
@@ -95,6 +97,7 @@ Rz = dcm_mod.rot_z(0.3)
 
 # Nearest rotation in Frobenius norm (never applied silently)
 from qnav.attitude.so3 import project
+R_noisy = R + 1e-4 * np.random.default_rng(0).standard_normal((3, 3))
 R_clean = project(R_noisy)
 ```
 
@@ -111,7 +114,9 @@ q = euler.to_quaternion(angles, seq="ZYX")
 
 # Recovery: near gimbal lock issues GimbalLockWarning and sets third angle = 0
 import warnings
+q_near_gimbal = euler.to_quaternion(np.array([0.3, np.pi / 2 - 1e-9, 0.1]), seq="ZYX")
 with warnings.catch_warnings(record=True) as w:
+    warnings.simplefilter("always")
     recovered = euler.from_quaternion(q_near_gimbal, seq="ZYX")
 
 # All 18 sequences (12 Tait-Bryan + 6 proper), intrinsic (uppercase) or extrinsic (lowercase)
@@ -122,6 +127,7 @@ R_xyz = euler.to_dcm(angles, seq="xyz")    # extrinsic = intrinsic ZYX reversed
 ### SO(3) Lie group
 
 ```python
+import numpy as np
 from qnav.attitude import so3
 
 # hat: ℝ³ → so(3)  |  vee: so(3) → ℝ³
@@ -155,21 +161,22 @@ from qnav.frames import Frame, FrameTransform
 from qnav.attitude import quaternion as quat
 import numpy as np
 
-BODY  = Frame("BODY")
-IMU   = Frame("IMU")
+BODY = Frame("BODY", axes="x:forward y:right z:down", kind="body")
+IMU = Frame("IMU", kind="sensor")
 
 # A static sensor-to-body transform: 5° misalignment about z
 q_body_imu = quat.exp(np.array([0.0, 0.0, np.deg2rad(5)]))
 t_body_imu = np.array([0.1, 0.0, -0.05])  # lever arm [m]
 
-T = FrameTransform(q=q_body_imu, t=t_body_imu, from_frame=IMU, to_frame=BODY)
+T = FrameTransform(target="BODY", source="IMU",
+                   rotation=q_body_imu, translation=t_body_imu)
 
 # Transform a velocity measured in IMU frame
 v_imu = np.array([1.0, 0.0, 0.0])
-v_body = T.apply_vector(v_imu)   # raises FrameMismatchError if frame is wrong
+v_body = T.apply_vector(v_imu)   # rotation only; apply_point adds the lever arm
 
 # Inverse
-T_inv = T.inverse()              # from_frame=BODY, to_frame=IMU
+T_inv = T.inverse()              # target="IMU", source="BODY"
 ```
 
 ### Earth frames and geodesy
@@ -201,12 +208,18 @@ lat2, lon2, h2 = ecef_to_geodetic(r_ecef)  # Bowring iteration, sub-mm accuracy
 ### Gyro bias from static data
 
 ```python
+import numpy as np
 from qnav.calibration.gyro_bias import detect_static_intervals, estimate_bias
 
-# gyro: (N, 3), accel: (N, 3), dt: sample period
+# gyro: (N, 3), accel: (N, 3) — here: 30 s static with a 0.01 rad/s x-bias
+rng = np.random.default_rng(0)
+n = 3000
+gyro = np.array([0.01, 0.0, 0.0]) + 1e-4 * rng.standard_normal((n, 3))
+accel = np.array([0.0, 0.0, -9.81]) + 1e-3 * rng.standard_normal((n, 3))
+
 static_mask = detect_static_intervals(gyro, accel, dt=0.01)
 bias, sigma = estimate_bias(gyro, static_mask)
-print(f"bias: {np.rad2deg(bias * 3600)} deg/hr ± {np.rad2deg(sigma * 3600)} deg/hr")
+print(f"bias: {np.rad2deg(bias) * 3600} deg/hr ± {np.rad2deg(sigma) * 3600} deg/hr")
 ```
 
 Static detection uses three gates: per-axis gyro std < threshold, accelerometer-magnitude std < threshold, and mean ‖ω‖ < magnitude threshold. The magnitude gate is what makes the method robust to constant-rate spins (which pass the variance gate but are not static).
@@ -214,15 +227,21 @@ Static detection uses three gates: per-axis gyro std < threshold, accelerometer-
 ### Magnetometer ellipsoid calibration
 
 ```python
-from qnav.calibration.mag_ellipsoid import fit_ellipsoid, MagCalibration
+import numpy as np
+from qnav.attitude import quaternion as quat
+from qnav.calibration.mag_ellipsoid import fit_ellipsoid
 
-# Collect raw_data while rotating the device through all orientations
-# Shape: (N, 3), no particular order required
-ellipsoid = fit_ellipsoid(raw_data)    # raises CalibrationError if SPD check fails
-cal = MagCalibration(ellipsoid)
+# Collect raw readings while rotating the device through all orientations
+# Shape: (N, 3), no particular order required (simulated here)
+rng = np.random.default_rng(0)
+field = np.array([0.2, 0.0, 0.45])
+qs = quat.random((400,), rng=rng)
+raw_data = np.stack([quat.rotate_frame(q, field) for q in qs]) + np.array([0.05, -0.02, 0.01])
+
+cal = fit_ellipsoid(raw_data)    # returns MagCalibration; raises CalibrationError if SPD check fails
 
 # Apply to new readings
-m_corrected = cal.correct(m_raw)
+m_corrected = cal.correct(raw_data)
 ```
 
 The fit uses SVD on the quadric form `‖A m + b‖² = 1`, validates positive-definiteness of A (an improper ellipsoid fit indicates bad data), and returns the Cholesky correction map that centers and spheres the data.
@@ -230,11 +249,15 @@ The fit uses SVD on the quadric form `‖A m + b‖² = 1`, validates positive-d
 ### Allan variance
 
 ```python
-from qnav.sensors.allan import overlapping_allan_variance, identify_noise
+import numpy as np
+from qnav.sensors.allan import allan_deviation, identify_noise
 
-taus, adev = overlapping_allan_variance(gyro_data[:, 0], dt=1/200)
+rng = np.random.default_rng(0)
+gyro_data = 0.005 * np.sqrt(200) * rng.standard_normal((20000, 3))  # white noise at 200 Hz
+
+taus, adev = allan_deviation(gyro_data[:, 0], dt=1 / 200)
 params = identify_noise(taus, adev)
-print(f"ARW: {params['noise_density']:.4f} rad/s/√Hz")
+print(f"ARW: {params['density']:.4f} rad/s/√Hz")
 print(f"bias instability: {params['bias_instability']:.6f} rad/s")
 ```
 
@@ -249,8 +272,8 @@ from qnav.filters import Eskf
 from qnav.heading.magnetic_model import field_from_elements
 import numpy as np
 
-# Build the reference field: dip 60°, declination 0°, unit magnitude
-M_NAV = field_from_elements(declination=0.0, inclination=np.deg2rad(60.0), magnitude=1.0)
+# Build the reference field: dip 60°, declination 0°, unit intensity
+M_NAV = field_from_elements(declination=0.0, inclination=np.deg2rad(60.0), intensity=1.0)
 
 f = Eskf(
     gyro_noise_density=0.005,   # rad/s/√Hz
@@ -258,11 +281,16 @@ f = Eskf(
     nav_frame="NED",
 )
 
-for k in range(n_steps):
-    f.predict(gyro[k], dt)
+rng = np.random.default_rng(0)
+dt = 0.01
+for k in range(500):                 # static body, noisy sensors
+    gyro = 0.005 * rng.standard_normal(3)
+    accel = np.array([0.0, 0.0, -9.81]) + 0.05 * rng.standard_normal(3)
+    mag = M_NAV + 0.02 * rng.standard_normal(3)
+    f.predict(gyro, dt)
     if k % 5 == 0:                   # fuse aiding sensors at 20 Hz
-        f.update_gravity(accel[k], sigma=0.02)
-        f.update_magnetometer(M_NAV, mag[k], sigma=0.02)
+        f.update_gravity(accel, sigma=0.02)
+        f.update_magnetometer(M_NAV, mag, sigma=0.02)
 
 # Extract results
 q_nav_body = f.q
@@ -293,9 +321,11 @@ pytest --tb=short -q               # compact failure output
 The `qnav.validation` module exposes the mathematical invariants and reference cases used internally:
 
 ```python
-from qnav.validation.invariants import check_all
+import numpy as np
+from qnav.validation import invariants
 from qnav.attitude import quaternion as quat
 
 q = quat.random((), rng=np.random.default_rng(0))
-results = check_all(q)     # returns dict of {invariant_name: pass/fail}
+assert invariants.quaternion_norm_violation(q) < 1e-12
+assert invariants.exp_log_roundtrip_violation(np.array([0.1, -0.2, 0.3])) < 1e-12
 ```

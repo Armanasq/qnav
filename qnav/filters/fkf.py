@@ -88,7 +88,7 @@ class FastKalmanFilter(AttitudeFilter):
         if self.P.shape != (4, 4):
             raise ValueError("P0 must be 4×4")
 
-    def predict(self, omega_body: np.ndarray, dt: float) -> np.ndarray:
+    def _predict(self, omega_body: np.ndarray, dt: float) -> np.ndarray:
         """First-order transition + process noise via the rate Jacobian Ξ(q)."""
         w = np.asarray(omega_body, dtype=float)
         Phi = np.eye(4) + 0.5 * dt * self._omega4(w)

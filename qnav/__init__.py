@@ -18,8 +18,22 @@ Normative conventions: ``docs/conventions.md``.
 
 __version__ = "0.1.0"
 
-from qnav import attitude, frames  # noqa: F401
+from qnav import (  # noqa: F401
+    attitude,
+    calibration,
+    determination,
+    filters,
+    frames,
+    geomag,
+    heading,
+    metrics,
+    sensors,
+    simulation,
+    types,
+    validation,
+)
 from qnav.errors import (  # noqa: F401
+    CalibrationError,
     ConventionError,
     DegenerateGeometryWarning,
     FrameGraphError,
@@ -29,3 +43,15 @@ from qnav.errors import (  # noqa: F401
     QnavError,
     QnavWarning,
 )
+
+#: Supported public API: these subpackages and exceptions. Modules or symbols
+#: prefixed with ``_`` are internal and may change without deprecation.
+__all__ = [
+    "__version__",
+    "attitude", "calibration", "determination", "filters", "frames",
+    "geomag", "heading", "metrics", "sensors", "simulation", "types",
+    "validation",
+    "QnavError", "QnavWarning", "CalibrationError", "ConventionError",
+    "FrameGraphError", "FrameMismatchError", "DegenerateGeometryWarning",
+    "GimbalLockWarning", "NormalizationWarning",
+]
