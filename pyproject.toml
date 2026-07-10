@@ -24,6 +24,7 @@ classifiers = [
 dependencies = ["numpy>=1.22"]
 
 [project.optional-dependencies]
+datasets = ["h5py>=3.8"]
 interop = ["scipy>=1.7", "pandas>=1.3"]
 test = ["pytest>=7", "hypothesis>=6", "pytest-cov"]
 docs = [
@@ -61,7 +62,7 @@ no_implicit_optional = true
 # optional interop dependencies: adapters import them lazily; stubs are not
 # a runtime requirement
 [[tool.mypy.overrides]]
-module = ["scipy.*", "pandas.*"]
+module = ["scipy.*", "pandas.*", "h5py.*"]
 ignore_missing_imports = true
 
 [tool.pytest.ini_options]

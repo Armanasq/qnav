@@ -1,0 +1,10 @@
+{
+  "cpu": "13th Gen Intel(R) Core(TM) i9-13980HX",
+  "architecture": "x86_64",
+  "os": "Linux-6.8.0-124-generic-x86_64-with-glibc2.35",
+  "python": "3.10.12",
+  "numpy": "1.26.4",
+  "blas": "openblas64",
+  "threads": 32,
+  "commit": "49f3b90"
+}

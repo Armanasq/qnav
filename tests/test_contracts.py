@@ -193,3 +193,37 @@ class TestInnovationStatistics:
         assert stats.mean_nis == pytest.approx(3.0, rel=0.1)
         assert stats.var_nis == pytest.approx(6.0, rel=0.2)
         assert stats.accepted == 2000 and stats.consecutive_rejections == 0
+
+
+class TestMeasurementImmutability:
+    """Phase 11 hardening: measurements are deeply immutable after construction."""
+
+    def test_arrays_are_defensive_copies(self):
+        v = np.array([1.0, 2.0, 3.0])
+        m = Measurement(value=v, timestamp=0.0)
+        v[0] = 99.0
+        assert m.value[0] == 1.0
+
+    def test_arrays_are_write_protected(self):
+        m = Measurement(value=np.zeros(3), timestamp=0.0, covariance=np.eye(3))
+        with pytest.raises(ValueError):
+            m.value[0] = 1.0
+        with pytest.raises(ValueError):
+            m.covariance[0, 0] = 5.0
+
+    def test_covariance_must_be_symmetric_psd(self):
+        asym = np.eye(3)
+        asym[0, 1] = 0.5
+        with pytest.raises(ValueError, match="symmetric"):
+            Measurement(value=np.zeros(3), timestamp=0.0, covariance=asym)
+        with pytest.raises(ValueError, match="semidefinite"):
+            Measurement(value=np.zeros(3), timestamp=0.0,
+                        covariance=np.diag([1.0, 1.0, -1.0]))
+
+    def test_sequence_id_nonnegative(self):
+        with pytest.raises(ValueError, match="sequence_id"):
+            Measurement(value=np.zeros(3), timestamp=0.0, sequence_id=-1)
+
+    def test_string_field_types(self):
+        with pytest.raises(TypeError):
+            Measurement(value=np.zeros(3), timestamp=0.0, sensor_id=7)

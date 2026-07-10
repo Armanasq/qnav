@@ -1,0 +1,2208 @@
+{
+  "environment": {
+    "cpu": "13th Gen Intel(R) Core(TM) i9-13980HX",
+    "architecture": "x86_64",
+    "os": "Linux-6.8.0-124-generic-x86_64-with-glibc2.35",
+    "python": "3.10.12",
+    "numpy": "1.26.4",
+    "blas": "openblas64",
+    "threads": 32,
+    "commit": "49f3b90"
+  },
+  "configuration": {
+    "estimator": "Eskf (gate 0.999, gravity always, mag when referenced)",
+    "init_mode": "accel_mag",
+    "init_is_oracle": false,
+    "mag_reference_mode": "calibration",
+    "mag_reference_is_oracle": false,
+    "noise_config": "universal",
+    "noise_values": {
+      "gyro_nd": 0.005,
+      "gyro_bw": 1e-05,
+      "acc_sigma": 0.05,
+      "mag_sigma": 0.1
+    },
+    "calibration_segment_s": 5.0,
+    "aggregation": "median over trials per collection",
+    "metrics_exclude": "calibration segment and ground-truth gaps",
+    "dataset_licenses": "see qnav/data provenance; public research benchmarks (BROAD-format exports)"
+  },
+  "summary": {
+    "trials_succeeded": 52,
+    "trials_failed": 0,
+    "failure_rate": 0.0
+  },
+  "aggregate": {
+    "Caruso-Sassari": {
+      "trials": 8,
+      "median_rmse_deg": 2.910197118355394,
+      "median_tilt_rmse_deg": 1.9733099162481134,
+      "median_heading_rmse_deg": 2.262605137810704,
+      "median_realtime_factor": 22.488359866116944,
+      "mag_aided_trials": 8
+    },
+    "EuRoC-MAV": {
+      "trials": 6,
+      "median_rmse_deg": 80.50337674794088,
+      "median_tilt_rmse_deg": 3.484550260893744,
+      "median_heading_rmse_deg": 80.42351283736606,
+      "median_realtime_factor": 19.24249679973928,
+      "mag_aided_trials": 0
+    },
+    "Myon": {
+      "trials": 8,
+      "median_rmse_deg": 47.35255333775079,
+      "median_tilt_rmse_deg": 0.5952273224915738,
+      "median_heading_rmse_deg": 47.31411387936491,
+      "median_realtime_factor": 13.101743903781838,
+      "mag_aided_trials": 0
+    },
+    "OxIOD": {
+      "trials": 8,
+      "median_rmse_deg": 4.282063901181708,
+      "median_tilt_rmse_deg": 2.485492224399192,
+      "median_heading_rmse_deg": 3.3282810392371633,
+      "median_realtime_factor": 21.110051848191503,
+      "mag_aided_trials": 8
+    },
+    "RepoIMU": {
+      "trials": 8,
+      "median_rmse_deg": 0.9641586586710409,
+      "median_tilt_rmse_deg": 0.5225359932833424,
+      "median_heading_rmse_deg": 0.6818438429750056,
+      "median_realtime_factor": 24.262194045400328,
+      "mag_aided_trials": 8
+    },
+    "TUM-VI": {
+      "trials": 6,
+      "median_rmse_deg": 94.11780236625651,
+      "median_tilt_rmse_deg": 5.617896203139986,
+      "median_heading_rmse_deg": 94.01188340957036,
+      "median_realtime_factor": 19.17712786472297,
+      "mag_aided_trials": 0
+    },
+    "diodem": {
+      "trials": 8,
+      "median_rmse_deg": 5.120561724417049,
+      "median_tilt_rmse_deg": 0.8220942072439266,
+      "median_heading_rmse_deg": 4.522155496309864,
+      "median_realtime_factor": 61.635531027723985,
+      "mag_aided_trials": 8
+    }
+  },
+  "reports": [
+    {
+      "dataset": "Marco::fast_v4_AP1",
+      "estimator": "Eskf",
+      "n_samples": 18995,
+      "duration_s": 189.94999575428665,
+      "rate_hz": 100.00000223517424,
+      "rmse_deg": 2.81539467363225,
+      "tilt_rmse_deg": 2.599877234999426,
+      "heading_rmse_deg": 1.0687650431528097,
+      "final_error_deg": 2.61298914576637,
+      "heading_offset_deg": -177.62540277833324,
+      "mean_nis": {
+        "accel": 36.10482329086217,
+        "mag": 0.20061560628809005
+      },
+      "rejection_rate": 0.06362200579099764,
+      "realtime_factor": 23.289300027521215,
+      "mag_aided": true,
+      "conventions": {
+        "dataset": "Marco::fast_v4_AP1",
+        "rate_hz": 100.00000223517424,
+        "n_samples": 18995,
+        "gyro_consistency": {
+          "residual_rad_s": 0.019621849434677773,
+          "residual_conjugate_rad_s": 0.019617623422405098,
+          "signal_rad_s": 0.010685456011599146,
+          "verdict": "confirmed"
+        },
+        "gravity": {
+          "residual_m_s2": 0.783067634386895,
+          "residual_z_down_m_s2": 19.450775307318075,
+          "confirmed": true
+        },
+        "gt_valid_fraction": 0.9999473545669914,
+        "gt_longest_gap_s": 0.0,
+        "has_mag": true,
+        "ok": true
+      },
+      "path": "Caruso-Sassari/Marco::fast_v4_AP1.hdf5",
+      "collection": "Caruso-Sassari"
+    },
+    {
+      "dataset": "Marco::fast_v4_AP2",
+      "estimator": "Eskf",
+      "n_samples": 18995,
+      "duration_s": 189.94999575428665,
+      "rate_hz": 100.00000223517424,
+      "rmse_deg": 2.7781802400025004,
+      "tilt_rmse_deg": 1.3568346386560441,
+      "heading_rmse_deg": 2.424412775175862,
+      "final_error_deg": 1.6858855101587218,
+      "heading_offset_deg": -179.0348422832792,
+      "mean_nis": {
+        "accel": 38.561800422657974,
+        "mag": 0.17544705036298003
+      },
+      "rejection_rate": 0.06564885496183206,
+      "realtime_factor": 23.133222188462973,
+      "mag_aided": true,
+      "conventions": {
+        "dataset": "Marco::fast_v4_AP2",
+        "rate_hz": 100.00000223517424,
+        "n_samples": 18995,
+        "gyro_consistency": {
+          "residual_rad_s": 0.02223830078439733,
+          "residual_conjugate_rad_s": 0.022236396771997752,
+          "signal_rad_s": 0.01087383194882505,
+          "verdict": "confirmed"
+        },
+        "gravity": {
+          "residual_m_s2": 0.5281787610181768,
+          "residual_z_down_m_s2": 19.370826113352255,
+          "confirmed": true
+        },
+        "gt_valid_fraction": 0.9998947091339826,
+        "gt_longest_gap_s": 0.0,
+        "has_mag": true,
+        "ok": true
+      },
+      "path": "Caruso-Sassari/Marco::fast_v4_AP2.hdf5",
+      "collection": "Caruso-Sassari"
+    },
+    {
+      "dataset": "Marco::fast_v4_SH1",
+      "estimator": "Eskf",
+      "n_samples": 18995,
+      "duration_s": 189.94999575428665,
+      "rate_hz": 100.00000223517424,
+      "rmse_deg": 3.1431642350040185,
+      "tilt_rmse_deg": 2.257772940711965,
+      "heading_rmse_deg": 2.1786910332055496,
+      "final_error_deg": 1.9897387031557023,
+      "heading_offset_deg": -178.83721379334946,
+      "mean_nis": {
+        "accel": 54.55828516009526,
+        "mag": 0.27492559322723126
+      },
+      "rejection_rate": 0.07162411160831798,
+      "realtime_factor": 24.23510714825975,
+      "mag_aided": true,
+      "conventions": {
+        "dataset": "Marco::fast_v4_SH1",
+        "rate_hz": 100.00000223517424,
+        "n_samples": 18995,
+        "gyro_consistency": {
+          "residual_rad_s": 0.0028418533521377375,
+          "residual_conjugate_rad_s": 0.0028459857420361136,
+          "signal_rad_s": 0.0013978341598408872,
+          "verdict": "confirmed"
+        },
+        "gravity": {
+          "residual_m_s2": 0.3045122893023187,
+          "residual_z_down_m_s2": 19.697094114933556,
+          "confirmed": true
+        },
+        "gt_valid_fraction": 0.9998947091339826,
+        "gt_longest_gap_s": 0.0,
+        "has_mag": true,
+        "ok": true
+      },
+      "path": "Caruso-Sassari/Marco::fast_v4_SH1.hdf5",
+      "collection": "Caruso-Sassari"
+    },
+    {
+      "dataset": "Marco::fast_v4_SH2",
+      "estimator": "Eskf",
+      "n_samples": 18995,
+      "duration_s": 189.94999575428665,
+      "rate_hz": 100.00000223517424,
+      "rmse_deg": 4.400608934967859,
+      "tilt_rmse_deg": 3.323232913190498,
+      "heading_rmse_deg": 2.948938874665439,
+      "final_error_deg": 2.0416568913573734,
+      "heading_offset_deg": -177.55680087464864,
+      "mean_nis": {
+        "accel": 60.25327239791677,
+        "mag": 0.2463929109813409
+      },
+      "rejection_rate": 0.07538826006843906,
+      "realtime_factor": 22.66406964378381,
+      "mag_aided": true,
+      "conventions": {
+        "dataset": "Marco::fast_v4_SH2",
+        "rate_hz": 100.00000223517424,
+        "n_samples": 18995,
+        "gyro_consistency": {
+          "residual_rad_s": 0.002845332739640611,
+          "residual_conjugate_rad_s": 0.002836494596243326,
+          "signal_rad_s": 0.001391119036171214,
+          "verdict": "confirmed"
+        },
+        "gravity": {
+          "residual_m_s2": 0.3571551283339823,
+          "residual_z_down_m_s2": 19.455428713236845,
+          "confirmed": true
+        },
+        "gt_valid_fraction": 0.9999473545669914,
+        "gt_longest_gap_s": 0.0,
+        "has_mag": true,
+        "ok": true
+      },
+      "path": "Caruso-Sassari/Marco::fast_v4_SH2.hdf5",
+      "collection": "Caruso-Sassari"
+    },
+    {
+      "dataset": "Marco::fast_v4_XS1",
+      "estimator": "Eskf",
+      "n_samples": 18995,
+      "duration_s": 189.94999575428665,
+      "rate_hz": 100.00000223517424,
+      "rmse_deg": 2.931100718239957,
+      "tilt_rmse_deg": 1.435578823508947,
+      "heading_rmse_deg": 2.554750472161959,
+      "final_error_deg": 2.3927013967063617,
+      "heading_offset_deg": -178.89863444000918,
+      "mean_nis": {
+        "accel": 27.164310588094263,
+        "mag": 0.01896683545870502
+      },
+      "rejection_rate": 0.05754145827849434,
+      "realtime_factor": 21.16027974285852,
+      "mag_aided": true,
+      "conventions": {
+        "dataset": "Marco::fast_v4_XS1",
+        "rate_hz": 100.00000223517424,
+        "n_samples": 18995,
+        "gyro_consistency": {
+          "residual_rad_s": 0.03222659161760128,
+          "residual_conjugate_rad_s": 0.032219965099835136,
+          "signal_rad_s": 0.014390952106805811,
+          "verdict": "confirmed"
+        },
+        "gravity": {
+          "residual_m_s2": 0.22887881050240483,
+          "residual_z_down_m_s2": 19.6536697723548,
+          "confirmed": true
+        },
+        "gt_valid_fraction": 0.9999473545669914,
+        "gt_longest_gap_s": 0.0,
+        "has_mag": true,
+        "ok": true
+      },
+      "path": "Caruso-Sassari/Marco::fast_v4_XS1.hdf5",
+      "collection": "Caruso-Sassari"
+    },
+    {
+      "dataset": "Marco::fast_v4_XS2",
+      "estimator": "Eskf",
+      "n_samples": 18995,
+      "duration_s": 189.94999575428665,
+      "rate_hz": 100.00000223517424,
+      "rmse_deg": 1.9945990611695061,
+      "tilt_rmse_deg": 1.5107459324968893,
+      "heading_rmse_deg": 1.3006694795624865,
+      "final_error_deg": 1.3745938861498617,
+      "heading_offset_deg": -177.68126741815468,
+      "mean_nis": {
+        "accel": 34.34878105063396,
+        "mag": 0.023571826750028627
+      },
+      "rejection_rate": 0.062279547249276125,
+      "realtime_factor": 19.311095864746417,
+      "mag_aided": true,
+      "conventions": {
+        "dataset": "Marco::fast_v4_XS2",
+        "rate_hz": 100.00000223517424,
+        "n_samples": 18995,
+        "gyro_consistency": {
+          "residual_rad_s": 0.018871340445818337,
+          "residual_conjugate_rad_s": 0.018887826520988162,
+          "signal_rad_s": 0.009568574728484729,
+          "verdict": "confirmed"
+        },
+        "gravity": {
+          "residual_m_s2": 0.5830116242784309,
+          "residual_z_down_m_s2": 19.19012618976423,
+          "confirmed": true
+        },
+        "gt_valid_fraction": 0.9999473545669914,
+        "gt_longest_gap_s": 0.0,
+        "has_mag": true,
+        "ok": true
+      },
+      "path": "Caruso-Sassari/Marco::fast_v4_XS2.hdf5",
+      "collection": "Caruso-Sassari"
+    },
+    {
+      "dataset": "Marco::medium_v4_AP1",
+      "estimator": "Eskf",
+      "n_samples": 20262,
+      "duration_s": 202.61999547109008,
+      "rate_hz": 100.00000223517424,
+      "rmse_deg": 3.041150503727665,
+      "tilt_rmse_deg": 2.5129369085471818,
+      "heading_rmse_deg": 1.7160594082307532,
+      "final_error_deg": 2.4494834905651284,
+      "heading_offset_deg": -178.30025485118134,
+      "mean_nis": {
+        "accel": 8.393528442173688,
+        "mag": 0.1061185659073653
+      },
+      "rejection_rate": 0.06188925081433225,
+      "realtime_factor": 21.011758026179827,
+      "mag_aided": true,
+      "conventions": {
+        "dataset": "Marco::medium_v4_AP1",
+        "rate_hz": 100.00000223517424,
+        "n_samples": 20262,
+        "gyro_consistency": {
+          "residual_rad_s": 0.019897885030341882,
+          "residual_conjugate_rad_s": 0.019891286386274142,
+          "signal_rad_s": 0.010617311163720094,
+          "verdict": "confirmed"
+        },
+        "gravity": {
+          "residual_m_s2": 0.4074995982184423,
+          "residual_z_down_m_s2": 19.83370115367828,
+          "confirmed": true
+        },
+        "gt_valid_fraction": 0.9999506465304511,
+        "gt_longest_gap_s": 0.0,
+        "has_mag": true,
+        "ok": true
+      },
+      "path": "Caruso-Sassari/Marco::medium_v4_AP1.hdf5",
+      "collection": "Caruso-Sassari"
+    },
+    {
+      "dataset": "Marco::medium_v4_AP2",
+      "estimator": "Eskf",
+      "n_samples": 20262,
+      "duration_s": 202.61999547109008,
+      "rate_hz": 100.00000223517424,
+      "rmse_deg": 2.8892935184708306,
+      "tilt_rmse_deg": 1.6888468917842618,
+      "heading_rmse_deg": 2.3465192424158583,
+      "final_error_deg": 1.9168873420880574,
+      "heading_offset_deg": -178.8845775660077,
+      "mean_nis": {
+        "accel": 7.130997307681057,
+        "mag": 0.10346187490949182
+      },
+      "rejection_rate": 0.056731813246471224,
+      "realtime_factor": 22.312650088450074,
+      "mag_aided": true,
+      "conventions": {
+        "dataset": "Marco::medium_v4_AP2",
+        "rate_hz": 100.00000223517424,
+        "n_samples": 20262,
+        "gyro_consistency": {
+          "residual_rad_s": 0.023102799074184503,
+          "residual_conjugate_rad_s": 0.023098458016926504,
+          "signal_rad_s": 0.010828334960192889,
+          "verdict": "confirmed"
+        },
+        "gravity": {
+          "residual_m_s2": 0.15200322302835184,
+          "residual_z_down_m_s2": 19.748864234046415,
+          "confirmed": true
+        },
+        "gt_valid_fraction": 0.9999506465304511,
+        "gt_longest_gap_s": 0.0,
+        "has_mag": true,
+        "ok": true
+      },
+      "path": "Caruso-Sassari/Marco::medium_v4_AP2.hdf5",
+      "collection": "Caruso-Sassari"
+    },
+    {
+      "dataset": "EurocMAV::V1_01_easy",
+      "estimator": "Eskf",
+      "n_samples": 28712,
+      "duration_s": 143.55999679118395,
+      "rate_hz": 200.00000447034847,
+      "rmse_deg": 97.20013632135763,
+      "tilt_rmse_deg": 3.6262672115080345,
+      "heading_rmse_deg": 97.14766522281315,
+      "final_error_deg": 65.06889294918832,
+      "heading_offset_deg": -22.896370886953886,
+      "mean_nis": {
+        "accel": 3.312787958355879
+      },
+      "rejection_rate": 0.016926720534967958,
+      "realtime_factor": 15.82051008830399,
+      "mag_aided": false,
+      "conventions": {
+        "dataset": "EurocMAV::V1_01_easy",
+        "rate_hz": 200.00000447034847,
+        "n_samples": 28712,
+        "gyro_consistency": {
+          "residual_rad_s": 0.03797355590709781,
+          "residual_conjugate_rad_s": 0.2328093687507551,
+          "signal_rad_s": 0.10075640036578665,
+          "verdict": "confirmed"
+        },
+        "gravity": {
+          "residual_m_s2": 1.3049007237440449,
+          "residual_z_down_m_s2": 19.543967070795777,
+          "confirmed": true
+        },
+        "gt_valid_fraction": 1.0,
+        "gt_longest_gap_s": 0.0,
+        "has_mag": false,
+        "ok": true
+      },
+      "path": "EuRoC-MAV/EurocMAV::V1_01_easy.hdf5",
+      "collection": "EuRoC-MAV"
+    },
+    {
+      "dataset": "EurocMAV::V1_02_medium",
+      "estimator": "Eskf",
+      "n_samples": 16702,
+      "duration_s": 83.50999813340604,
+      "rate_hz": 200.00000447034847,
+      "rmse_deg": 80.10623639536952,
+      "tilt_rmse_deg": 4.152169310051527,
+      "heading_rmse_deg": 80.0063762546977,
+      "final_error_deg": 57.78992359752034,
+      "heading_offset_deg": 96.95961907381773,
+      "mean_nis": {
+        "accel": 7.943753965538004
+      },
+      "rejection_rate": 0.1123817506885403,
+      "realtime_factor": 19.139042252883986,
+      "mag_aided": false,
+      "conventions": {
+        "dataset": "EurocMAV::V1_02_medium",
+        "rate_hz": 200.00000447034847,
+        "n_samples": 16702,
+        "gyro_consistency": {
+          "residual_rad_s": 0.03710427537074018,
+          "residual_conjugate_rad_s": 0.3220040567778418,
+          "signal_rad_s": 0.14374291094406766,
+          "verdict": "confirmed"
+        },
+        "gravity": {
+          "residual_m_s2": 1.8340607564196305,
+          "residual_z_down_m_s2": 20.013571827202153,
+          "confirmed": true
+        },
+        "gt_valid_fraction": 1.0,
+        "gt_longest_gap_s": 0.0,
+        "has_mag": false,
+        "ok": true
+      },
+      "path": "EuRoC-MAV/EurocMAV::V1_02_medium.hdf5",
+      "collection": "EuRoC-MAV"
+    },
+    {
+      "dataset": "EurocMAV::V1_03_difficult",
+      "estimator": "Eskf",
+      "n_samples": 20932,
+      "duration_s": 104.6599976606667,
+      "rate_hz": 200.00000447034847,
+      "rmse_deg": 74.61353372304984,
+      "tilt_rmse_deg": 6.84345733447861,
+      "heading_rmse_deg": 74.32266699388971,
+      "final_error_deg": 26.613208783025065,
+      "heading_offset_deg": -58.312479125408565,
+      "mean_nis": {
+        "accel": 18.68965632006779
+      },
+      "rejection_rate": 0.26208675711828777,
+      "realtime_factor": 20.595114266755814,
+      "mag_aided": false,
+      "conventions": {
+        "dataset": "EurocMAV::V1_03_difficult",
+        "rate_hz": 200.00000447034847,
+        "n_samples": 20932,
+        "gyro_consistency": {
+          "residual_rad_s": 0.05802363834529968,
+          "residual_conjugate_rad_s": 0.2203051943530369,
+          "signal_rad_s": 0.09324676170715733,
+          "verdict": "confirmed"
+        },
+        "gravity": {
+          "residual_m_s2": 1.1541250498086162,
+          "residual_z_down_m_s2": 19.938190666116967,
+          "confirmed": true
+        },
+        "gt_valid_fraction": 1.0,
+        "gt_longest_gap_s": 0.0,
+        "has_mag": false,
+        "ok": true
+      },
+      "path": "EuRoC-MAV/EurocMAV::V1_03_difficult.hdf5",
+      "collection": "EuRoC-MAV"
+    },
+    {
+      "dataset": "EurocMAV::V2_01_easy",
+      "estimator": "Eskf",
+      "n_samples": 22401,
+      "duration_s": 112.00499749649316,
+      "rate_hz": 200.00000447034847,
+      "rmse_deg": 60.953712893584644,
+      "tilt_rmse_deg": 1.4853028527666956,
+      "heading_rmse_deg": 60.93745799534302,
+      "final_error_deg": 129.45470360820778,
+      "heading_offset_deg": -0.33951594722692957,
+      "mean_nis": {
+        "accel": 4.111372440647051
+      },
+      "rejection_rate": 0.033927056827820185,
+      "realtime_factor": 19.345951346594575,
+      "mag_aided": false,
+      "conventions": {
+        "dataset": "EurocMAV::V2_01_easy",
+        "rate_hz": 200.00000447034847,
+        "n_samples": 22401,
+        "gyro_consistency": {
+          "residual_rad_s": 0.04245952597041956,
+          "residual_conjugate_rad_s": 0.22820504948861203,
+          "signal_rad_s": 0.08093908069293017,
+          "verdict": "confirmed"
+        },
+        "gravity": {
+          "residual_m_s2": 1.7024154629603419,
+          "residual_z_down_m_s2": 20.093020276719532,
+          "confirmed": true
+        },
+        "gt_valid_fraction": 1.0,
+        "gt_longest_gap_s": 0.0,
+        "has_mag": false,
+        "ok": true
+      },
+      "path": "EuRoC-MAV/EurocMAV::V2_01_easy.hdf5",
+      "collection": "EuRoC-MAV"
+    },
+    {
+      "dataset": "EurocMAV::V2_02_medium",
+      "estimator": "Eskf",
+      "n_samples": 23091,
+      "duration_s": 115.45499741937965,
+      "rate_hz": 200.00000447034847,
+      "rmse_deg": 86.06657777298997,
+      "tilt_rmse_deg": 3.312247180167509,
+      "heading_rmse_deg": 86.01311928635712,
+      "final_error_deg": 92.48886804240672,
+      "heading_offset_deg": 72.94266034751934,
+      "mean_nis": {
+        "accel": 9.344578013023579
+      },
+      "rejection_rate": 0.1566844225022736,
+      "realtime_factor": 19.892523666812313,
+      "mag_aided": false,
+      "conventions": {
+        "dataset": "EurocMAV::V2_02_medium",
+        "rate_hz": 200.00000447034847,
+        "n_samples": 23091,
+        "gyro_consistency": {
+          "residual_rad_s": 0.040711959135683505,
+          "residual_conjugate_rad_s": 0.7985240949649876,
+          "signal_rad_s": 0.24172773566202876,
+          "verdict": "confirmed"
+        },
+        "gravity": {
+          "residual_m_s2": 1.7869781573340573,
+          "residual_z_down_m_s2": 19.571909831796315,
+          "confirmed": true
+        },
+        "gt_valid_fraction": 1.0,
+        "gt_longest_gap_s": 0.0,
+        "has_mag": false,
+        "ok": true
+      },
+      "path": "EuRoC-MAV/EurocMAV::V2_02_medium.hdf5",
+      "collection": "EuRoC-MAV"
+    },
+    {
+      "dataset": "EurocMAV::V2_03_difficult",
+      "estimator": "Eskf",
+      "n_samples": 22970,
+      "duration_s": 114.84999743290246,
+      "rate_hz": 200.00000447034847,
+      "rmse_deg": 80.90051710051222,
+      "tilt_rmse_deg": 3.3428333102794534,
+      "heading_rmse_deg": 80.84064942003442,
+      "final_error_deg": 93.62227626753003,
+      "heading_offset_deg": -58.11719337376208,
+      "mean_nis": {
+        "accel": 9.652278128828351
+      },
+      "rejection_rate": 0.1761427949499347,
+      "realtime_factor": 16.927515729994735,
+      "mag_aided": false,
+      "conventions": {
+        "dataset": "EurocMAV::V2_03_difficult",
+        "rate_hz": 200.00000447034847,
+        "n_samples": 22970,
+        "gyro_consistency": {
+          "residual_rad_s": 0.03665150031864041,
+          "residual_conjugate_rad_s": 0.6098742821216439,
+          "signal_rad_s": 0.16357328912166283,
+          "verdict": "confirmed"
+        },
+        "gravity": {
+          "residual_m_s2": 1.4570552535073342,
+          "residual_z_down_m_s2": 19.340186140353396,
+          "confirmed": true
+        },
+        "gt_valid_fraction": 1.0,
+        "gt_longest_gap_s": 0.0,
+        "has_mag": false,
+        "ok": true
+      },
+      "path": "EuRoC-MAV/EurocMAV::V2_03_difficult.hdf5",
+      "collection": "EuRoC-MAV"
+    },
+    {
+      "dataset": "01_slow_rotation_A",
+      "estimator": "Eskf",
+      "n_samples": 56940,
+      "duration_s": 199.29000615142286,
+      "rate_hz": 285.7142768952314,
+      "rmse_deg": 40.60364986411213,
+      "tilt_rmse_deg": 0.5999090270574665,
+      "heading_rmse_deg": 40.599310052205574,
+      "final_error_deg": 26.025271883554083,
+      "heading_offset_deg": 55.22448814293013,
+      "mean_nis": {
+        "accel": 2.4265736986736983
+      },
+      "rejection_rate": 0.020337197049525815,
+      "realtime_factor": 10.765704410346578,
+      "mag_aided": false,
+      "conventions": {
+        "dataset": "01_slow_rotation_A",
+        "rate_hz": 285.7142768952314,
+        "n_samples": 56940,
+        "gyro_consistency": {
+          "residual_rad_s": 0.07363329884608281,
+          "residual_conjugate_rad_s": 0.07254491993252955,
+          "signal_rad_s": 0.003712818741824271,
+          "verdict": "confirmed"
+        },
+        "gravity": {
+          "residual_m_s2": 0.13110603047095015,
+          "residual_z_down_m_s2": 19.714751829933302,
+          "confirmed": true
+        },
+        "gt_valid_fraction": 0.9971548998946259,
+        "gt_longest_gap_s": 0.08400000259280205,
+        "has_mag": false,
+        "ok": true
+      },
+      "path": "Myon/01_slow_rotation_A.hdf5",
+      "collection": "Myon"
+    },
+    {
+      "dataset": "02_slow_rotation_B",
+      "estimator": "Eskf",
+      "n_samples": 53240,
+      "duration_s": 186.3400057516992,
+      "rate_hz": 285.7142768952314,
+      "rmse_deg": 52.93380594040561,
+      "tilt_rmse_deg": 0.5297251456462162,
+      "heading_rmse_deg": 52.93155232724518,
+      "final_error_deg": 22.544677418186915,
+      "heading_offset_deg": 0.8618483904806101,
+      "mean_nis": {
+        "accel": 1.1282205543574455
+      },
+      "rejection_rate": 0.004695717505634861,
+      "realtime_factor": 12.380902328607531,
+      "mag_aided": false,
+      "conventions": {
+        "dataset": "02_slow_rotation_B",
+        "rate_hz": 285.7142768952314,
+        "n_samples": 53240,
+        "gyro_consistency": {
+          "residual_rad_s": 0.06008782434308442,
+          "residual_conjugate_rad_s": 0.0596039102214264,
+          "signal_rad_s": 0.003232301305888945,
+          "verdict": "confirmed"
+        },
+        "gravity": {
+          "residual_m_s2": 0.07156063371537874,
+          "residual_z_down_m_s2": 19.658232548174198,
+          "confirmed": true
+        },
+        "gt_valid_fraction": 0.9679564237415477,
+        "gt_longest_gap_s": 0.017500000540167093,
+        "has_mag": false,
+        "ok": true
+      },
+      "path": "Myon/02_slow_rotation_B.hdf5",
+      "collection": "Myon"
+    },
+    {
+      "dataset": "03_slow_rotation_with_breaks_A",
+      "estimator": "Eskf",
+      "n_samples": 60861,
+      "duration_s": 213.0135065750219,
+      "rate_hz": 285.7142768952314,
+      "rmse_deg": 24.787505761895385,
+      "tilt_rmse_deg": 0.576055360876504,
+      "heading_rmse_deg": 24.780814396439293,
+      "final_error_deg": 1.6981601036336968,
+      "heading_offset_deg": 34.19746482749367,
+      "mean_nis": {
+        "accel": 1.7154762202288563
+      },
+      "rejection_rate": 0.017005964410706363,
+      "realtime_factor": 12.99208782044298,
+      "mag_aided": false,
+      "conventions": {
+        "dataset": "03_slow_rotation_with_breaks_A",
+        "rate_hz": 285.7142768952314,
+        "n_samples": 60861,
+        "gyro_consistency": {
+          "residual_rad_s": 0.04242246191100335,
+          "residual_conjugate_rad_s": 0.042959182149417595,
+          "signal_rad_s": 0.0038524912372748885,
+          "verdict": "confirmed"
+        },
+        "gravity": {
+          "residual_m_s2": 0.15908939572084838,
+          "residual_z_down_m_s2": 19.672776919191207,
+          "confirmed": true
+        },
+        "gt_valid_fraction": 0.9965002218169271,
+        "gt_longest_gap_s": 0.16450000507757068,
+        "has_mag": false,
+        "ok": true
+      },
+      "path": "Myon/03_slow_rotation_with_breaks_A.hdf5",
+      "collection": "Myon"
+    },
+    {
+      "dataset": "04_slow_rotation_with_breaks_B",
+      "estimator": "Eskf",
+      "n_samples": 59212,
+      "duration_s": 207.24200639687479,
+      "rate_hz": 285.7142768952314,
+      "rmse_deg": 19.955522306101106,
+      "tilt_rmse_deg": 0.4589695954541912,
+      "heading_rmse_deg": 19.95029382025871,
+      "final_error_deg": 11.514236957268782,
+      "heading_offset_deg": -25.054230579979198,
+      "mean_nis": {
+        "accel": 1.0772813640130947
+      },
+      "rejection_rate": 0.005623860028372627,
+      "realtime_factor": 13.211399987120693,
+      "mag_aided": false,
+      "conventions": {
+        "dataset": "04_slow_rotation_with_breaks_B",
+        "rate_hz": 285.7142768952314,
+        "n_samples": 59212,
+        "gyro_consistency": {
+          "residual_rad_s": 0.055682764486024855,
+          "residual_conjugate_rad_s": 0.055514980181283986,
+          "signal_rad_s": 0.003126595824736998,
+          "verdict": "confirmed"
+        },
+        "gravity": {
+          "residual_m_s2": 0.08808631528168195,
+          "residual_z_down_m_s2": 19.636953515650674,
+          "confirmed": true
+        },
+        "gt_valid_fraction": 0.9660710666756739,
+        "gt_longest_gap_s": 0.02450000075623393,
+        "has_mag": false,
+        "ok": true
+      },
+      "path": "Myon/04_slow_rotation_with_breaks_B.hdf5",
+      "collection": "Myon"
+    },
+    {
+      "dataset": "05_medium_rotation",
+      "estimator": "Eskf",
+      "n_samples": 58412,
+      "duration_s": 204.44200631044805,
+      "rate_hz": 285.7142768952314,
+      "rmse_deg": 54.33030387979258,
+      "tilt_rmse_deg": 0.5905456179256812,
+      "heading_rmse_deg": 54.32719039089978,
+      "final_error_deg": 26.296575314000776,
+      "heading_offset_deg": -100.79070061413321,
+      "mean_nis": {
+        "accel": 2.1490013562425396
+      },
+      "rejection_rate": 0.017393686228857085,
+      "realtime_factor": 13.303340426583585,
+      "mag_aided": false,
+      "conventions": {
+        "dataset": "05_medium_rotation",
+        "rate_hz": 285.7142768952314,
+        "n_samples": 58412,
+        "gyro_consistency": {
+          "residual_rad_s": 0.07161905481504595,
+          "residual_conjugate_rad_s": 0.07204932275341426,
+          "signal_rad_s": 0.005433250108035281,
+          "verdict": "confirmed"
+        },
+        "gravity": {
+          "residual_m_s2": 0.049178937968586814,
+          "residual_z_down_m_s2": 19.64573793265634,
+          "confirmed": true
+        },
+        "gt_valid_fraction": 0.9300486201465452,
+        "gt_longest_gap_s": 0.017500000540167093,
+        "has_mag": false,
+        "ok": true
+      },
+      "path": "Myon/05_medium_rotation.hdf5",
+      "collection": "Myon"
+    },
+    {
+      "dataset": "06_fast_rotation_A",
+      "estimator": "Eskf",
+      "n_samples": 56380,
+      "duration_s": 197.33000609092414,
+      "rate_hz": 285.7142768952314,
+      "rmse_deg": 78.08257001187785,
+      "tilt_rmse_deg": 2.4985098428593817,
+      "heading_rmse_deg": 78.04568960284725,
+      "final_error_deg": 80.21781712390816,
+      "heading_offset_deg": -149.11941867551354,
+      "mean_nis": {
+        "accel": 16.068012812708112
+      },
+      "rejection_rate": 0.2284675416814473,
+      "realtime_factor": 14.005138048354302,
+      "mag_aided": false,
+      "conventions": {
+        "dataset": "06_fast_rotation_A",
+        "rate_hz": 285.7142768952314,
+        "n_samples": 56380,
+        "gyro_consistency": {
+          "residual_rad_s": 0.04044815320757371,
+          "residual_conjugate_rad_s": 0.04025115001772841,
+          "signal_rad_s": 0.0037873856077462226,
+          "verdict": "confirmed"
+        },
+        "gravity": {
+          "residual_m_s2": 0.15269570681418496,
+          "residual_z_down_m_s2": 19.732502772579995,
+          "confirmed": true
+        },
+        "gt_valid_fraction": 0.9945725434551259,
+        "gt_longest_gap_s": 0.05950000183656812,
+        "has_mag": false,
+        "ok": true
+      },
+      "path": "Myon/06_fast_rotation_A.hdf5",
+      "collection": "Myon"
+    },
+    {
+      "dataset": "07_fast_rotation_B",
+      "estimator": "Eskf",
+      "n_samples": 52518,
+      "duration_s": 183.81300567369908,
+      "rate_hz": 285.7142768952314,
+      "rmse_deg": 55.52800685384022,
+      "tilt_rmse_deg": 3.34230164189602,
+      "heading_rmse_deg": 55.43663235504056,
+      "final_error_deg": 81.02861224903914,
+      "heading_offset_deg": 94.1177355768504,
+      "mean_nis": {
+        "accel": 38.20491759979102
+      },
+      "rejection_rate": 0.3722914048516699,
+      "realtime_factor": 13.303586702198833,
+      "mag_aided": false,
+      "conventions": {
+        "dataset": "07_fast_rotation_B",
+        "rate_hz": 285.7142768952314,
+        "n_samples": 52518,
+        "gyro_consistency": {
+          "residual_rad_s": 0.22861529558497784,
+          "residual_conjugate_rad_s": 0.2287702614436795,
+          "signal_rad_s": 0.003248272619391274,
+          "verdict": "inconclusive"
+        },
+        "gravity": {
+          "residual_m_s2": 0.10877982763916835,
+          "residual_z_down_m_s2": 19.553028457762842,
+          "confirmed": true
+        },
+        "gt_valid_fraction": 0.969648501466164,
+        "gt_longest_gap_s": 0.0,
+        "has_mag": false,
+        "ok": true
+      },
+      "path": "Myon/07_fast_rotation_B.hdf5",
+      "collection": "Myon"
+    },
+    {
+      "dataset": "08_fast_rotation_with_breaks_A",
+      "estimator": "Eskf",
+      "n_samples": 55358,
+      "duration_s": 193.753005980514,
+      "rate_hz": 285.7142768952314,
+      "rmse_deg": 41.77130073509596,
+      "tilt_rmse_deg": 2.4746445981370395,
+      "heading_rmse_deg": 41.69667543148464,
+      "final_error_deg": 7.321576867806938,
+      "heading_offset_deg": 82.16159091997744,
+      "mean_nis": {
+        "accel": 28.766669573550043
+      },
+      "rejection_rate": 0.3244698146609343,
+      "realtime_factor": 12.385757623677263,
+      "mag_aided": false,
+      "conventions": {
+        "dataset": "08_fast_rotation_with_breaks_A",
+        "rate_hz": 285.7142768952314,
+        "n_samples": 55358,
+        "gyro_consistency": {
+          "residual_rad_s": 0.05706256051558133,
+          "residual_conjugate_rad_s": 0.05677560512946106,
+          "signal_rad_s": 0.00379519634141535,
+          "verdict": "confirmed"
+        },
+        "gravity": {
+          "residual_m_s2": 0.08080228527656522,
+          "residual_z_down_m_s2": 19.642369183170146,
+          "confirmed": true
+        },
+        "gt_valid_fraction": 0.9954116839481195,
+        "gt_longest_gap_s": 0.4165000128559768,
+        "has_mag": false,
+        "ok": true
+      },
+      "path": "Myon/08_fast_rotation_with_breaks_A.hdf5",
+      "collection": "Myon"
+    },
+    {
+      "dataset": "OxIOD::handbag_data1_1:fixed",
+      "estimator": "Eskf",
+      "n_samples": 57500,
+      "duration_s": 574.9999871477485,
+      "rate_hz": 100.00000223517424,
+      "rmse_deg": 3.1540141433151185,
+      "tilt_rmse_deg": 2.146471478345742,
+      "heading_rmse_deg": 2.3132123167649823,
+      "final_error_deg": 6.700395975742343,
+      "heading_offset_deg": 149.45008944281122,
+      "mean_nis": {
+        "accel": 2.59051653311824,
+        "mag": 0.5190707359109672
+      },
+      "rejection_rate": 0.0027304347826086956,
+      "realtime_factor": 21.938558969567957,
+      "mag_aided": true,
+      "conventions": {
+        "dataset": "OxIOD::handbag_data1_1:fixed",
+        "rate_hz": 100.00000223517424,
+        "n_samples": 57500,
+        "gyro_consistency": {
+          "residual_rad_s": 0.3351380741358354,
+          "residual_conjugate_rad_s": 0.7527147572347375,
+          "signal_rad_s": 0.24628166362192375,
+          "verdict": "confirmed"
+        },
+        "gravity": {
+          "residual_m_s2": 0.6092070975450414,
+          "residual_z_down_m_s2": 19.286740337546945,
+          "confirmed": true
+        },
+        "gt_valid_fraction": 0.9992521739130434,
+        "gt_longest_gap_s": 0.23999999463558197,
+        "has_mag": true,
+        "ok": true
+      },
+      "path": "OxIOD/OxIOD::handbag_data1_1:fixed.hdf5",
+      "collection": "OxIOD"
+    },
+    {
+      "dataset": "OxIOD::handbag_data1_2:fixed",
+      "estimator": "Eskf",
+      "n_samples": 57000,
+      "duration_s": 569.9999872595072,
+      "rate_hz": 100.00000223517424,
+      "rmse_deg": 3.1493533641246776,
+      "tilt_rmse_deg": 2.3965945779512494,
+      "heading_rmse_deg": 2.0719443790965713,
+      "final_error_deg": 2.062056575078008,
+      "heading_offset_deg": 175.55759578909783,
+      "mean_nis": {
+        "accel": 3.050281905952057,
+        "mag": 0.506958865835036
+      },
+      "rejection_rate": 0.006166666666666667,
+      "realtime_factor": 20.186798668170024,
+      "mag_aided": true,
+      "conventions": {
+        "dataset": "OxIOD::handbag_data1_2:fixed",
+        "rate_hz": 100.00000223517424,
+        "n_samples": 57000,
+        "gyro_consistency": {
+          "residual_rad_s": 0.360487721121647,
+          "residual_conjugate_rad_s": 0.8550098755176311,
+          "signal_rad_s": 0.24145505802533695,
+          "verdict": "confirmed"
+        },
+        "gravity": {
+          "residual_m_s2": 1.0224415353724006,
+          "residual_z_down_m_s2": 18.790828214706043,
+          "confirmed": true
+        },
+        "gt_valid_fraction": 0.9969649122807017,
+        "gt_longest_gap_s": 0.3199999928474426,
+        "has_mag": true,
+        "ok": true
+      },
+      "path": "OxIOD/OxIOD::handbag_data1_2:fixed.hdf5",
+      "collection": "OxIOD"
+    },
+    {
+      "dataset": "OxIOD::handbag_data1_3:fixed",
+      "estimator": "Eskf",
+      "n_samples": 58000,
+      "duration_s": 579.9999870359898,
+      "rate_hz": 100.00000223517424,
+      "rmse_deg": 3.5034467784459453,
+      "tilt_rmse_deg": 2.7170152548160087,
+      "heading_rmse_deg": 2.188232153081061,
+      "final_error_deg": 4.60004510836975,
+      "heading_offset_deg": 174.77138492716884,
+      "mean_nis": {
+        "accel": 3.5832263540158307,
+        "mag": 0.5058125062967144
+      },
+      "rejection_rate": 0.007344827586206896,
+      "realtime_factor": 20.719108794485827,
+      "mag_aided": true,
+      "conventions": {
+        "dataset": "OxIOD::handbag_data1_3:fixed",
+        "rate_hz": 100.00000223517424,
+        "n_samples": 58000,
+        "gyro_consistency": {
+          "residual_rad_s": 0.37195013618763023,
+          "residual_conjugate_rad_s": 0.944653077650737,
+          "signal_rad_s": 0.2868901481892687,
+          "verdict": "confirmed"
+        },
+        "gravity": {
+          "residual_m_s2": 1.2810696974229898,
+          "residual_z_down_m_s2": 19.915824988400644,
+          "confirmed": true
+        },
+        "gt_valid_fraction": 0.9992758620689656,
+        "gt_longest_gap_s": 0.2299999948590994,
+        "has_mag": true,
+        "ok": true
+      },
+      "path": "OxIOD/OxIOD::handbag_data1_3:fixed.hdf5",
+      "collection": "OxIOD"
+    },
+    {
+      "dataset": "OxIOD::handbag_data1_4:fixed",
+      "estimator": "Eskf",
+      "n_samples": 44500,
+      "duration_s": 444.9999900534749,
+      "rate_hz": 100.00000223517424,
+      "rmse_deg": 2.982896808183261,
+      "tilt_rmse_deg": 2.359204558085611,
+      "heading_rmse_deg": 1.8236106219289883,
+      "final_error_deg": 2.1787033942231475,
+      "heading_offset_deg": -168.22706687429556,
+      "mean_nis": {
+        "accel": 2.8062824529375177,
+        "mag": 0.5408580775738494
+      },
+      "rejection_rate": 0.0033370786516853934,
+      "realtime_factor": 21.646659840428217,
+      "mag_aided": true,
+      "conventions": {
+        "dataset": "OxIOD::handbag_data1_4:fixed",
+        "rate_hz": 100.00000223517424,
+        "n_samples": 44500,
+        "gyro_consistency": {
+          "residual_rad_s": 0.3619145581593329,
+          "residual_conjugate_rad_s": 0.9402534297593377,
+          "signal_rad_s": 0.28118630512065107,
+          "verdict": "confirmed"
+        },
+        "gravity": {
+          "residual_m_s2": 1.484017137136929,
+          "residual_z_down_m_s2": 20.120201524753647,
+          "confirmed": true
+        },
+        "gt_valid_fraction": 0.9994606741573033,
+        "gt_longest_gap_s": 0.23999999463558197,
+        "has_mag": true,
+        "ok": true
+      },
+      "path": "OxIOD/OxIOD::handbag_data1_4:fixed.hdf5",
+      "collection": "OxIOD"
+    },
+    {
+      "dataset": "OxIOD::handbag_data2_1:fixed",
+      "estimator": "Eskf",
+      "n_samples": 57500,
+      "duration_s": 574.9999871477485,
+      "rate_hz": 100.00000223517424,
+      "rmse_deg": 9.041134220745608,
+      "tilt_rmse_deg": 2.489876661354689,
+      "heading_rmse_deg": 8.694841912366464,
+      "final_error_deg": 2.555769578195187,
+      "heading_offset_deg": 134.69117480407508,
+      "mean_nis": {
+        "accel": 2.952875070984207,
+        "mag": 1.9834534764491696
+      },
+      "rejection_rate": 0.004730434782608695,
+      "realtime_factor": 21.50099490189718,
+      "mag_aided": true,
+      "conventions": {
+        "dataset": "OxIOD::handbag_data2_1:fixed",
+        "rate_hz": 100.00000223517424,
+        "n_samples": 57500,
+        "gyro_consistency": {
+          "residual_rad_s": 0.44617102502769473,
+          "residual_conjugate_rad_s": 0.8428788594840906,
+          "signal_rad_s": 0.24469691338572952,
+          "verdict": "confirmed"
+        },
+        "gravity": {
+          "residual_m_s2": 0.7636141666389811,
+          "residual_z_down_m_s2": 19.108830416155072,
+          "confirmed": true
+        },
+        "gt_valid_fraction": 0.9947130434782608,
+        "gt_longest_gap_s": 0.42999999038875103,
+        "has_mag": true,
+        "ok": true
+      },
+      "path": "OxIOD/OxIOD::handbag_data2_1:fixed.hdf5",
+      "collection": "OxIOD"
+    },
+    {
+      "dataset": "OxIOD::handbag_data2_2:fixed",
+      "estimator": "Eskf",
+      "n_samples": 56000,
+      "duration_s": 559.9999874830246,
+      "rate_hz": 100.00000223517424,
+      "rmse_deg": 6.204072107245325,
+      "tilt_rmse_deg": 2.8594562893659194,
+      "heading_rmse_deg": 5.59416869238523,
+      "final_error_deg": 3.846940500001965,
+      "heading_offset_deg": 105.95152782656722,
+      "mean_nis": {
+        "accel": 4.0837404567419116,
+        "mag": 0.6820251718739601
+      },
+      "rejection_rate": 0.012928571428571428,
+      "realtime_factor": 21.525323809991804,
+      "mag_aided": true,
+      "conventions": {
+        "dataset": "OxIOD::handbag_data2_2:fixed",
+        "rate_hz": 100.00000223517424,
+        "n_samples": 56000,
+        "gyro_consistency": {
+          "residual_rad_s": 0.4007628103023116,
+          "residual_conjugate_rad_s": 0.8496938650539422,
+          "signal_rad_s": 0.25133055689126405,
+          "verdict": "confirmed"
+        },
+        "gravity": {
+          "residual_m_s2": 0.7826204784597279,
+          "residual_z_down_m_s2": 19.3637666769877,
+          "confirmed": true
+        },
+        "gt_valid_fraction": 0.9969821428571428,
+        "gt_longest_gap_s": 0.35999999195337296,
+        "has_mag": true,
+        "ok": true
+      },
+      "path": "OxIOD/OxIOD::handbag_data2_2:fixed.hdf5",
+      "collection": "OxIOD"
+    },
+    {
+      "dataset": "OxIOD::handbag_data2_3:fixed",
+      "estimator": "Eskf",
+      "n_samples": 42500,
+      "duration_s": 424.99999050050974,
+      "rate_hz": 100.00000223517424,
+      "rmse_deg": 5.170218989098474,
+      "tilt_rmse_deg": 2.481107787443695,
+      "heading_rmse_deg": 4.536605814553115,
+      "final_error_deg": 6.686658230398503,
+      "heading_offset_deg": 95.9907863697138,
+      "mean_nis": {
+        "accel": 3.499639786663427,
+        "mag": 0.8166193340688797
+      },
+      "rejection_rate": 0.005905882352941177,
+      "realtime_factor": 19.859931612336442,
+      "mag_aided": true,
+      "conventions": {
+        "dataset": "OxIOD::handbag_data2_3:fixed",
+        "rate_hz": 100.00000223517424,
+        "n_samples": 42500,
+        "gyro_consistency": {
+          "residual_rad_s": 0.4888354515480673,
+          "residual_conjugate_rad_s": 0.9684451190008359,
+          "signal_rad_s": 0.30224873368047844,
+          "verdict": "confirmed"
+        },
+        "gravity": {
+          "residual_m_s2": 1.3740471251345547,
+          "residual_z_down_m_s2": 20.434806530036514,
+          "confirmed": true
+        },
+        "gt_valid_fraction": 0.9959294117647058,
+        "gt_longest_gap_s": 0.25999999418854713,
+        "has_mag": true,
+        "ok": true
+      },
+      "path": "OxIOD/OxIOD::handbag_data2_3:fixed.hdf5",
+      "collection": "OxIOD"
+    },
+    {
+      "dataset": "OxIOD::handbag_data2_4:fixed",
+      "estimator": "Eskf",
+      "n_samples": 37000,
+      "duration_s": 369.99999172985554,
+      "rate_hz": 100.00000223517424,
+      "rmse_deg": 5.06068102391747,
+      "tilt_rmse_deg": 2.601165503402432,
+      "heading_rmse_deg": 4.343349761709344,
+      "final_error_deg": 5.080942699732162,
+      "heading_offset_deg": 145.15436329766752,
+      "mean_nis": {
+        "accel": 3.9790674907181813,
+        "mag": 0.662733269903602
+      },
+      "rejection_rate": 0.009945945945945946,
+      "realtime_factor": 20.14757204642539,
+      "mag_aided": true,
+      "conventions": {
+        "dataset": "OxIOD::handbag_data2_4:fixed",
+        "rate_hz": 100.00000223517424,
+        "n_samples": 37000,
+        "gyro_consistency": {
+          "residual_rad_s": 0.44702400326970954,
+          "residual_conjugate_rad_s": 0.8374554821943389,
+          "signal_rad_s": 0.2716438197525413,
+          "verdict": "confirmed"
+        },
+        "gravity": {
+          "residual_m_s2": 0.9125132850134122,
+          "residual_z_down_m_s2": 19.559373308458607,
+          "confirmed": true
+        },
+        "gt_valid_fraction": 0.9968918918918919,
+        "gt_longest_gap_s": 0.3399999924004078,
+        "has_mag": true,
+        "ok": true
+      },
+      "path": "OxIOD/OxIOD::handbag_data2_4:fixed.hdf5",
+      "collection": "OxIOD"
+    },
+    {
+      "dataset": "RepoIMU::TStick_02_1",
+      "estimator": "Eskf",
+      "n_samples": 8993,
+      "duration_s": 89.92999798990786,
+      "rate_hz": 100.00000223517424,
+      "rmse_deg": 0.8011883271544497,
+      "tilt_rmse_deg": 0.512905758434907,
+      "heading_rmse_deg": 0.6153347673468991,
+      "final_error_deg": 0.9109085007251458,
+      "heading_offset_deg": -146.70995218036745,
+      "mean_nis": {
+        "accel": 0.1640665209111731,
+        "mag": 0.023884677525740482
+      },
+      "rejection_rate": 0.0,
+      "realtime_factor": 24.800562346368704,
+      "mag_aided": true,
+      "conventions": {
+        "dataset": "RepoIMU::TStick_02_1",
+        "rate_hz": 100.00000223517424,
+        "n_samples": 8993,
+        "gyro_consistency": {
+          "residual_rad_s": 0.06597310991919542,
+          "residual_conjugate_rad_s": 0.15862752775943037,
+          "signal_rad_s": 0.09800756297028233,
+          "verdict": "confirmed"
+        },
+        "gravity": {
+          "residual_m_s2": 0.23861234402944942,
+          "residual_z_down_m_s2": 19.588720632027872,
+          "confirmed": true
+        },
+        "gt_valid_fraction": 1.0,
+        "gt_longest_gap_s": 0.0,
+        "has_mag": true,
+        "ok": true
+      },
+      "path": "RepoIMU/RepoIMU::TStick_02_1.hdf5",
+      "collection": "RepoIMU"
+    },
+    {
+      "dataset": "RepoIMU::TStick_02_2",
+      "estimator": "Eskf",
+      "n_samples": 9000,
+      "duration_s": 89.99999798834324,
+      "rate_hz": 100.00000223517424,
+      "rmse_deg": 0.9843627506978444,
+      "tilt_rmse_deg": 0.6403726053087127,
+      "heading_rmse_deg": 0.748352918603112,
+      "final_error_deg": 1.0272592622998222,
+      "heading_offset_deg": -114.40621755323245,
+      "mean_nis": {
+        "accel": 0.24536552618635646,
+        "mag": 0.021790229143602242
+      },
+      "rejection_rate": 0.00038888888888888887,
+      "realtime_factor": 24.83814838117165,
+      "mag_aided": true,
+      "conventions": {
+        "dataset": "RepoIMU::TStick_02_2",
+        "rate_hz": 100.00000223517424,
+        "n_samples": 9000,
+        "gyro_consistency": {
+          "residual_rad_s": 0.06678591399371986,
+          "residual_conjugate_rad_s": 0.20272497786130492,
+          "signal_rad_s": 0.12114031145288623,
+          "verdict": "confirmed"
+        },
+        "gravity": {
+          "residual_m_s2": 0.31494636405769855,
+          "residual_z_down_m_s2": 19.64757169011652,
+          "confirmed": true
+        },
+        "gt_valid_fraction": 1.0,
+        "gt_longest_gap_s": 0.0,
+        "has_mag": true,
+        "ok": true
+      },
+      "path": "RepoIMU/RepoIMU::TStick_02_2.hdf5",
+      "collection": "RepoIMU"
+    },
+    {
+      "dataset": "RepoIMU::TStick_03_1",
+      "estimator": "Eskf",
+      "n_samples": 8963,
+      "duration_s": 89.62999799661338,
+      "rate_hz": 100.00000223517424,
+      "rmse_deg": 2.20021013402202,
+      "tilt_rmse_deg": 2.130124011450864,
+      "heading_rmse_deg": 0.5631414436096899,
+      "final_error_deg": 1.0643397680660607,
+      "heading_offset_deg": -146.6619539346772,
+      "mean_nis": {
+        "accel": 0.31348573464868257,
+        "mag": 0.06393118357239252
+      },
+      "rejection_rate": 0.00011156978690170702,
+      "realtime_factor": 24.42625768183067,
+      "mag_aided": true,
+      "conventions": {
+        "dataset": "RepoIMU::TStick_03_1",
+        "rate_hz": 100.00000223517424,
+        "n_samples": 8963,
+        "gyro_consistency": {
+          "residual_rad_s": 0.0686106571368741,
+          "residual_conjugate_rad_s": 0.20461125829577062,
+          "signal_rad_s": 0.12784739997157663,
+          "verdict": "confirmed"
+        },
+        "gravity": {
+          "residual_m_s2": 0.27457891827869635,
+          "residual_z_down_m_s2": 19.65540055858451,
+          "confirmed": true
+        },
+        "gt_valid_fraction": 1.0,
+        "gt_longest_gap_s": 0.0,
+        "has_mag": true,
+        "ok": true
+      },
+      "path": "RepoIMU/RepoIMU::TStick_03_1.hdf5",
+      "collection": "RepoIMU"
+    },
+    {
+      "dataset": "RepoIMU::TStick_03_2",
+      "estimator": "Eskf",
+      "n_samples": 8853,
+      "duration_s": 88.5299980212003,
+      "rate_hz": 100.00000223517424,
+      "rmse_deg": 1.9565293882502746,
+      "tilt_rmse_deg": 1.6678060678164701,
+      "heading_rmse_deg": 1.018957541447923,
+      "final_error_deg": 1.6200155988918263,
+      "heading_offset_deg": -153.1879360361281,
+      "mean_nis": {
+        "accel": 0.24906518102945144,
+        "mag": 0.05617163000700084
+      },
+      "rejection_rate": 0.0,
+      "realtime_factor": 23.576667922763068,
+      "mag_aided": true,
+      "conventions": {
+        "dataset": "RepoIMU::TStick_03_2",
+        "rate_hz": 100.00000223517424,
+        "n_samples": 8853,
+        "gyro_consistency": {
+          "residual_rad_s": 0.07664028620582992,
+          "residual_conjugate_rad_s": 0.1692768452957286,
+          "signal_rad_s": 0.10760639798975342,
+          "verdict": "confirmed"
+        },
+        "gravity": {
+          "residual_m_s2": 0.28827245184672695,
+          "residual_z_down_m_s2": 19.603677867717717,
+          "confirmed": true
+        },
+        "gt_valid_fraction": 1.0,
+        "gt_longest_gap_s": 0.0,
+        "has_mag": true,
+        "ok": true
+      },
+      "path": "RepoIMU/RepoIMU::TStick_03_2.hdf5",
+      "collection": "RepoIMU"
+    },
+    {
+      "dataset": "RepoIMU::TStick_03_3",
+      "estimator": "Eskf",
+      "n_samples": 8818,
+      "duration_s": 88.17999802902341,
+      "rate_hz": 100.00000223517424,
+      "rmse_deg": 0.9439545666442373,
+      "tilt_rmse_deg": 0.5293137361555487,
+      "heading_rmse_deg": 0.7814708695885157,
+      "final_error_deg": 1.0082440996254756,
+      "heading_offset_deg": -147.87931680054294,
+      "mean_nis": {
+        "accel": 0.24753618923286666,
+        "mag": 0.06614788678043251
+      },
+      "rejection_rate": 0.00011340440009072352,
+      "realtime_factor": 20.770064304791106,
+      "mag_aided": true,
+      "conventions": {
+        "dataset": "RepoIMU::TStick_03_3",
+        "rate_hz": 100.00000223517424,
+        "n_samples": 8818,
+        "gyro_consistency": {
+          "residual_rad_s": 0.0660024173222865,
+          "residual_conjugate_rad_s": 0.1903479130918249,
+          "signal_rad_s": 0.12440352801621066,
+          "verdict": "confirmed"
+        },
+        "gravity": {
+          "residual_m_s2": 0.30163572331073557,
+          "residual_z_down_m_s2": 19.667816857958023,
+          "confirmed": true
+        },
+        "gt_valid_fraction": 1.0,
+        "gt_longest_gap_s": 0.0,
+        "has_mag": true,
+        "ok": true
+      },
+      "path": "RepoIMU/RepoIMU::TStick_03_3.hdf5",
+      "collection": "RepoIMU"
+    },
+    {
+      "dataset": "RepoIMU::TStick_04_1",
+      "estimator": "Eskf",
+      "n_samples": 8843,
+      "duration_s": 88.42999802343547,
+      "rate_hz": 100.00000223517424,
+      "rmse_deg": 0.615087480825596,
+      "tilt_rmse_deg": 0.2553885544432694,
+      "heading_rmse_deg": 0.559529785797626,
+      "final_error_deg": 0.8536467314855452,
+      "heading_offset_deg": -145.52873967561956,
+      "mean_nis": {
+        "accel": 0.4742508204468775,
+        "mag": 0.006203566464846287
+      },
+      "rejection_rate": 0.00011308379509216329,
+      "realtime_factor": 23.428052442868946,
+      "mag_aided": true,
+      "conventions": {
+        "dataset": "RepoIMU::TStick_04_1",
+        "rate_hz": 100.00000223517424,
+        "n_samples": 8843,
+        "gyro_consistency": {
+          "residual_rad_s": 0.04148596105716273,
+          "residual_conjugate_rad_s": 0.48325356685340665,
+          "signal_rad_s": 0.13294342730537148,
+          "verdict": "confirmed"
+        },
+        "gravity": {
+          "residual_m_s2": 0.411822527699636,
+          "residual_z_down_m_s2": 19.64470512191174,
+          "confirmed": true
+        },
+        "gt_valid_fraction": 1.0,
+        "gt_longest_gap_s": 0.0,
+        "has_mag": true,
+        "ok": true
+      },
+      "path": "RepoIMU/RepoIMU::TStick_04_1.hdf5",
+      "collection": "RepoIMU"
+    },
+    {
+      "dataset": "RepoIMU::TStick_04_2",
+      "estimator": "Eskf",
+      "n_samples": 8955,
+      "duration_s": 89.54999799840152,
+      "rate_hz": 100.00000223517424,
+      "rmse_deg": 0.48777567316131565,
+      "tilt_rmse_deg": 0.32640728162385924,
+      "heading_rmse_deg": 0.36236040886504556,
+      "final_error_deg": 0.2625972621250659,
+      "heading_offset_deg": -148.6874163928937,
+      "mean_nis": {
+        "accel": 0.37830538265348995,
+        "mag": 0.027064889633270098
+      },
+      "rejection_rate": 0.00022333891680625348,
+      "realtime_factor": 24.098130408969983,
+      "mag_aided": true,
+      "conventions": {
+        "dataset": "RepoIMU::TStick_04_2",
+        "rate_hz": 100.00000223517424,
+        "n_samples": 8955,
+        "gyro_consistency": {
+          "residual_rad_s": 0.04429442030095446,
+          "residual_conjugate_rad_s": 0.41292047919299457,
+          "signal_rad_s": 0.11112621170339,
+          "verdict": "confirmed"
+        },
+        "gravity": {
+          "residual_m_s2": 0.38252012421772075,
+          "residual_z_down_m_s2": 19.599555787970495,
+          "confirmed": true
+        },
+        "gt_valid_fraction": 1.0,
+        "gt_longest_gap_s": 0.0,
+        "has_mag": true,
+        "ok": true
+      },
+      "path": "RepoIMU/RepoIMU::TStick_04_2.hdf5",
+      "collection": "RepoIMU"
+    },
+    {
+      "dataset": "RepoIMU::TStick_04_3",
+      "estimator": "Eskf",
+      "n_samples": 9000,
+      "duration_s": 89.99999798834324,
+      "rate_hz": 100.00000223517424,
+      "rmse_deg": 1.850965288672677,
+      "tilt_rmse_deg": 0.5157582504111363,
+      "heading_rmse_deg": 1.7773427378217337,
+      "final_error_deg": 2.209204121550924,
+      "heading_offset_deg": -144.49687253323796,
+      "mean_nis": {
+        "accel": 0.3132897111212171,
+        "mag": 0.09015123044303083
+      },
+      "rejection_rate": 0.00016666666666666666,
+      "realtime_factor": 24.704409798600828,
+      "mag_aided": true,
+      "conventions": {
+        "dataset": "RepoIMU::TStick_04_3",
+        "rate_hz": 100.00000223517424,
+        "n_samples": 9000,
+        "gyro_consistency": {
+          "residual_rad_s": 0.03405414730891435,
+          "residual_conjugate_rad_s": 0.4407734098958604,
+          "signal_rad_s": 0.11833172558968702,
+          "verdict": "confirmed"
+        },
+        "gravity": {
+          "residual_m_s2": 0.3565736433831429,
+          "residual_z_down_m_s2": 19.73149657203665,
+          "confirmed": true
+        },
+        "gt_valid_fraction": 1.0,
+        "gt_longest_gap_s": 0.0,
+        "has_mag": true,
+        "ok": true
+      },
+      "path": "RepoIMU/RepoIMU::TStick_04_3.hdf5",
+      "collection": "RepoIMU"
+    },
+    {
+      "dataset": "TumVI::room1",
+      "estimator": "Eskf",
+      "n_samples": 28122,
+      "duration_s": 140.6099968571216,
+      "rate_hz": 200.00000447034847,
+      "rmse_deg": 75.71301201224836,
+      "tilt_rmse_deg": 7.832368726985007,
+      "heading_rmse_deg": 75.32451900241233,
+      "final_error_deg": 142.4412339846818,
+      "heading_offset_deg": 100.68058255701392,
+      "mean_nis": {
+        "accel": 26.10778858394322
+      },
+      "rejection_rate": 0.3589360642913022,
+      "realtime_factor": 21.186249129533074,
+      "mag_aided": false,
+      "conventions": {
+        "dataset": "TumVI::room1",
+        "rate_hz": 200.00000447034847,
+        "n_samples": 28122,
+        "gyro_consistency": {
+          "residual_rad_s": 0.19716747225035228,
+          "residual_conjugate_rad_s": 0.7019414713099899,
+          "signal_rad_s": 0.15827058244114647,
+          "verdict": "confirmed"
+        },
+        "gravity": {
+          "residual_m_s2": 1.086953762673401,
+          "residual_z_down_m_s2": 19.86667116229305,
+          "confirmed": true
+        },
+        "gt_valid_fraction": 0.9753218121044023,
+        "gt_longest_gap_s": 1.0549999764189124,
+        "has_mag": false,
+        "ok": true
+      },
+      "path": "TUM-VI/TumVI::room1.hdf5",
+      "collection": "TUM-VI"
+    },
+    {
+      "dataset": "TumVI::room2",
+      "estimator": "Eskf",
+      "n_samples": 28732,
+      "duration_s": 143.65999678894877,
+      "rate_hz": 200.00000447034847,
+      "rmse_deg": 97.35845512433283,
+      "tilt_rmse_deg": 5.437012127428165,
+      "heading_rmse_deg": 97.2942431538867,
+      "final_error_deg": 125.42226637766312,
+      "heading_offset_deg": -138.20201141236276,
+      "mean_nis": {
+        "accel": 5.450726522566951
+      },
+      "rejection_rate": 0.04625504663789503,
+      "realtime_factor": 19.303630343742416,
+      "mag_aided": false,
+      "conventions": {
+        "dataset": "TumVI::room2",
+        "rate_hz": 200.00000447034847,
+        "n_samples": 28732,
+        "gyro_consistency": {
+          "residual_rad_s": 0.2340041117442064,
+          "residual_conjugate_rad_s": 1.3436688299771655,
+          "signal_rad_s": 0.31858423414906495,
+          "verdict": "confirmed"
+        },
+        "gravity": {
+          "residual_m_s2": 1.4149018986000554,
+          "residual_z_down_m_s2": 19.641845330821575,
+          "confirmed": true
+        },
+        "gt_valid_fraction": 0.8919323402478073,
+        "gt_longest_gap_s": 2.4999999441206455,
+        "has_mag": false,
+        "ok": true
+      },
+      "path": "TUM-VI/TumVI::room2.hdf5",
+      "collection": "TUM-VI"
+    },
+    {
+      "dataset": "TumVI::room3",
+      "estimator": "Eskf",
+      "n_samples": 28124,
+      "duration_s": 140.61999685689807,
+      "rate_hz": 200.00000447034847,
+      "rmse_deg": 89.28604985604645,
+      "tilt_rmse_deg": 5.798780278851806,
+      "heading_rmse_deg": 89.14791263721709,
+      "final_error_deg": 29.40658527196619,
+      "heading_offset_deg": 155.84838339551334,
+      "mean_nis": {
+        "accel": 6.657017739924372
+      },
+      "rejection_rate": 0.0837718674441758,
+      "realtime_factor": 19.00619221551316,
+      "mag_aided": false,
+      "conventions": {
+        "dataset": "TumVI::room3",
+        "rate_hz": 200.00000447034847,
+        "n_samples": 28124,
+        "gyro_consistency": {
+          "residual_rad_s": 0.2946660765235567,
+          "residual_conjugate_rad_s": 2.3118058566944937,
+          "signal_rad_s": 0.5898470651735768,
+          "verdict": "confirmed"
+        },
+        "gravity": {
+          "residual_m_s2": 1.8281413291093471,
+          "residual_z_down_m_s2": 19.075079246098866,
+          "confirmed": true
+        },
+        "gt_valid_fraction": 0.8933650974256863,
+        "gt_longest_gap_s": 1.9849999556317925,
+        "has_mag": false,
+        "ok": true
+      },
+      "path": "TUM-VI/TumVI::room3.hdf5",
+      "collection": "TUM-VI"
+    },
+    {
+      "dataset": "TumVI::room4",
+      "estimator": "Eskf",
+      "n_samples": 22212,
+      "duration_s": 111.05999751761556,
+      "rate_hz": 200.00000447034847,
+      "rmse_deg": 99.65988337749914,
+      "tilt_rmse_deg": 3.0552164142034917,
+      "heading_rmse_deg": 99.64892293632684,
+      "final_error_deg": 67.37007277410991,
+      "heading_offset_deg": -6.742878156637497,
+      "mean_nis": {
+        "accel": 5.024466216626508
+      },
+      "rejection_rate": 0.06383936610840987,
+      "realtime_factor": 18.881300300019284,
+      "mag_aided": false,
+      "conventions": {
+        "dataset": "TumVI::room4",
+        "rate_hz": 200.00000447034847,
+        "n_samples": 22212,
+        "gyro_consistency": {
+          "residual_rad_s": 0.22521556878910293,
+          "residual_conjugate_rad_s": 1.6208320641152105,
+          "signal_rad_s": 0.3928982068738117,
+          "verdict": "confirmed"
+        },
+        "gravity": {
+          "residual_m_s2": 1.2006302636385298,
+          "residual_z_down_m_s2": 19.59933967499063,
+          "confirmed": true
+        },
+        "gt_valid_fraction": 0.9753286511795426,
+        "gt_longest_gap_s": 0.5799999870359898,
+        "has_mag": false,
+        "ok": true
+      },
+      "path": "TUM-VI/TumVI::room4.hdf5",
+      "collection": "TUM-VI"
+    },
+    {
+      "dataset": "TumVI::room5",
+      "estimator": "Eskf",
+      "n_samples": 28381,
+      "duration_s": 141.90499682817608,
+      "rate_hz": 200.00000447034847,
+      "rmse_deg": 91.7902328955643,
+      "tilt_rmse_deg": 6.941529986695583,
+      "heading_rmse_deg": 91.59316498418409,
+      "final_error_deg": 12.001067465445892,
+      "heading_offset_deg": 151.12319865029824,
+      "mean_nis": {
+        "accel": 24.636085699673682
+      },
+      "rejection_rate": 0.403016102321976,
+      "realtime_factor": 21.656742804034376,
+      "mag_aided": false,
+      "conventions": {
+        "dataset": "TumVI::room5",
+        "rate_hz": 200.00000447034847,
+        "n_samples": 28381,
+        "gyro_consistency": {
+          "residual_rad_s": 0.20036980819308192,
+          "residual_conjugate_rad_s": 1.3142365782081404,
+          "signal_rad_s": 0.33663631761382606,
+          "verdict": "confirmed"
+        },
+        "gravity": {
+          "residual_m_s2": 1.8381174026154856,
+          "residual_z_down_m_s2": 19.054762681996703,
+          "confirmed": true
+        },
+        "gt_valid_fraction": 0.9942214862055601,
+        "gt_longest_gap_s": 0.1699999962002039,
+        "has_mag": false,
+        "ok": true
+      },
+      "path": "TUM-VI/TumVI::room5.hdf5",
+      "collection": "TUM-VI"
+    },
+    {
+      "dataset": "TumVI::room6",
+      "estimator": "Eskf",
+      "n_samples": 26281,
+      "duration_s": 131.40499706286937,
+      "rate_hz": 200.00000447034847,
+      "rmse_deg": 96.44537183694871,
+      "tilt_rmse_deg": 2.067707557279395,
+      "heading_rmse_deg": 96.43060183495663,
+      "final_error_deg": 83.57199953659014,
+      "heading_offset_deg": -9.122286249993238,
+      "mean_nis": {
+        "accel": 1.2245572745625075
+      },
+      "rejection_rate": 0.0022830181499942925,
+      "realtime_factor": 19.050625385703526,
+      "mag_aided": false,
+      "conventions": {
+        "dataset": "TumVI::room6",
+        "rate_hz": 200.00000447034847,
+        "n_samples": 26281,
+        "gyro_consistency": {
+          "residual_rad_s": 0.23746360855949017,
+          "residual_conjugate_rad_s": 0.9199197219623473,
+          "signal_rad_s": 0.19185121517666953,
+          "verdict": "confirmed"
+        },
+        "gravity": {
+          "residual_m_s2": 0.8463768897411779,
+          "residual_z_down_m_s2": 19.282820207561485,
+          "confirmed": true
+        },
+        "gt_valid_fraction": 0.9622540999200944,
+        "gt_longest_gap_s": 3.1399999298155308,
+        "has_mag": false,
+        "ok": true
+      },
+      "path": "TUM-VI/TumVI::room6.hdf5",
+      "collection": "TUM-VI"
+    },
+    {
+      "dataset": "exp01_motion01_canonical_seg1",
+      "estimator": "Eskf",
+      "n_samples": 5680,
+      "duration_s": 142.00000000000202,
+      "rate_hz": 39.99999999999943,
+      "rmse_deg": 5.91949959424214,
+      "tilt_rmse_deg": 1.541057136090557,
+      "heading_rmse_deg": 5.716872390486777,
+      "final_error_deg": 4.069829343368672,
+      "heading_offset_deg": -41.84661626485738,
+      "mean_nis": {
+        "accel": 2.0519962237295166,
+        "mag": 1.0925552367303482
+      },
+      "rejection_rate": 0.007042253521126761,
+      "realtime_factor": 58.24377951636749,
+      "mag_aided": true,
+      "conventions": {
+        "dataset": "exp01_motion01_canonical_seg1",
+        "rate_hz": 39.99999999999943,
+        "n_samples": 5680,
+        "gyro_consistency": {
+          "residual_rad_s": 0.2665100130875361,
+          "residual_conjugate_rad_s": 1.6677605270996567,
+          "signal_rad_s": 0.3748085322958818,
+          "verdict": "confirmed"
+        },
+        "gravity": {
+          "residual_m_s2": 0.8936685065589156,
+          "residual_z_down_m_s2": 19.47681568193444,
+          "confirmed": true
+        },
+        "gt_valid_fraction": 1.0,
+        "gt_longest_gap_s": 0.0,
+        "has_mag": true,
+        "ok": true
+      },
+      "path": "diodem/exp01/exp01_motion01_canonical_seg1.h5",
+      "collection": "diodem"
+    },
+    {
+      "dataset": "exp01_motion01_canonical_seg2",
+      "estimator": "Eskf",
+      "n_samples": 5680,
+      "duration_s": 142.00000000000202,
+      "rate_hz": 39.99999999999943,
+      "rmse_deg": 7.257181360472721,
+      "tilt_rmse_deg": 5.068225665997746,
+      "heading_rmse_deg": 5.200473005700246,
+      "final_error_deg": 4.947613582103427,
+      "heading_offset_deg": -61.561202674235716,
+      "mean_nis": {
+        "accel": 3.8458870815058854,
+        "mag": 10.380476074268659
+      },
+      "rejection_rate": 0.013556338028169013,
+      "realtime_factor": 57.98120386983511,
+      "mag_aided": true,
+      "conventions": {
+        "dataset": "exp01_motion01_canonical_seg2",
+        "rate_hz": 39.99999999999943,
+        "n_samples": 5680,
+        "gyro_consistency": {
+          "residual_rad_s": 0.17507657832152074,
+          "residual_conjugate_rad_s": 0.812699601746772,
+          "signal_rad_s": 0.17563632782908123,
+          "verdict": "confirmed"
+        },
+        "gravity": {
+          "residual_m_s2": 0.5501705286079824,
+          "residual_z_down_m_s2": 19.560469212673542,
+          "confirmed": true
+        },
+        "gt_valid_fraction": 1.0,
+        "gt_longest_gap_s": 0.0,
+        "has_mag": true,
+        "ok": true
+      },
+      "path": "diodem/exp01/exp01_motion01_canonical_seg2.h5",
+      "collection": "diodem"
+    },
+    {
+      "dataset": "exp01_motion01_canonical_seg3",
+      "estimator": "Eskf",
+      "n_samples": 5680,
+      "duration_s": 142.00000000000202,
+      "rate_hz": 39.99999999999943,
+      "rmse_deg": 5.974606837826574,
+      "tilt_rmse_deg": 0.20080979156218276,
+      "heading_rmse_deg": 5.971257424231106,
+      "final_error_deg": 9.21415498295525,
+      "heading_offset_deg": 140.28296933573193,
+      "mean_nis": {
+        "accel": 0.5664222018220602,
+        "mag": 305.44937828503805
+      },
+      "rejection_rate": 0.5012323943661972,
+      "realtime_factor": 66.61003419024246,
+      "mag_aided": true,
+      "conventions": {
+        "dataset": "exp01_motion01_canonical_seg3",
+        "rate_hz": 39.99999999999943,
+        "n_samples": 5680,
+        "gyro_consistency": {
+          "residual_rad_s": 0.054149866652360525,
+          "residual_conjugate_rad_s": 0.16984855135852803,
+          "signal_rad_s": 0.050541303414883866,
+          "verdict": "confirmed"
+        },
+        "gravity": {
+          "residual_m_s2": 0.47546022294747364,
+          "residual_z_down_m_s2": 19.449617096495555,
+          "confirmed": true
+        },
+        "gt_valid_fraction": 1.0,
+        "gt_longest_gap_s": 0.0,
+        "has_mag": true,
+        "ok": true
+      },
+      "path": "diodem/exp01/exp01_motion01_canonical_seg3.h5",
+      "collection": "diodem"
+    },
+    {
+      "dataset": "exp01_motion01_canonical_seg4",
+      "estimator": "Eskf",
+      "n_samples": 5680,
+      "duration_s": 142.00000000000202,
+      "rate_hz": 39.99999999999943,
+      "rmse_deg": 18.641568465468385,
+      "tilt_rmse_deg": 1.346955179813796,
+      "heading_rmse_deg": 18.593002119975385,
+      "final_error_deg": 0.7844077250417499,
+      "heading_offset_deg": 16.319863662175585,
+      "mean_nis": {
+        "accel": 1.0490180376191647,
+        "mag": 3.1400057880993457
+      },
+      "rejection_rate": 0.049823943661971834,
+      "realtime_factor": 58.95761735088343,
+      "mag_aided": true,
+      "conventions": {
+        "dataset": "exp01_motion01_canonical_seg4",
+        "rate_hz": 39.99999999999943,
+        "n_samples": 5680,
+        "gyro_consistency": {
+          "residual_rad_s": 0.051017258196172775,
+          "residual_conjugate_rad_s": 0.13266521740385026,
+          "signal_rad_s": 0.04006821871583715,
+          "verdict": "confirmed"
+        },
+        "gravity": {
+          "residual_m_s2": 0.24357720966067953,
+          "residual_z_down_m_s2": 19.695936648127987,
+          "confirmed": true
+        },
+        "gt_valid_fraction": 1.0,
+        "gt_longest_gap_s": 0.0,
+        "has_mag": true,
+        "ok": true
+      },
+      "path": "diodem/exp01/exp01_motion01_canonical_seg4.h5",
+      "collection": "diodem"
+    },
+    {
+      "dataset": "exp01_motion01_canonical_seg5",
+      "estimator": "Eskf",
+      "n_samples": 5680,
+      "duration_s": 142.00000000000202,
+      "rate_hz": 39.99999999999943,
+      "rmse_deg": 4.32162385459196,
+      "tilt_rmse_deg": 1.973253232602602,
+      "heading_rmse_deg": 3.8438379869194828,
+      "final_error_deg": 7.805721862114895,
+      "heading_offset_deg": 45.64074991672528,
+      "mean_nis": {
+        "accel": 6.280928903881075,
+        "mag": 1.6481722727940997
+      },
+      "rejection_rate": 0.031778169014084506,
+      "realtime_factor": 61.62669486106978,
+      "mag_aided": true,
+      "conventions": {
+        "dataset": "exp01_motion01_canonical_seg5",
+        "rate_hz": 39.99999999999943,
+        "n_samples": 5680,
+        "gyro_consistency": {
+          "residual_rad_s": 0.057148352852425324,
+          "residual_conjugate_rad_s": 0.16585760480092812,
+          "signal_rad_s": 0.04734516498503245,
+          "verdict": "confirmed"
+        },
+        "gravity": {
+          "residual_m_s2": 0.23819039393810004,
+          "residual_z_down_m_s2": 19.618495770665035,
+          "confirmed": true
+        },
+        "gt_valid_fraction": 1.0,
+        "gt_longest_gap_s": 0.0,
+        "has_mag": true,
+        "ok": true
+      },
+      "path": "diodem/exp01/exp01_motion01_canonical_seg5.h5",
+      "collection": "diodem"
+    },
+    {
+      "dataset": "exp01_motion02_pause1_seg1",
+      "estimator": "Eskf",
+      "n_samples": 360,
+      "duration_s": 9.000000000000007,
+      "rate_hz": 39.999999999999964,
+      "rmse_deg": 1.2682940953068942,
+      "tilt_rmse_deg": 0.2972332346740572,
+      "heading_rmse_deg": 1.23282104224829,
+      "final_error_deg": 2.068564353654512,
+      "heading_offset_deg": -30.401038104864384,
+      "mean_nis": {
+        "accel": 1.1183427627739186,
+        "mag": 0.040762075927549914
+      },
+      "rejection_rate": 0.011111111111111112,
+      "realtime_factor": 62.59000529729237,
+      "mag_aided": true,
+      "conventions": {
+        "dataset": "exp01_motion02_pause1_seg1",
+        "rate_hz": 39.999999999999964,
+        "n_samples": 360,
+        "gyro_consistency": {
+          "residual_rad_s": 0.089836474964881,
+          "residual_conjugate_rad_s": 0.28266311031256197,
+          "signal_rad_s": 0.07695946234127775,
+          "verdict": "confirmed"
+        },
+        "gravity": {
+          "residual_m_s2": 0.3723843427882699,
+          "residual_z_down_m_s2": 19.52274920151144,
+          "confirmed": true
+        },
+        "gt_valid_fraction": 1.0,
+        "gt_longest_gap_s": 0.0,
+        "has_mag": true,
+        "ok": true
+      },
+      "path": "diodem/exp01/exp01_motion02_pause1_seg1.h5",
+      "collection": "diodem"
+    },
+    {
+      "dataset": "exp01_motion02_pause1_seg2",
+      "estimator": "Eskf",
+      "n_samples": 360,
+      "duration_s": 9.000000000000007,
+      "rate_hz": 39.999999999999964,
+      "rmse_deg": 0.29004573365755226,
+      "tilt_rmse_deg": 0.14393446468124135,
+      "heading_rmse_deg": 0.25176465603217196,
+      "final_error_deg": 0.49523814078029454,
+      "heading_offset_deg": -25.229621059079058,
+      "mean_nis": {
+        "accel": 0.7171258428336005,
+        "mag": 0.0177081962652637
+      },
+      "rejection_rate": 0.005555555555555556,
+      "realtime_factor": 61.6443671943782,
+      "mag_aided": true,
+      "conventions": {
+        "dataset": "exp01_motion02_pause1_seg2",
+        "rate_hz": 39.999999999999964,
+        "n_samples": 360,
+        "gyro_consistency": {
+          "residual_rad_s": 0.05403691484315467,
+          "residual_conjugate_rad_s": 0.15802265207911095,
+          "signal_rad_s": 0.042761857573054,
+          "verdict": "confirmed"
+        },
+        "gravity": {
+          "residual_m_s2": 0.277919373373192,
+          "residual_z_down_m_s2": 19.64773301094458,
+          "confirmed": true
+        },
+        "gt_valid_fraction": 1.0,
+        "gt_longest_gap_s": 0.0,
+        "has_mag": true,
+        "ok": true
+      },
+      "path": "diodem/exp01/exp01_motion02_pause1_seg2.h5",
+      "collection": "diodem"
+    },
+    {
+      "dataset": "exp01_motion02_pause1_seg3",
+      "estimator": "Eskf",
+      "n_samples": 360,
+      "duration_s": 9.000000000000007,
+      "rate_hz": 39.999999999999964,
+      "rmse_deg": 0.3165453790516536,
+      "tilt_rmse_deg": 0.2933664282082615,
+      "heading_rmse_deg": 0.11888380238508472,
+      "final_error_deg": 0.4792530562969625,
+      "heading_offset_deg": -29.98415993247232,
+      "mean_nis": {
+        "accel": 0.1591259520730318,
+        "mag": 0.013758698799687597
+      },
+      "rejection_rate": 0.0,
+      "realtime_factor": 62.08838248025165,
+      "mag_aided": true,
+      "conventions": {
+        "dataset": "exp01_motion02_pause1_seg3",
+        "rate_hz": 39.999999999999964,
+        "n_samples": 360,
+        "gyro_consistency": {
+          "residual_rad_s": 0.03534012699281043,
+          "residual_conjugate_rad_s": 0.1496321321958536,
+          "signal_rad_s": 0.041335337929218376,
+          "verdict": "confirmed"
+        },
+        "gravity": {
+          "residual_m_s2": 0.1794704593895162,
+          "residual_z_down_m_s2": 19.573887804981513,
+          "confirmed": true
+        },
+        "gt_valid_fraction": 1.0,
+        "gt_longest_gap_s": 0.0,
+        "has_mag": true,
+        "ok": true
+      },
+      "path": "diodem/exp01/exp01_motion02_pause1_seg3.h5",
+      "collection": "diodem"
+    }
+  ],
+  "failures": []
+}

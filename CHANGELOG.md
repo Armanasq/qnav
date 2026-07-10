@@ -4,9 +4,43 @@ All notable changes to qnav are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versioning follows
 the policy in README.md ("Public API, versioning, and deprecation").
 
-## [Unreleased]
+## [0.2.0] - 2026-07-10
+
+Release candidate for the navigation-stack expansion. The `nav`,
+`filters.{contracts,robust,pipeline,invariant}`, `interop`, extended
+`calibration`, and `validation.{imu_datasets,replay_eval,comparison}` APIs
+are **provisional** (see `api_manifest.json`); the attitude/frames core
+remains stable under the deprecation policy.
 
 ### Added
+- Real-dataset validation infrastructure: BROAD/DIODEM HDF5 + NPZ loaders
+  with plausibility validation, machine-readable convention verification
+  (competing-hypothesis gyro/gravity checks), sidecar metadata consistency
+  checks, and a compact in-repo fixture (40 s RepoIMU trial).
+- Heading-aligned replay evaluation (`qnav.validation.replay_eval`): total
+  /tilt/heading RMSE with closed-form constant-yaw alignment, per-sensor
+  NIS, rejection rate, real-time factor; calibration segments and
+  ground-truth gaps excluded from metrics.
+- `benchmarks/run_dataset_eval.py` (argparse): separate initialization
+  modes (ground_truth [oracle], accel_mag, identity, perturbed_10/45/90/
+  150), magnetic-reference modes (oracle [labeled], calibration
+  [deployable], none), universal vs per-dataset noise configurations,
+  failure-rate-based exit status, and committed result artifacts under
+  `benchmarks/results/` (JSON + Markdown + environment; no absolute paths).
+- Public API manifest (`api_manifest.json`) with stable/provisional labels,
+  compared in CI (`tests/test_api_manifest.py`).
+- `qnav[datasets]` extra (h5py>=3.8).
+- Fault-injection and long-duration replay tests on real sensor data
+  (magnetic disturbance gating, accelerometer dropout/spikes, memory-growth
+  bound).
+
+### Changed
+- `Measurement` is now deeply immutable: arrays are defensively copied and
+  write-protected; covariance must be symmetric PSD; `sequence_id >= 0`;
+  `sensor_id`/`frame` must be strings.
+- DIODEM sidecar metadata sanitized (absolute source paths removed).
+
+### Added (navigation-stack expansion, previously unreleased)
 - Left-invariant attitude EKF (`qnav.filters.LeftInvariantEskf`,
   imperfect-IEKF form with gyro bias): nav-frame error definition with
   state-independent measurement Jacobians; same constructor, update
