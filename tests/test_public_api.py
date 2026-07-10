@@ -29,7 +29,7 @@ MODULES = [
     "qnav.geomag.wmm",
     "qnav.filters.base", "qnav.filters.contracts",
     "qnav.nav.state", "qnav.nav.mechanization", "qnav.nav.increments",
-    "qnav.nav.eskf", "qnav.nav.measurements",
+    "qnav.nav.eskf", "qnav.nav.measurements", "qnav.nav.preintegration",
     "qnav.sensors.imu", "qnav.sensors.allan", "qnav.sensors.noise",
     "qnav.calibration.gyro_bias", "qnav.calibration.mag_ellipsoid",
     "qnav.calibration.accel_calibration", "qnav.calibration.frame_alignment",

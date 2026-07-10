@@ -11,9 +11,10 @@
   lifecycle (snapshot/restore/reset/health) with :mod:`qnav.filters`
 """
 
-from qnav.nav import eskf, increments, measurements, mechanization, state  # noqa: F401
+from qnav.nav import eskf, increments, measurements, mechanization, preintegration, state  # noqa: F401
 from qnav.nav.eskf import NavEskf  # noqa: F401
 from qnav.nav.increments import accumulate_increments  # noqa: F401
+from qnav.nav.preintegration import ImuPreintegration, PreintegratedImu  # noqa: F401
 from qnav.nav.mechanization import (  # noqa: F401
     gravity_ecef,
     propagate_ecef,
@@ -23,7 +24,8 @@ from qnav.nav.mechanization import (  # noqa: F401
 from qnav.nav.state import NavState  # noqa: F401
 
 __all__ = [
-    "NavEskf", "NavState", "accumulate_increments", "gravity_ecef",
+    "ImuPreintegration", "NavEskf", "NavState", "PreintegratedImu",
+    "accumulate_increments", "gravity_ecef",
     "propagate_ecef", "propagate_ned", "propagate_state",
-    "eskf", "increments", "measurements", "mechanization", "state",
+    "eskf", "increments", "measurements", "mechanization", "preintegration", "state",
 ]

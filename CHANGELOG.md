@@ -7,6 +7,13 @@ the policy in README.md ("Public API, versioning, and deprecation").
 ## [Unreleased]
 
 ### Added
+- IMU preintegration (`qnav.nav.preintegration.ImuPreintegration`,
+  Forster-style on-manifold): gravity-free body-frame delta rotation/
+  velocity/position, first-order bias Jacobians with `corrected()`
+  re-linearization, 9x9 preintegrated covariance, interval length.
+  Cross-checked in tests against per-sample recursion (bit-exact), NED
+  mechanization (Earth-term bounds), finite-difference bias Jacobians,
+  and Monte-Carlo covariance consistency (NEES).
 - Modular navigation measurement models (`qnav.nav.measurements`):
   GNSS position/velocity (lever-arm aware), barometric altitude,
   rangefinder height (tilt-compensated with attitude Jacobian), external
