@@ -46,7 +46,7 @@ class ComplementaryFilter(AttitudeFilter):
             raise ValueError("gain must be in [0, 1]")
         self.gain = float(gain)
 
-    def predict(self, omega_body: np.ndarray, dt: float) -> np.ndarray:
+    def _predict(self, omega_body: np.ndarray, dt: float) -> np.ndarray:
         self.q = kin.integrate_exponential(self.q, omega_body, dt)
         return self.q
 

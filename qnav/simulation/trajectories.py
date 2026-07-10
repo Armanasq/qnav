@@ -12,6 +12,8 @@ from dataclasses import dataclass
 
 import numpy as np
 
+from qnav.types import ArrayLike
+
 from qnav.attitude import quaternion as quat
 
 __all__ = ["Trajectory", "static_pose", "constant_rate", "sinusoidal_euler", "coning"]
@@ -62,7 +64,7 @@ def constant_rate(
 
 
 def sinusoidal_euler(
-    amp: np.ndarray, freq: np.ndarray, duration: float, dt: float,
+    amp: ArrayLike, freq: ArrayLike, duration: float, dt: float,
     nav_frame: str = "NED",
 ) -> Trajectory:
     """Sinusoidal ZYX Euler motion: yaw/pitch/roll = amp·sin(2πf t).

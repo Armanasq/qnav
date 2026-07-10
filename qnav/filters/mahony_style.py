@@ -54,7 +54,7 @@ class MahonyFilter(AttitudeFilter):
             raise ValueError("gains must be nonnegative")
         self.kp = float(kp)
         self.ki = float(ki)
-        self.bias = np.zeros(3)
+        self.bias: np.ndarray = np.zeros(3)
 
     def correction(
         self, v_nav: np.ndarray, v_body: np.ndarray, weights: np.ndarray | None = None
@@ -90,7 +90,7 @@ class MahonyFilter(AttitudeFilter):
         self.q = kin.integrate_exponential(self.q, omega, dt)
         return self.q
 
-    def predict(self, omega_body: np.ndarray, dt: float) -> np.ndarray:
+    def _predict(self, omega_body: np.ndarray, dt: float) -> np.ndarray:
         """Gyro-only step (bias-corrected, no direction update)."""
         return self.step(omega_body, dt)
 

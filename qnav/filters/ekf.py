@@ -46,8 +46,8 @@ class QuaternionEkf(AttitudeFilter):
         if self.P.shape != (4, 4):
             raise ValueError("P0 must be 4×4")
 
-    def predict(self, omega_meas: np.ndarray, dt: float) -> np.ndarray:
-        phi = np.asarray(omega_meas, dtype=float) * dt
+    def _predict(self, omega_body: np.ndarray, dt: float) -> np.ndarray:
+        phi = omega_body * dt
         dq = quat.exp(phi)
         F = quat.right_matrix(dq)
         # noise injection: q⊗Exp(φ+δ) ≈ q_{k+1} + ½ [q_{k+1}]_L Ξ δ  (small δ)

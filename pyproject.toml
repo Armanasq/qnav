@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "qnav"
-version = "0.1.0"
+dynamic = ["version"]
 description = "Convention-safe attitude, heading, frame-transform, and navigation math for robotics, aerospace, and sensor fusion."
 readme = "README.md"
 requires-python = ">=3.9"
@@ -24,6 +24,7 @@ classifiers = [
 dependencies = ["numpy>=1.22"]
 
 [project.optional-dependencies]
+interop = ["scipy>=1.7", "pandas>=1.3"]
 test = ["pytest>=7", "hypothesis>=6", "pytest-cov"]
 docs = [
     "mkdocs>=1.5",
@@ -41,6 +42,27 @@ Repository = "https://github.com/armanasq/qnav"
 
 [tool.setuptools.packages.find]
 include = ["qnav*"]
+
+[tool.setuptools.dynamic]
+version = { attr = "qnav.__version__" }
+
+[tool.setuptools.package-data]
+qnav = ["py.typed"]
+
+# mypy no longer targets 3.9 semantics; runtime 3.9 support is covered by the
+# CI test matrix.
+[tool.mypy]
+packages = ["qnav"]
+python_version = "3.10"
+warn_unused_ignores = true
+warn_redundant_casts = true
+no_implicit_optional = true
+
+# optional interop dependencies: adapters import them lazily; stubs are not
+# a runtime requirement
+[[tool.mypy.overrides]]
+module = ["scipy.*", "pandas.*"]
+ignore_missing_imports = true
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

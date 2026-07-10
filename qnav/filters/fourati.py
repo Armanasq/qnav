@@ -79,7 +79,7 @@ class FouratiFilter(AttitudeFilter):
         self.m_ref = m / n
         self.g_ref = np.array([0.0, 0.0, 1.0])   # gravity-down, NED
 
-    def predict(self, omega_body: np.ndarray, dt: float) -> np.ndarray:
+    def _predict(self, omega_body: np.ndarray, dt: float) -> np.ndarray:
         """Gyro-only step (first-order, matching the observer's integrator)."""
         w = np.asarray(omega_body, dtype=float)
         qd = 0.5 * quat.mul(self.q, np.concatenate([[0.0], w]))

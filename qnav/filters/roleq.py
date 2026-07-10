@@ -74,7 +74,7 @@ class RoleqFilter(AttitudeFilter):
             raise ValueError("weights must be two nonnegative values with positive sum")
         self.weights = w / w.sum()
 
-    def predict(self, omega_body: np.ndarray, dt: float) -> np.ndarray:
+    def _predict(self, omega_body: np.ndarray, dt: float) -> np.ndarray:
         """Gyro-only propagation (first-order transition, as in the paper)."""
         w = np.asarray(omega_body, dtype=float)
         qd = 0.5 * quat.mul(self.q, np.concatenate([[0.0], w]))

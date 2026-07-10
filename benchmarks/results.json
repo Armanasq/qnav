@@ -1,0 +1,184 @@
+{
+  "environment": {
+    "cpu": "13th Gen Intel(R) Core(TM) i9-13980HX",
+    "architecture": "x86_64",
+    "os": "Linux-6.8.0-124-generic-x86_64-with-glibc2.35",
+    "python": "3.10.12",
+    "numpy": "1.26.4",
+    "blas": "openblas64",
+    "threads": 32,
+    "commit": "709e50b"
+  },
+  "results": [
+    {
+      "name": "quat.mul batch 100k",
+      "n_items": 100000,
+      "median_s": 0.00670893800270278,
+      "best_s": 0.006317005001619691,
+      "p95_s": 0.00705788599952939,
+      "per_item_ns": 67.0893800270278,
+      "repeats": 7,
+      "warmup": 2
+    },
+    {
+      "name": "quat.rotate_vector batch 100k",
+      "n_items": 100000,
+      "median_s": 0.0063011329984874465,
+      "best_s": 0.006114550000347663,
+      "p95_s": 0.0064243980013998225,
+      "per_item_ns": 63.011329984874465,
+      "repeats": 7,
+      "warmup": 2
+    },
+    {
+      "name": "quat.exp batch 100k",
+      "n_items": 100000,
+      "median_s": 0.004241736001858953,
+      "best_s": 0.004165767000813503,
+      "p95_s": 0.004282787002011901,
+      "per_item_ns": 42.417360018589534,
+      "repeats": 7,
+      "warmup": 2
+    },
+    {
+      "name": "so3.exp batch 100k",
+      "n_items": 100000,
+      "median_s": 0.020927653000399005,
+      "best_s": 0.02065850199869601,
+      "p95_s": 0.021135979000973748,
+      "per_item_ns": 209.27653000399005,
+      "repeats": 7,
+      "warmup": 2
+    },
+    {
+      "name": "so3.log batch 100k",
+      "n_items": 100000,
+      "median_s": 0.13311427199732861,
+      "best_s": 0.13253998900108854,
+      "p95_s": 0.13430775400047423,
+      "per_item_ns": 1331.1427199732861,
+      "repeats": 7,
+      "warmup": 2
+    },
+    {
+      "name": "so3.right_jacobian batch 100k",
+      "n_items": 100000,
+      "median_s": 0.02277623199915979,
+      "best_s": 0.022610755997447995,
+      "p95_s": 0.023132497997721657,
+      "per_item_ns": 227.7623199915979,
+      "repeats": 7,
+      "warmup": 2
+    },
+    {
+      "name": "quest 1000 solves",
+      "n_items": 1000,
+      "median_s": 0.059763182998722186,
+      "best_s": 0.055477391000749776,
+      "p95_s": 0.061008565997326514,
+      "per_item_ns": 59763.182998722186,
+      "repeats": 7,
+      "warmup": 2
+    },
+    {
+      "name": "saam 1000 solves",
+      "n_items": 1000,
+      "median_s": 0.03334556800109567,
+      "best_s": 0.03196368600038113,
+      "p95_s": 0.03688812000109465,
+      "per_item_ns": 33345.56800109567,
+      "repeats": 7,
+      "warmup": 2
+    },
+    {
+      "name": "Eskf.predict x1000",
+      "n_items": 1000,
+      "median_s": 0.09366165800020099,
+      "best_s": 0.09311919700121507,
+      "p95_s": 0.09468647600078839,
+      "per_item_ns": 93661.65800020099,
+      "repeats": 7,
+      "warmup": 2
+    },
+    {
+      "name": "Eskf predict+gravity update x1000",
+      "n_items": 1000,
+      "median_s": 0.23508422799932305,
+      "best_s": 0.2339990510008647,
+      "p95_s": 0.23703842200120562,
+      "per_item_ns": 235084.22799932305,
+      "repeats": 7,
+      "warmup": 2
+    },
+    {
+      "name": "NavEskf.predict x1000",
+      "n_items": 1000,
+      "median_s": 0.25883106699984637,
+      "best_s": 0.257264670002769,
+      "p95_s": 0.26108340399878216,
+      "per_item_ns": 258831.06699984637,
+      "repeats": 7,
+      "warmup": 2
+    },
+    {
+      "name": "NavEskf predict + 10Hz pos/vel x1000",
+      "n_items": 1000,
+      "median_s": 0.3102410819992656,
+      "best_s": 0.30825565600025584,
+      "p95_s": 0.3112105110012635,
+      "per_item_ns": 310241.0819992656,
+      "repeats": 7,
+      "warmup": 2
+    },
+    {
+      "name": "ImuPreintegration.integrate x1000",
+      "n_items": 1000,
+      "median_s": 0.13523459100179025,
+      "best_s": 0.1347126250002475,
+      "p95_s": 0.1360205210003187,
+      "per_item_ns": 135234.59100179025,
+      "repeats": 7,
+      "warmup": 2
+    },
+    {
+      "name": "NavEskf 10s replay @ 100 Hz",
+      "n_items": 1000,
+      "median_s": 0.25971003900122014,
+      "best_s": 0.258907925002859,
+      "p95_s": 0.260852392999368,
+      "per_item_ns": 259710.03900122014,
+      "repeats": 5,
+      "warmup": 2
+    },
+    {
+      "name": "NavEskf 10s replay @ 400 Hz",
+      "n_items": 4000,
+      "median_s": 1.0416635159999714,
+      "best_s": 1.0390463050025573,
+      "p95_s": 1.0433768520015292,
+      "per_item_ns": 260415.87899999286,
+      "repeats": 5,
+      "warmup": 2
+    },
+    {
+      "name": "NavEskf 10s replay @ 1000 Hz",
+      "n_items": 10000,
+      "median_s": 2.604161985000246,
+      "best_s": 2.593709554999805,
+      "p95_s": 2.6094988840013684,
+      "per_item_ns": 260416.1985000246,
+      "repeats": 5,
+      "warmup": 2
+    },
+    {
+      "name": "NavEskf 60s covariance propagation @100Hz",
+      "n_items": 6000,
+      "median_s": 1.566623835999053,
+      "best_s": 1.565267486999801,
+      "p95_s": 1.6079969919992436,
+      "per_item_ns": 261103.97266650884,
+      "repeats": 3,
+      "warmup": 2
+    }
+  ]
+}

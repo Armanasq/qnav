@@ -47,6 +47,10 @@ qnav/
 │                      generators, noise injection (dropout, outliers, jitter), vehicle state
 ├── metrics/           Attitude error (geodesic, RMSE), NEES/χ² consistency bounds (SciPy-free),
 │                      heading error, covariance diagnostics
+├── nav/               Inertial navigation: NavState, NED/ECEF strapdown mechanization
+│                      (Earth rate, transport, Coriolis, Somigliana gravity), coning/sculling,
+│                      15-state ESKF, modular measurement models (GNSS, baro, ZUPT, UWB, ...),
+│                      Forster-style IMU preintegration
 └── validation/        Mathematical invariants, reference cases against closed-form solutions,
                        benchmark runner, canonical MARG dataset
 ```
@@ -68,7 +72,7 @@ From source:
 git clone https://github.com/armanasq/qnav
 cd qnav
 pip install -e ".[dev]"
-pytest                                    # 248 tests, ~45 s
+pytest
 ```
 
 ---
@@ -118,6 +122,7 @@ print(np.rad2deg(quat.angular_distance(q_AB, q_AC)))  # 45°
 ### SO(3) Lie group operations
 
 ```python
+import numpy as np
 from qnav.attitude import so3
 
 R = so3.exp(np.array([0.1, -0.2, 0.3]))   # Rodrigues, exact
@@ -135,8 +140,13 @@ R_new = so3.boxplus(R, np.array([0.01, 0.0, 0.0]))
 ### Error-state Kalman filter
 
 ```python
-from qnav.filters import Eskf
 import numpy as np
+from qnav.filters import Eskf
+from qnav.heading.magnetic_model import field_from_elements
+
+rng = np.random.default_rng(0)
+dt = 0.01
+m_nav = field_from_elements(declination=0.0, inclination=np.deg2rad(60.0))
 
 f = Eskf(
     gyro_noise_density=0.005,   # rad/s/√Hz  (datasheet: in-run noise)
@@ -144,52 +154,62 @@ f = Eskf(
     nav_frame="NED",
 )
 
-for gyro, accel, mag in sensor_stream:
-    f.predict(gyro, dt=0.01)
+for k in range(200):            # static body, noisy sensors
+    gyro = 0.005 * rng.standard_normal(3)
+    accel = np.array([0.0, 0.0, -9.81]) + 0.05 * rng.standard_normal(3)
+    mag = m_nav + 0.02 * rng.standard_normal(3)
+    f.predict(gyro, dt=dt)
     f.update_gravity(accel, sigma=0.02)
-    f.update_magnetometer(mag_nav_reference, mag, sigma=0.02)
+    f.update_magnetometer(m_nav, mag, sigma=0.02)
 
-print(f"attitude std (roll/pitch/yaw): {np.rad2deg(f.attitude_std)} deg")
-print(f"gyro bias estimate: {np.rad2deg(f.bias * 3600)} deg/hr")
+print(f"attitude std (x/y/z): {np.rad2deg(f.attitude_std)} deg")
+print(f"gyro bias estimate: {np.rad2deg(f.bias) * 3600} deg/hr")
 ```
 
 ### Attitude determination (Wahba problem)
 
 ```python
-from qnav.determination import quest
+import numpy as np
+from qnav.attitude import quaternion as quat
+from qnav.determination import quest_q
 
-# Gravity (NED: [0,0,1] down) and magnetic field in nav frame
-v_nav = np.array([[0, 0, 1.0], [0.3, 0.0, 0.95]])
+# Gravity (NED: [0,0,1] down) and magnetic field direction in nav frame
+v_nav = np.array([[0.0, 0.0, 1.0], [0.3, 0.0, 0.95]])
 v_nav /= np.linalg.norm(v_nav, axis=1, keepdims=True)
 
-# Same vectors measured in body frame (noisy)
-v_body = np.array([[...], [...]])
+# The same vectors observed in the body frame (here: body rotated 30° in yaw)
+q_true = quat.exp(np.array([0.0, 0.0, np.deg2rad(30)]))
+v_body = np.stack([quat.rotate_frame(q_true, v) for v in v_nav])
 
-q_nav_body = quest.solve(v_nav, v_body, weights=[1.0, 0.5])
+q_nav_body = quest_q(v_nav, v_body, weights=np.array([1.0, 0.5]))
+assert quat.angular_distance(q_nav_body, q_true) < 1e-9
 ```
 
 ### Typed frame transforms
 
 ```python
-from qnav.frames import Frame, FrameTransform
+import numpy as np
+from qnav.attitude import quaternion as quat
+from qnav.frames import FrameTransform
 
-LIDAR = Frame("LIDAR")
-IMU   = Frame("IMU")
-BODY  = Frame("BODY")
+q_body_imu = quat.exp(np.array([0.0, 0.0, np.deg2rad(5)]))   # 5° mounting yaw
+t_body_imu = np.array([0.10, 0.0, -0.05])                     # lever arm [m]
 
-T_body_imu  = FrameTransform(q=q_body_imu,  t=t_body_imu,  from_frame=IMU,  to_frame=BODY)
-T_body_lidar = FrameTransform(q=q_body_lidar, t=t_body_lidar, from_frame=LIDAR, to_frame=BODY)
+T_body_imu = FrameTransform(target="BODY", source="IMU",
+                            rotation=q_body_imu, translation=t_body_imu)
 
-# apply_vector checks frame consistency at runtime
+v_imu = np.array([1.0, 0.0, 0.0])
 v_body = T_body_imu.apply_vector(v_imu)
 
-# Compose: raises FrameMismatchError if the chain doesn't close
-T_lidar_imu = T_body_imu.inverse().compose(T_body_lidar.inverse())
+# Composition checks frame labels; a non-matching chain raises FrameMismatchError
+T_imu_body = T_body_imu.inverse()
+identity = T_body_imu @ T_imu_body        # T_body_body
 ```
 
 ### WGS-84 geodesy
 
 ```python
+import numpy as np
 from qnav.frames.earth import geodetic_to_ecef, dcm_ecef_to_ned, normal_gravity
 
 lat, lon, h = np.deg2rad(48.8566), np.deg2rad(2.3522), 35.0  # Paris
@@ -198,15 +218,54 @@ R_ned_ecef = dcm_ecef_to_ned(lat, lon)
 g = normal_gravity(lat, h)   # Somigliana + free-air, m/s²
 ```
 
+### Full inertial navigation (15-state ESKF)
+
+```python
+import numpy as np
+from qnav.attitude import quaternion as quat
+from qnav.nav import NavEskf, NavState
+from qnav.nav.measurements import BaroAltitude, GnssPosition, ZuptVelocity
+
+lat, lon, h = np.deg2rad(48.85), np.deg2rad(2.35), 35.0
+f = NavEskf(
+    NavState(q=quat.identity(), p=[lat, lon, h], frame="NED"),
+    gyro_noise_density=0.002,    # rad/s/√Hz
+    accel_noise_density=0.02,    # m/s²/√Hz
+    gyro_bias_walk=1e-6, accel_bias_walk=1e-5,
+)
+
+rng = np.random.default_rng(0)
+for k in range(500):             # 5 s static at 100 Hz
+    gyro = 0.002 * rng.standard_normal(3)
+    accel = np.array([0.0, 0.0, -9.806]) + 0.02 * rng.standard_normal(3)
+    f.predict(gyro, accel, dt=0.01)
+    if k % 100 == 99:            # 1 Hz GNSS + baro
+        f.update_measurement(GnssPosition(), np.array([lat, lon, h]), sigma=2.0)
+        f.update_measurement(BaroAltitude(), h, sigma=0.5)
+    f.update_measurement(ZuptVelocity(), None, sigma=0.02)
+
+print("position 1σ [m]:", f.position_std)
+print("health:", f.health.name)
+```
+
+Measurement models (`qnav.nav.measurements`) are modular — GNSS position/velocity with lever arms, barometric altitude, rangefinder, external attitude/pose/velocity, wheel odometry, nonholonomic constraints, ZUPT/ZARU, UWB ranges, magnetic yaw, dual-antenna heading — each with a documented frame/unit contract and a finite-difference-verified Jacobian. All fuse through one gated Joseph-form kernel with chi-square NIS gating, Huber/Cauchy/Tukey robust losses, and per-sensor quarantine (`GatePolicy`, `SensorMonitor`).
+
 ### Magnetometer calibration
 
 ```python
-from qnav.calibration.mag_ellipsoid import fit_ellipsoid, MagCalibration
+import numpy as np
+from qnav.attitude import quaternion as quat
+from qnav.calibration.mag_ellipsoid import fit_ellipsoid
 
-# raw_data: (N, 3) array of magnetometer readings during arbitrary rotation
-ellipsoid = fit_ellipsoid(raw_data)          # SVD quadric fit → SPD validation
-cal = MagCalibration(ellipsoid)
-corrected = cal.correct(raw_data)            # maps sphere, compensates soft+hard iron
+# Simulate raw readings: rotations of a fixed field, plus hard-iron offset
+rng = np.random.default_rng(1)
+field = np.array([0.2, 0.0, 0.45])
+qs = quat.random((500,), rng=rng)
+raw = np.stack([quat.rotate_frame(q, field) for q in qs]) + np.array([0.05, -0.02, 0.01])
+
+cal = fit_ellipsoid(raw)          # SVD quadric fit → SPD validation
+corrected = cal.correct(raw)      # maps to sphere: soft + hard iron compensated
+assert np.std(np.linalg.norm(corrected, axis=1)) < 1e-6
 ```
 
 ---
@@ -216,7 +275,7 @@ corrected = cal.correct(raw_data)            # maps sphere, compensates soft+har
 | Scenario | Recommended | Why |
 |---|---|---|
 | Exactly 2 reference vectors, no noise weighting needed | `triad` | O(1), deterministic, closes analytically |
-| ≥ 2 vectors, weighted, real-time embedded | `quest` | Newton iteration on the characteristic polynomial; ~5 µs |
+| ≥ 2 vectors, weighted, real-time embedded | `quest` | Newton iteration on the characteristic polynomial |
 | ≥ 2 vectors, fastest optimal solver | `flae` | Quartic characteristic polynomial; companion roots + Newton polish |
 | ≥ 2 vectors, batch, numerical robustness paramount | `svd` | SVD-based; handles near-degenerate configs gracefully |
 | Online alignment with N vectors and covariance output | `davenport` | Full 4×4 eigensystem; straightforward to extend |
@@ -256,7 +315,7 @@ pytest --hypothesis-seed=0         # property tests with fixed seed
 ```
 
 The test suite covers:
-- **30+ Hypothesis property tests** on quaternion algebra (associativity, conjugate, double-cover, exp/log round-trip across random inputs)
+- **Hypothesis property tests** on quaternion algebra (associativity, conjugate, double-cover, exp/log round-trip across random inputs)
 - **Finite-difference Jacobian verification** for all analytical Jacobians in `attitude/jacobians.py` and `filters/madgwick_style.py`
 - **Convergence order tests** for all integrators (measured empirically against fine-grid reference)
 - **NEES consistency** for the ESKF (Monte-Carlo average NEES within χ²(3) bounds)
@@ -275,6 +334,22 @@ mkdocs build            # static site to site/
 Published at **https://armanasq.github.io/qnav/**
 
 Math pages cover: quaternion algebra, SO(3) Lie group, Euler angles, coordinate frames, attitude determination, filtering, heading/tilt, and a complete formula catalog with source traceability to 7 primary references.
+
+---
+
+## Public API, versioning, and deprecation
+
+The supported public API is: the subpackages and exceptions exported by `qnav.__all__`, plus every symbol in those subpackages' `__all__` lists. Anything prefixed with an underscore (modules like `qnav._validate`, functions, attributes) is internal and may change without notice.
+
+qnav follows semantic versioning:
+
+- **Patch** (0.1.x): bug fixes, documentation, numerical improvements within stated tolerances.
+- **Minor** (0.x.0): new features; public behavior changes only through a deprecation cycle.
+- **Deprecation cycle**: the old symbol keeps working and emits `DeprecationWarning` naming the replacement for at least one minor release before removal. Incorrect *results* (wrong math) are fixed immediately and noted in the changelog as behavior changes.
+
+Pre-1.0 caveat: minor releases may include breaking changes, but always with a deprecation shim when technically possible. `tests/test_public_api.py` defines the import surface that these rules protect.
+
+All documentation examples are executed in CI (`tests/test_doc_examples.py`).
 
 ---
 

@@ -13,7 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.9", "3.10", "3.11", "3.12"]
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
 
     steps:
       - uses: actions/checkout@v4
@@ -27,25 +27,108 @@ jobs:
       - name: Install package + test dependencies
         run: pip install -e ".[test]"
 
+      - name: Run tests (unit, property, regression, doc examples, API smoke)
+        run: pytest -q --tb=short --cov=qnav --cov-report=term-missing --cov-fail-under=88
+
+  min-deps:
+    name: Minimum dependencies (NumPy 1.22)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+          cache: pip
+      - name: Install with pinned minimum NumPy
+        run: |
+          pip install "numpy==1.22.0"
+          pip install -e ".[test]" --no-deps
+          pip install pytest hypothesis
+      - name: Verify NumPy version unchanged
+        run: python -c "import numpy; assert numpy.__version__ == '1.22.0', numpy.__version__"
       - name: Run tests
-        run: pytest -q --tb=short --cov=qnav --cov-report=term-missing
+        run: pytest -q --tb=short
+
+  latest-deps:
+    name: Latest dependencies (NumPy 2.x)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+      - name: Install with latest NumPy
+        run: |
+          pip install -e ".[test]"
+          pip install --upgrade numpy
+          python -c "import numpy; assert numpy.__version__.startswith('2.'), numpy.__version__"
+      - name: Run tests
+        run: pytest -q --tb=short
+
+  typecheck:
+    name: Static typing (mypy)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install
+        run: pip install -e . mypy
+      - name: mypy
+        run: mypy
 
   lint:
     name: Lint
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
           cache: pip
-
       - name: Install dev dependencies
         run: pip install ruff
-
       - name: Ruff check
         run: ruff check qnav/ tests/
 
+  build:
+    name: Build, validate, and install wheel
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Build sdist and wheel
+        run: |
+          pip install build twine
+          python -m build
+      - name: Validate package metadata
+        run: twine check dist/*
+      - name: Install wheel in a clean environment and smoke-test imports
+        run: |
+          python -m venv /tmp/wheel-venv
+          /tmp/wheel-venv/bin/pip install dist/*.whl
+          /tmp/wheel-venv/bin/python - <<'EOF'
+          import pathlib
+          import numpy as np
+          import qnav
+          assert isinstance(qnav.__version__, str)
+          assert (pathlib.Path(qnav.__file__).parent / "py.typed").exists(), "py.typed missing"
+          for name in qnav.__all__:
+              assert hasattr(qnav, name), name
+          from qnav.filters import Eskf
+          f = Eskf(gyro_noise_density=0.01)
+          f.predict(np.array([0.01, 0.0, 0.0]), 0.01)
+          f.update_gravity(np.array([0.0, 0.0, -9.81]), sigma=0.02)
+          print("wheel smoke OK", qnav.__version__)
+          EOF
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/

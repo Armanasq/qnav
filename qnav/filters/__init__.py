@@ -33,28 +33,55 @@ Complementary/observer filters (no covariance, minimal tuning):
 """
 
 from qnav.filters import (  # noqa: F401
-    aqua, base, complementary, ekf, eskf, fkf, fourati, madgwick_style,
-    mahony_style, roleq, ukf,
+    aqua, base, complementary, contracts, ekf, eskf, fkf, fourati,
+    invariant, madgwick_style, mahony_style, pipeline, robust, roleq, ukf,
 )
 from qnav.filters import mahony_style as nonlinear_complementary  # noqa: F401
 from qnav.filters.aqua import AquaFilter  # noqa: F401
 from qnav.filters.base import AttitudeFilter  # noqa: F401
 from qnav.filters.complementary import ComplementaryFilter  # noqa: F401
+from qnav.filters.contracts import (  # noqa: F401
+    EstimatorHealth,
+    EstimatorSnapshot,
+    InnovationStatistics,
+    Measurement,
+    UpdateResult,
+)
 from qnav.filters.ekf import QuaternionEkf  # noqa: F401
 from qnav.filters.eskf import Eskf  # noqa: F401
 from qnav.filters.fkf import FastKalmanFilter  # noqa: F401
 from qnav.filters.fourati import FouratiFilter  # noqa: F401
+from qnav.filters.invariant import LeftInvariantEskf  # noqa: F401
 from qnav.filters.madgwick_style import MadgwickStyleFilter  # noqa: F401
 from qnav.filters.mahony_style import MahonyFilter, NonlinearComplementaryFilter  # noqa: F401
+from qnav.filters.pipeline import (  # noqa: F401
+    ClockDiscontinuityError,
+    FusionPipeline,
+    ProcessReport,
+)
+from qnav.filters.robust import (  # noqa: F401
+    GatePolicy,
+    SensorMonitor,
+    cauchy_weight,
+    chi2_quantile,
+    detect_saturation,
+    huber_weight,
+    tukey_weight,
+)
 from qnav.filters.roleq import RoleqFilter  # noqa: F401
 from qnav.filters.ukf import UkfAttitude  # noqa: F401
 
 __all__ = [
     "AquaFilter", "AttitudeFilter", "ComplementaryFilter", "Eskf",
-    "FastKalmanFilter", "FouratiFilter", "MadgwickStyleFilter",
+    "ClockDiscontinuityError", "EstimatorHealth", "EstimatorSnapshot",
+    "FusionPipeline", "GatePolicy", "ProcessReport",
+    "InnovationStatistics", "Measurement", "SensorMonitor", "UpdateResult",
+    "cauchy_weight", "chi2_quantile", "detect_saturation", "huber_weight",
+    "tukey_weight",
+    "FastKalmanFilter", "FouratiFilter", "LeftInvariantEskf", "MadgwickStyleFilter",
     "MahonyFilter", "NonlinearComplementaryFilter", "QuaternionEkf",
     "RoleqFilter", "UkfAttitude",
-    "aqua", "base", "complementary", "ekf", "eskf", "fkf", "fourati",
-    "madgwick_style", "mahony_style", "nonlinear_complementary", "roleq",
+    "aqua", "base", "complementary", "contracts", "ekf", "eskf", "fkf", "fourati",
+    "invariant", "madgwick_style", "mahony_style", "nonlinear_complementary", "pipeline", "robust", "roleq",
     "ukf",
 ]

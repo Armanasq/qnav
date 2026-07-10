@@ -89,3 +89,30 @@ Results are printed as a table. There are no performance regression tests in CI 
 qnav has no Numba, Cython, or C extensions. This keeps the installation trivial and the code auditable.
 
 For applications where the filter runs faster than Python can call NumPy, the recommended path is to use qnav's **tested reference implementations** to validate a Cython or C++ reimplementation, rather than running qnav in the hot loop. The test suite is designed to support this: every algorithm has reference cases that can be used as acceptance criteria.
+
+## Measured baselines
+
+Reproducible suite: `python benchmarks/run_benchmarks.py` (writes
+`benchmarks/results.json` including the full environment record — CPU,
+architecture, OS, Python, NumPy, BLAS backend, thread count, warm-up and
+repeat counts, commit SHA). Numbers quoted without that context are not
+comparable; do not copy them into marketing text.
+
+Reference measurement (i9-13980HX, Linux, Python 3.10, NumPy 1.26/OpenBLAS,
+commit `709e50b`; median of repeats):
+
+| benchmark | median | per item |
+|---|---|---|
+| quaternion multiply, batch 100 k | 6.7 ms | 67 ns |
+| SO(3) exp, batch 100 k | 20.9 ms | 209 ns |
+| QUEST solve (2 obs) | — | 60 µs |
+| attitude ESKF predict + gravity update | — | 235 µs/step |
+| 15-state NavEskf predict | — | 259 µs/step |
+| IMU preintegration step | — | 135 µs |
+| NavEskf 10 s replay @ 1 kHz | 2.60 s | 3.8× real time |
+
+Conclusion recorded for the native-acceleration policy: the pure-NumPy
+15-state ESKF sustains 1 kHz IMU replay at ~3.8× real time on a laptop CPU.
+No measured workload currently fails its latency target, so no C++/Rust
+kernel is justified yet (see the policy above: profile first, accelerate
+only proven bottlenecks).

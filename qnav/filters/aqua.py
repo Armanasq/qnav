@@ -147,7 +147,7 @@ class AquaFilter(AttitudeFilter):
         return self.q
 
     # -- gyro-only propagation -----------------------------------------------
-    def predict(self, omega_body: np.ndarray, dt: float) -> np.ndarray:
+    def _predict(self, omega_body: np.ndarray, dt: float) -> np.ndarray:
         """Gyro-only exponential propagation (no corrections)."""
         self.q = kin.integrate_exponential(self.q, omega_body, dt)
         return self.q
@@ -169,7 +169,7 @@ class AquaFilter(AttitudeFilter):
             if fn > 1e-12:
                 g_nav = quat.rotate_vector(q, -f / fn)
                 dq = _tilt_delta(g_nav)
-                gain = self._effective_alpha(fn)
+                gain = self._effective_alpha(float(fn))
                 dq = _scale_toward_identity(dq, gain, self.lerp_threshold)
                 q = quat.normalize(quat.mul(dq, q))
 
