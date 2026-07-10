@@ -47,6 +47,10 @@ qnav/
 │                      generators, noise injection (dropout, outliers, jitter), vehicle state
 ├── metrics/           Attitude error (geodesic, RMSE), NEES/χ² consistency bounds (SciPy-free),
 │                      heading error, covariance diagnostics
+├── nav/               Inertial navigation: NavState, NED/ECEF strapdown mechanization
+│                      (Earth rate, transport, Coriolis, Somigliana gravity), coning/sculling,
+│                      15-state ESKF, modular measurement models (GNSS, baro, ZUPT, UWB, ...),
+│                      Forster-style IMU preintegration
 └── validation/        Mathematical invariants, reference cases against closed-form solutions,
                        benchmark runner, canonical MARG dataset
 ```
@@ -213,6 +217,38 @@ r_ecef = geodetic_to_ecef(lat, lon, h)
 R_ned_ecef = dcm_ecef_to_ned(lat, lon)
 g = normal_gravity(lat, h)   # Somigliana + free-air, m/s²
 ```
+
+### Full inertial navigation (15-state ESKF)
+
+```python
+import numpy as np
+from qnav.attitude import quaternion as quat
+from qnav.nav import NavEskf, NavState
+from qnav.nav.measurements import BaroAltitude, GnssPosition, ZuptVelocity
+
+lat, lon, h = np.deg2rad(48.85), np.deg2rad(2.35), 35.0
+f = NavEskf(
+    NavState(q=quat.identity(), p=[lat, lon, h], frame="NED"),
+    gyro_noise_density=0.002,    # rad/s/√Hz
+    accel_noise_density=0.02,    # m/s²/√Hz
+    gyro_bias_walk=1e-6, accel_bias_walk=1e-5,
+)
+
+rng = np.random.default_rng(0)
+for k in range(500):             # 5 s static at 100 Hz
+    gyro = 0.002 * rng.standard_normal(3)
+    accel = np.array([0.0, 0.0, -9.806]) + 0.02 * rng.standard_normal(3)
+    f.predict(gyro, accel, dt=0.01)
+    if k % 100 == 99:            # 1 Hz GNSS + baro
+        f.update_measurement(GnssPosition(), np.array([lat, lon, h]), sigma=2.0)
+        f.update_measurement(BaroAltitude(), h, sigma=0.5)
+    f.update_measurement(ZuptVelocity(), None, sigma=0.02)
+
+print("position 1σ [m]:", f.position_std)
+print("health:", f.health.name)
+```
+
+Measurement models (`qnav.nav.measurements`) are modular — GNSS position/velocity with lever arms, barometric altitude, rangefinder, external attitude/pose/velocity, wheel odometry, nonholonomic constraints, ZUPT/ZARU, UWB ranges, magnetic yaw, dual-antenna heading — each with a documented frame/unit contract and a finite-difference-verified Jacobian. All fuse through one gated Joseph-form kernel with chi-square NIS gating, Huber/Cauchy/Tukey robust losses, and per-sensor quarantine (`GatePolicy`, `SensorMonitor`).
 
 ### Magnetometer calibration
 
