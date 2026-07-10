@@ -7,6 +7,15 @@ the policy in README.md ("Public API, versioning, and deprecation").
 ## [Unreleased]
 
 ### Added
+- Observability-aware calibration extensions (`qnav.calibration`):
+  `assess_least_squares` (SVD-based OBSERVABLE / WEAKLY_OBSERVABLE /
+  UNOBSERVABLE grading with condition number, excitation metric, weakest
+  direction), `estimate_time_offset` (normalized cross-correlation with
+  sub-sample parabolic refinement and reliability flag),
+  `fit_temperature_bias` (polynomial bias-vs-temperature with covariance;
+  refuses orders the thermal sweep cannot support), and
+  `estimate_lever_arm` (rigid-body LSQ with covariance; raises on
+  unexciting motion). All return covariance and observability diagnostics.
 - Optional interop adapters (`qnav.interop`, extras `qnav[interop]`):
   lossless SciPy `Rotation` bridge (`to_scipy`/`from_scipy`, scalar-first
   <-> scalar-last, physical-rotation equivalence tested) and dataset
