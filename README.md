@@ -349,6 +349,8 @@ qnav follows semantic versioning:
 
 Pre-1.0 caveat: minor releases may include breaking changes, but always with a deprecation shim when technically possible. `tests/test_public_api.py` defines the import surface that these rules protect.
 
+**Stability labels** (machine-readable in [`api_manifest.json`](api_manifest.json), enforced in CI): the attitude/frames/determination/metrics core is **stable**; the navigation stack (`qnav.nav`), estimator contracts/robustness/pipeline/invariant filter, interop, extended calibration, and validation tooling are **provisional** — functional and tested (including against real sensor datasets, see `benchmarks/results/`), but their APIs may change in a minor release while real-world validation matures.
+
 All documentation examples are executed in CI (`tests/test_doc_examples.py`).
 
 ---

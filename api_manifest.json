@@ -1,0 +1,378 @@
+{
+  "qnav": {
+    "stability": "stable",
+    "symbols": [
+      "CalibrationError",
+      "ConventionError",
+      "DegenerateGeometryWarning",
+      "FrameGraphError",
+      "FrameMismatchError",
+      "GimbalLockWarning",
+      "NormalizationWarning",
+      "QnavError",
+      "QnavWarning",
+      "__version__",
+      "attitude",
+      "calibration",
+      "determination",
+      "filters",
+      "frames",
+      "geomag",
+      "heading",
+      "interop",
+      "metrics",
+      "nav",
+      "sensors",
+      "simulation",
+      "types",
+      "validation"
+    ]
+  },
+  "qnav.attitude.quaternion": {
+    "stability": "stable",
+    "symbols": [
+      "angle",
+      "angular_distance",
+      "axis",
+      "canonical",
+      "conjugate",
+      "exp",
+      "from_jpl",
+      "from_scalar_last",
+      "identity",
+      "inverse",
+      "is_unit",
+      "left_matrix",
+      "log",
+      "mean",
+      "mul",
+      "norm",
+      "normalize",
+      "power",
+      "random",
+      "relative",
+      "right_matrix",
+      "rotate_frame",
+      "rotate_vector",
+      "to_jpl",
+      "to_scalar_last"
+    ]
+  },
+  "qnav.attitude.so3": {
+    "stability": "stable",
+    "symbols": [
+      "boxminus",
+      "boxplus",
+      "exp",
+      "geodesic_distance",
+      "hat",
+      "is_rotation",
+      "left_jacobian",
+      "left_jacobian_inverse",
+      "log",
+      "project",
+      "right_jacobian",
+      "right_jacobian_inverse",
+      "vee"
+    ]
+  },
+  "qnav.attitude.dcm": {
+    "stability": "stable",
+    "symbols": [
+      "from_axis_angle",
+      "from_quaternion",
+      "identity",
+      "is_orthogonal",
+      "orthogonality_error",
+      "orthonormalize",
+      "rot_x",
+      "rot_y",
+      "rot_z",
+      "to_quaternion",
+      "to_quaternion_robust"
+    ]
+  },
+  "qnav.attitude.euler": {
+    "stability": "stable",
+    "symbols": [
+      "ALLOWED_SEQUENCES",
+      "from_dcm",
+      "from_quaternion",
+      "to_dcm",
+      "to_quaternion"
+    ]
+  },
+  "qnav.frames.core": {
+    "stability": "stable",
+    "symbols": [
+      "Frame",
+      "WELL_KNOWN_FRAMES"
+    ]
+  },
+  "qnav.frames.transforms": {
+    "stability": "stable",
+    "symbols": [
+      "FrameTransform"
+    ]
+  },
+  "qnav.frames.graph": {
+    "stability": "stable",
+    "symbols": [
+      "FrameGraph"
+    ]
+  },
+  "qnav.frames.earth": {
+    "stability": "stable",
+    "symbols": [
+      "DCM_ENU_NED",
+      "DCM_NED_ENU",
+      "WGS84_A",
+      "WGS84_B",
+      "WGS84_E2",
+      "WGS84_F",
+      "WGS84_GM",
+      "WGS84_OMEGA",
+      "dcm_ecef_to_enu",
+      "dcm_ecef_to_ned",
+      "dcm_eci_to_ecef",
+      "dcm_enu_to_ecef",
+      "dcm_ned_to_ecef",
+      "earth_rate_ned",
+      "ecef_to_geodetic",
+      "gaussian_radius",
+      "geodetic_to_ecef",
+      "gravity_vector",
+      "meridian_radius",
+      "normal_gravity",
+      "transport_rate_ned",
+      "transverse_radius"
+    ]
+  },
+  "qnav.determination": {
+    "stability": "stable",
+    "symbols": [
+      "davenport",
+      "davenport_q",
+      "famc",
+      "famc_q",
+      "flae",
+      "flae_q",
+      "fqa",
+      "fqa_q",
+      "oleq",
+      "oleq_q",
+      "quest",
+      "quest_q",
+      "saam",
+      "saam_q",
+      "svd",
+      "svd_attitude",
+      "triad",
+      "triad_dcm",
+      "wahba"
+    ]
+  },
+  "qnav.filters": {
+    "stability": "provisional",
+    "symbols": [
+      "AquaFilter",
+      "AttitudeFilter",
+      "ClockDiscontinuityError",
+      "ComplementaryFilter",
+      "Eskf",
+      "EstimatorHealth",
+      "EstimatorSnapshot",
+      "FastKalmanFilter",
+      "FouratiFilter",
+      "FusionPipeline",
+      "GatePolicy",
+      "InnovationStatistics",
+      "LeftInvariantEskf",
+      "MadgwickStyleFilter",
+      "MahonyFilter",
+      "Measurement",
+      "NonlinearComplementaryFilter",
+      "ProcessReport",
+      "QuaternionEkf",
+      "RoleqFilter",
+      "SensorMonitor",
+      "UkfAttitude",
+      "UpdateResult",
+      "aqua",
+      "base",
+      "cauchy_weight",
+      "chi2_quantile",
+      "complementary",
+      "contracts",
+      "detect_saturation",
+      "ekf",
+      "eskf",
+      "fkf",
+      "fourati",
+      "huber_weight",
+      "invariant",
+      "madgwick_style",
+      "mahony_style",
+      "nonlinear_complementary",
+      "pipeline",
+      "robust",
+      "roleq",
+      "tukey_weight",
+      "ukf"
+    ]
+  },
+  "qnav.filters.contracts": {
+    "stability": "provisional",
+    "symbols": [
+      "EstimatorHealth",
+      "EstimatorSnapshot",
+      "InnovationStatistics",
+      "Measurement",
+      "UpdateResult"
+    ]
+  },
+  "qnav.filters.robust": {
+    "stability": "provisional",
+    "symbols": [
+      "GatePolicy",
+      "SensorMonitor",
+      "cauchy_weight",
+      "chi2_quantile",
+      "detect_saturation",
+      "huber_weight",
+      "tukey_weight"
+    ]
+  },
+  "qnav.filters.pipeline": {
+    "stability": "provisional",
+    "symbols": [
+      "ClockDiscontinuityError",
+      "FusionPipeline",
+      "ProcessReport"
+    ]
+  },
+  "qnav.filters.invariant": {
+    "stability": "provisional",
+    "symbols": [
+      "LeftInvariantEskf"
+    ]
+  },
+  "qnav.nav": {
+    "stability": "provisional",
+    "symbols": [
+      "ImuPreintegration",
+      "NavEskf",
+      "NavState",
+      "PreintegratedImu",
+      "accumulate_increments",
+      "eskf",
+      "gravity_ecef",
+      "increments",
+      "measurements",
+      "mechanization",
+      "preintegration",
+      "propagate_ecef",
+      "propagate_ned",
+      "propagate_state",
+      "state"
+    ]
+  },
+  "qnav.nav.measurements": {
+    "stability": "provisional",
+    "symbols": [
+      "BaroAltitude",
+      "DualAntennaHeading",
+      "ExternalAttitude",
+      "ExternalPose",
+      "ExternalVelocityBody",
+      "GnssPosition",
+      "GnssVelocity",
+      "MagYaw",
+      "NonholonomicConstraint",
+      "RangefinderHeight",
+      "UwbRange",
+      "WheelSpeed",
+      "ZaruGyroBias",
+      "ZuptVelocity"
+    ]
+  },
+  "qnav.nav.preintegration": {
+    "stability": "provisional",
+    "symbols": [
+      "ImuPreintegration",
+      "PreintegratedImu"
+    ]
+  },
+  "qnav.interop": {
+    "stability": "provisional",
+    "symbols": [
+      "datasets",
+      "scipy_rotation"
+    ]
+  },
+  "qnav.calibration": {
+    "stability": "provisional",
+    "symbols": [
+      "LeverArmEstimate",
+      "MagCalibration",
+      "Observability",
+      "ObservabilityReport",
+      "TemperatureBiasModel",
+      "TimeOffsetEstimate",
+      "accel_calibration",
+      "align_from_vector_pairs",
+      "assess_least_squares",
+      "calibrate_accelerometer",
+      "detect_static_intervals",
+      "estimate_bias",
+      "estimate_lever_arm",
+      "estimate_time_offset",
+      "fit_ellipsoid",
+      "fit_temperature_bias",
+      "frame_alignment",
+      "gyro_bias",
+      "lever_arm",
+      "mag_ellipsoid",
+      "observability",
+      "soft_hard_iron",
+      "temperature",
+      "time_offset"
+    ]
+  },
+  "qnav.metrics": {
+    "stability": "stable",
+    "symbols": [
+      "angle_error",
+      "attitude_error",
+      "average_nees",
+      "covariance_consistency",
+      "geodesic",
+      "heading_error",
+      "heading_rmse",
+      "nees",
+      "nees_bounds",
+      "quaternion_distance",
+      "rmse_angle"
+    ]
+  },
+  "qnav.validation": {
+    "stability": "provisional",
+    "symbols": [
+      "ComparisonResult",
+      "benchmark_runner",
+      "compare_attitude_estimators",
+      "comparison",
+      "datasets",
+      "invariants",
+      "reference_cases"
+    ]
+  },
+  "qnav.types": {
+    "stability": "stable",
+    "symbols": [
+      "ArrayLike",
+      "FloatArray",
+      "ScalarOrArray"
+    ]
+  }
+}
