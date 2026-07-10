@@ -10,4 +10,4 @@ build/
 .coverage
 
 # benchmark datasets (hundreds of MB): obtain separately, see qnav/validation/imu_datasets.py
-qnav/data/
+# qnav/data/
