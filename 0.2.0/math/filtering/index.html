@@ -1,0 +1,2312 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Convention-safe attitude, heading, frame-transform, and navigation math for robotics, aerospace, and sensor fusion.">
+      
+      
+      
+        <link rel="canonical" href="https://armanasq.github.io/qnav/0.2.0/math/filtering/">
+      
+      
+        <link rel="prev" href="../attitude_determination/">
+      
+      
+        <link rel="next" href="../heading/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Filtering - qnav</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="cyan">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#attitude-filtering" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="qnav" class="md-header__button md-logo" aria-label="qnav" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            qnav
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Filtering
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="cyan"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="cyan"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/armanasq/qnav" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    armanasq/qnav
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../getting_started/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Getting Started
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../conventions/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Conventions
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../quaternions/" class="md-tabs__link">
+          
+  
+  
+  Math
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../design/api_principles/" class="md-tabs__link">
+          
+  
+  
+  Design
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../api/quaternion/" class="md-tabs__link">
+          
+  
+  
+  API Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="qnav" class="md-nav__button md-logo" aria-label="qnav" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    qnav
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/armanasq/qnav" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    armanasq/qnav
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting_started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../conventions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Conventions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Math
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Math
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../quaternions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quaternion Algebra
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../so3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SO(3) Lie Group
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../euler_angles/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Euler Angles
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../frames/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Coordinate Frames
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../attitude_determination/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Attitude Determination
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Filtering
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Filtering
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-complementary-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The complementary structure
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#complementaryfilter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ComplementaryFilter
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mahonyfilter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MahonyFilter
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#madgwickstylefilter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MadgwickStyleFilter
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quaternionekf-total-state-ekf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        QuaternionEkf (total-state EKF)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#eskf-error-state-kalman-filter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Eskf (Error-State Kalman Filter)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Eskf (Error-State Kalman Filter)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#error-definition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Error definition
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prediction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prediction
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#measurement-update" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Measurement update
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#injection-and-reset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Injection and reset
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#covariance-validity-nees-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Covariance validity: NEES test
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#noise-parameters-from-datasheets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Noise parameters from datasheets
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#aquafilter-algebraic-quaternion-complementary-filter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AquaFilter (algebraic quaternion complementary filter)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fouratifilter-levenberg-marquardt-observer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FouratiFilter (Levenberg-Marquardt observer)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fastkalmanfilter-linear-quaternion-kf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FastKalmanFilter (linear quaternion KF)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#roleqfilter-recursive-linear-quaternion-estimator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RoleqFilter (recursive linear quaternion estimator)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ukfattitude-unscented-filter-on-so3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UkfAttitude (unscented filter on SO(3))
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#filter-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Filter comparison
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../heading/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Heading and Tilt
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../formula_catalog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Formula Catalog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Design
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../design/api_principles/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Principles
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../design/performance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Performance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/quaternion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    attitude.quaternion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/so3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    attitude.so3
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/dcm/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    attitude.dcm
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/euler/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    attitude.euler
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/kinematics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    attitude.kinematics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/jacobians/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    attitude.jacobians
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/covariance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    attitude.covariance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/frames/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    frames
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/heading/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    heading
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/sensors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    sensors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/calibration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    calibration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/determination/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    determination
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/filters/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    filters
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/geomag/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    geomag
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/simulation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    simulation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/metrics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    metrics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-complementary-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The complementary structure
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#complementaryfilter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ComplementaryFilter
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mahonyfilter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MahonyFilter
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#madgwickstylefilter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MadgwickStyleFilter
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quaternionekf-total-state-ekf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        QuaternionEkf (total-state EKF)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#eskf-error-state-kalman-filter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Eskf (Error-State Kalman Filter)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Eskf (Error-State Kalman Filter)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#error-definition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Error definition
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prediction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prediction
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#measurement-update" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Measurement update
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#injection-and-reset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Injection and reset
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#covariance-validity-nees-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Covariance validity: NEES test
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#noise-parameters-from-datasheets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Noise parameters from datasheets
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#aquafilter-algebraic-quaternion-complementary-filter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AquaFilter (algebraic quaternion complementary filter)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fouratifilter-levenberg-marquardt-observer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FouratiFilter (Levenberg-Marquardt observer)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fastkalmanfilter-linear-quaternion-kf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        FastKalmanFilter (linear quaternion KF)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#roleqfilter-recursive-linear-quaternion-estimator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RoleqFilter (recursive linear quaternion estimator)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ukfattitude-unscented-filter-on-so3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UkfAttitude (unscented filter on SO(3))
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#filter-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Filter comparison
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="attitude-filtering">Attitude Filtering<a class="headerlink" href="#attitude-filtering" title="Permanent link">&para;</a></h1>
+<p>An attitude filter combines gyroscope integration (high bandwidth, unbounded drift) with aiding sensor observations (bounded error, low bandwidth). qnav provides five filters representing different accuracy/complexity/uncertainty-quantification tradeoffs.</p>
+<h2 id="the-complementary-structure">The complementary structure<a class="headerlink" href="#the-complementary-structure" title="Permanent link">&para;</a></h2>
+<p>All attitude filters exploit the complementary noise characteristics of gyroscopes and aiding sensors:</p>
+<ul>
+<li><strong>Gyroscope</strong>: white noise with bounded power spectral density, plus a slowly-varying bias. Short-term accurate; long-term drifts.</li>
+<li><strong>Accelerometer/magnetometer</strong>: white measurement noise plus vibration sensitivity. Long-term accurate for tilt and heading in benign dynamics; corrupted by acceleration maneuvers.</li>
+</ul>
+<p>The complementary filter directly implements this in the frequency domain: integrate the gyroscope (high-pass) and use the aiding sensors to correct the low-frequency drift (low-pass). The ESKF implements the same idea with a principled noise model and a covariance that tracks estimation uncertainty.</p>
+<hr />
+<h2 id="complementaryfilter">ComplementaryFilter<a class="headerlink" href="#complementaryfilter" title="Permanent link">&para;</a></h2>
+<p>The simplest form. Exponential predict + SLERP blend:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>predict: q ← q ⊗ Exp(ω dt)
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>update:  v_body_pred = rotate_frame(q, v_nav)
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>         δq = axis-angle from (v_body_pred × v_body_meas)
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>         q ← slerp(q, q ⊗ Exp(gain · δq), 1.0)
+</span></code></pre></div>
+<p>The gain <span class="arithmatex">\(\alpha \in (0, 1)\)</span> is the only tuning parameter — it sets the crossover frequency between gyro integration and aiding correction. There is no bias estimation and no uncertainty quantification. Use it for prototyping or when only heading is needed.</p>
+<hr />
+<h2 id="mahonyfilter">MahonyFilter<a class="headerlink" href="#mahonyfilter" title="Permanent link">&para;</a></h2>
+<p>PI feedback complementary filter. The cross-product error drives a PI controller on the gyro input:</p>
+<div class="arithmatex">\[
+\mathbf{e}^b = \sum_i k_i\, \hat{\mathbf{v}}_i^b \times (R(\mathbf{q})^\top \mathbf{v}_i^{\text{nav}})
+\]</div>
+<div class="arithmatex">\[
+\hat{\boldsymbol{\omega}} = \boldsymbol{\omega}_m + k_P\, \mathbf{e}^b + k_I \int \mathbf{e}^b \, dt
+\]</div>
+<div class="arithmatex">\[
+\dot{\mathbf{q}} = \frac{1}{2} \mathbf{q} \otimes \hat{\boldsymbol{\omega}}
+\]</div>
+<p>The integral term <span class="arithmatex">\(\int \mathbf{e}^b \, dt\)</span> accumulates bias in the body frame; it behaves as a gyro bias estimate, though it is not a statistical estimate and does not have an associated covariance.</p>
+<p>Tuning: <span class="arithmatex">\(k_P\)</span> (proportional gain) sets convergence speed; <span class="arithmatex">\(k_I\)</span> (integral gain) sets how aggressively the bias integrator corrects for steady-state error. Typical values: <span class="arithmatex">\(k_P = 1.0\)</span>, <span class="arithmatex">\(k_I = 0.1{-}0.5\)</span>. Higher <span class="arithmatex">\(k_P\)</span> speeds convergence but amplifies aiding-sensor noise.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">qnav.filters</span><span class="w"> </span><span class="kn">import</span> <span class="n">MahonyFilter</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="n">f</span> <span class="o">=</span> <span class="n">MahonyFilter</span><span class="p">(</span><span class="n">kp</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">ki</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="n">v_nav</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">up_ned</span><span class="p">,</span> <span class="n">m_nav</span><span class="p">])</span>      <span class="c1"># shape (2, 3)</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="k">for</span> <span class="n">gyro</span><span class="p">,</span> <span class="n">accel</span><span class="p">,</span> <span class="n">mag</span> <span class="ow">in</span> <span class="n">stream</span><span class="p">:</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    <span class="n">v_body</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">accel</span><span class="p">,</span> <span class="n">mag</span><span class="p">])</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    <span class="n">f</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">gyro</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">v_nav</span><span class="o">=</span><span class="n">v_nav</span><span class="p">,</span> <span class="n">v_body</span><span class="o">=</span><span class="n">v_body</span><span class="p">)</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">q</span><span class="p">)</span>      <span class="c1"># current attitude</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">bias</span><span class="p">)</span>   <span class="c1"># integral bias estimate</span>
+</span></code></pre></div>
+<hr />
+<h2 id="madgwickstylefilter">MadgwickStyleFilter<a class="headerlink" href="#madgwickstylefilter" title="Permanent link">&para;</a></h2>
+<p>Gradient descent on the orientation objective. The objective function is the alignment error between predicted and measured reference vectors:</p>
+<div class="arithmatex">\[
+\mathbf{F}(\mathbf{q}) = \frac{1}{2} \sum_i \|\mathbf{R}(\mathbf{q})^\top \mathbf{v}_i^{\text{nav}} - \mathbf{v}_i^{\text{body}}\|^2
+\]</div>
+<p>The gradient with respect to the quaternion:</p>
+<div class="arithmatex">\[
+\nabla_{\mathbf{q}} F = \sum_i \frac{\partial (\mathbf{q}^* \otimes [0, \mathbf{v}_i^{\text{nav}}] \otimes \mathbf{q})}{\partial \mathbf{q}} (\mathbf{R}(\mathbf{q})^\top \mathbf{v}_i^{\text{nav}} - \mathbf{v}_i^{\text{body}})
+\]</div>
+<p>The update:</p>
+<div class="arithmatex">\[
+\mathbf{q} \leftarrow \text{normalize}\!\left(\mathbf{q} + \Delta t \left(\frac{1}{2}\mathbf{q} \otimes [0, \boldsymbol{\omega}] - \beta \frac{\nabla_{\mathbf{q}} F}{\|\nabla_{\mathbf{q}} F\|}\right)\right)
+\]</div>
+<p>The single gain <span class="arithmatex">\(\beta\)</span> [rad/s] sets the balance between gyroscope trust and gradient correction. It has units of angular rate because it directly multiplies the normalized gradient direction in the quaternion's tangent space.</p>
+<p>The gradient Jacobian in qnav uses the <strong>sandwich product</strong> form of the rotation action (rather than the Rodrigues form), which is necessary for the finite-difference test to pass for off-unit perturbations.</p>
+<hr />
+<h2 id="quaternionekf-total-state-ekf">QuaternionEkf (total-state EKF)<a class="headerlink" href="#quaternionekf-total-state-ekf" title="Permanent link">&para;</a></h2>
+<p>A standard EKF with the quaternion as part of the state vector. The predict step integrates kinematics; update steps use direction observations. The covariance is 4×4 (over quaternion components) but the filter projects updates onto the tangent space to maintain unit-norm.</p>
+<p>This filter has no bias state. Attitude error will grow without bound in a gyro-only scenario (no aiding), and will plateau in the presence of aiding — but the plateau is determined by the aiding noise, not a bias estimate. Use it when you need uncertainty quantification without the complexity of an error-state formulation.</p>
+<hr />
+<h2 id="eskf-error-state-kalman-filter">Eskf (Error-State Kalman Filter)<a class="headerlink" href="#eskf-error-state-kalman-filter" title="Permanent link">&para;</a></h2>
+<p>The production filter. State: nominal attitude <span class="arithmatex">\(\mathbf{q}\)</span> (unit quaternion) + gyro bias <span class="arithmatex">\(\mathbf{b}\)</span> [rad/s]. Error state: <span class="arithmatex">\(\delta\mathbf{x} = [\delta\boldsymbol{\theta}, \delta\mathbf{b}]^\top \in \mathbb{R}^6\)</span> with covariance <span class="arithmatex">\(\mathbf{P} \in \mathbb{R}^{6\times6}\)</span>.</p>
+<h3 id="error-definition">Error definition<a class="headerlink" href="#error-definition" title="Permanent link">&para;</a></h3>
+<p>The <strong>right/local</strong> error convention:</p>
+<div class="arithmatex">\[
+\mathbf{q}_{\text{true}} = \hat{\mathbf{q}} \otimes \text{Exp}(\delta\boldsymbol{\theta})
+\]</div>
+<p><span class="arithmatex">\(\delta\boldsymbol{\theta}\)</span> lives in the body frame at the current estimate <span class="arithmatex">\(\hat{\mathbf{q}}\)</span>. This choice is natural for gyroscope measurements (which are body-frame rates) and produces the simplest measurement Jacobians.</p>
+<p>The alternative <strong>left/global</strong> error <span class="arithmatex">\(\mathbf{q}_{\text{true}} = \text{Exp}(\delta\boldsymbol{\theta}) \otimes \hat{\mathbf{q}}\)</span> puts <span class="arithmatex">\(\delta\boldsymbol{\theta}\)</span> in the world frame — it simplifies some navigation-frame expressions at the cost of a more complex gyro process model.</p>
+<h3 id="prediction">Prediction<a class="headerlink" href="#prediction" title="Permanent link">&para;</a></h3>
+<p>Given gyro measurement <span class="arithmatex">\(\boldsymbol{\omega}_m\)</span>, gyro bias estimate <span class="arithmatex">\(\hat{\mathbf{b}}\)</span>, and step <span class="arithmatex">\(\Delta t\)</span>:</p>
+<p><strong>Nominal state</strong>:</p>
+<div class="arithmatex">\[
+\hat{\mathbf{q}} \leftarrow \hat{\mathbf{q}} \otimes \text{Exp}((\boldsymbol{\omega}_m - \hat{\mathbf{b}})\Delta t)
+\]</div>
+<p><strong>Error state transition</strong> (discrete, Euler approximation):</p>
+<div class="arithmatex">\[
+\mathbf{F} = \begin{bmatrix}
+\text{Exp}(\hat{\boldsymbol{\omega}} \Delta t)^\top &amp; -\mathbf{J}_r(\hat{\boldsymbol{\omega}} \Delta t) \cdot \Delta t \\
+\mathbf{0} &amp; \mathbf{I}
+\end{bmatrix}
+\]</div>
+<p>where <span class="arithmatex">\(\hat{\boldsymbol{\omega}} = \boldsymbol{\omega}_m - \hat{\mathbf{b}}\)</span>.</p>
+<p><strong>Discrete noise covariance</strong>:</p>
+<div class="arithmatex">\[
+\mathbf{Q}_d = \text{diag}(\sigma_g^2 \Delta t \cdot \mathbf{I}_3,\; \sigma_{bw}^2 \Delta t \cdot \mathbf{I}_3)
+\]</div>
+<p><strong>Covariance propagation</strong>:</p>
+<div class="arithmatex">\[
+\mathbf{P} \leftarrow \mathbf{F} \mathbf{P} \mathbf{F}^\top + \mathbf{Q}_d
+\]</div>
+<p>The <span class="arithmatex">\(\mathbf{J}_r\)</span> term in <span class="arithmatex">\(\mathbf{F}\)</span> is the key difference from a naive Euler approximation: it accounts for the non-commutativity of the rotation manifold in the cross-term between attitude and bias errors.</p>
+<h3 id="measurement-update">Measurement update<a class="headerlink" href="#measurement-update" title="Permanent link">&para;</a></h3>
+<p>For a unit-direction observation in the navigation frame <span class="arithmatex">\(\mathbf{v}^{\text{nav}}\)</span> and body-frame measurement <span class="arithmatex">\(\mathbf{v}^{\text{body}}\)</span>:</p>
+<p><strong>Predicted body measurement</strong>: <span class="arithmatex">\(\hat{\mathbf{v}}_b = \mathbf{R}(\hat{\mathbf{q}})^\top \mathbf{v}^{\text{nav}}\)</span></p>
+<p><strong>Observation Jacobian</strong>:</p>
+<div class="arithmatex">\[
+\mathbf{H} = \begin{bmatrix} [\hat{\mathbf{v}}_b]_\times &amp; \mathbf{0}_{3\times3} \end{bmatrix} \in \mathbb{R}^{3 \times 6}
+\]</div>
+<p>The skew-symmetric form <span class="arithmatex">\([\hat{\mathbf{v}}_b]_\times\)</span> arises from the first-order linearization of the rotation action around the error state <span class="arithmatex">\(\delta\boldsymbol{\theta}\)</span>.</p>
+<p><strong>Joseph-form update</strong> (numerically stable):</p>
+<div class="arithmatex">\[
+\mathbf{K} = \mathbf{P}\mathbf{H}^\top(\mathbf{H}\mathbf{P}\mathbf{H}^\top + \mathbf{R})^{-1}
+\]</div>
+<div class="arithmatex">\[
+\mathbf{P} \leftarrow (\mathbf{I} - \mathbf{K}\mathbf{H})\mathbf{P}(\mathbf{I} - \mathbf{K}\mathbf{H})^\top + \mathbf{K}\mathbf{R}\mathbf{K}^\top
+\]</div>
+<p>The Joseph form maintains positive-definiteness of <span class="arithmatex">\(\mathbf{P}\)</span> even with numerical errors, at twice the computational cost of the simple form <span class="arithmatex">\((\mathbf{I} - \mathbf{K}\mathbf{H})\mathbf{P}\)</span>.</p>
+<h3 id="injection-and-reset">Injection and reset<a class="headerlink" href="#injection-and-reset" title="Permanent link">&para;</a></h3>
+<p>After computing the error-state correction <span class="arithmatex">\(\delta\hat{\mathbf{x}} = [\delta\hat{\boldsymbol{\theta}}, \delta\hat{\mathbf{b}}]\)</span>:</p>
+<div class="arithmatex">\[
+\hat{\mathbf{q}} \leftarrow \hat{\mathbf{q}} \otimes \text{Exp}(\delta\hat{\boldsymbol{\theta}}), \quad \hat{\mathbf{b}} \leftarrow \hat{\mathbf{b}} + \delta\hat{\mathbf{b}}
+\]</div>
+<p>Then reset the error-state covariance (since the error state is now zeroed):</p>
+<div class="arithmatex">\[
+\mathbf{P} \leftarrow \mathbf{G}\mathbf{P}\mathbf{G}^\top, \quad \mathbf{G} = \begin{bmatrix} \mathbf{I} - \frac{1}{2}[\delta\hat{\boldsymbol{\theta}}]_\times &amp; \mathbf{0} \\ \mathbf{0} &amp; \mathbf{I} \end{bmatrix}
+\]</div>
+<p>The reset Jacobian <span class="arithmatex">\(\mathbf{G}\)</span> accounts for the nonlinearity of the injection. For small <span class="arithmatex">\(\delta\hat{\boldsymbol{\theta}}\)</span>, <span class="arithmatex">\(\mathbf{G} \approx \mathbf{I}\)</span> is an acceptable approximation.</p>
+<h3 id="covariance-validity-nees-test">Covariance validity: NEES test<a class="headerlink" href="#covariance-validity-nees-test" title="Permanent link">&para;</a></h3>
+<p>The Normalized Estimation Error Squared (NEES) tests whether the filter's covariance is consistent with the actual errors:</p>
+<div class="arithmatex">\[
+\epsilon_k = \delta\boldsymbol{\theta}_k^\top \mathbf{P}_{3\times3,k}^{-1} \delta\boldsymbol{\theta}_k
+\]</div>
+<p>For a correct filter, <span class="arithmatex">\(\epsilon_k\)</span> follows a <span class="arithmatex">\(\chi^2(3)\)</span> distribution. Averaged over <span class="arithmatex">\(N\)</span> samples, <span class="arithmatex">\(\bar{\epsilon}\)</span> should fall in the confidence interval <span class="arithmatex">\([r_1, r_2]\)</span> given by <code>nees_bounds(dim=3, n_samples=N)</code>.</p>
+<p>If <span class="arithmatex">\(\bar{\epsilon} &gt; r_2\)</span>: the filter is <strong>inconsistent</strong> (underestimates uncertainty). If <span class="arithmatex">\(\bar{\epsilon} &lt; r_1\)</span>: the filter is <strong>overconfident</strong> (overestimates uncertainty). The test suite verifies the ESKF is consistent on the canonical MARG dataset.</p>
+<h3 id="noise-parameters-from-datasheets">Noise parameters from datasheets<a class="headerlink" href="#noise-parameters-from-datasheets" title="Permanent link">&para;</a></h3>
+<p>IMU datasheets give noise specifications in several forms:</p>
+<table>
+<thead>
+<tr>
+<th>Datasheet spec</th>
+<th>qnav parameter</th>
+<th>Conversion</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ARW [°/hr/√Hz] or [°/√hr]</td>
+<td><code>gyro_noise_density</code> [rad/s/√Hz]</td>
+<td>multiply by π/(180 × 60)</td>
+</tr>
+<tr>
+<td>Bias instability [°/hr]</td>
+<td><code>gyro_bias_walk</code> (approx.)</td>
+<td>multiply by π/(180 × 3600 × √τ_corr)</td>
+</tr>
+<tr>
+<td>VRW [m/s/hr/√Hz]</td>
+<td>accel noise density</td>
+<td>multiply by 1/3600</td>
+</tr>
+</tbody>
+</table>
+<p>The Allan variance tools in <code>qnav.sensors.allan</code> identify these parameters directly from recorded gyro data.</p>
+<hr />
+<h2 id="aquafilter-algebraic-quaternion-complementary-filter">AquaFilter (algebraic quaternion complementary filter)<a class="headerlink" href="#aquafilter-algebraic-quaternion-complementary-filter" title="Permanent link">&para;</a></h2>
+<p>AQUA's contribution is <strong>structural decoupling</strong>: the accelerometer correction is a zero-yaw (tilt-only) delta quaternion, the magnetometer correction is a yaw-only delta. Both are closed-form shortest-arc constructions computed in the navigation frame:</p>
+<div class="arithmatex">\[
+\Delta q_{\text{acc}} = \begin{bmatrix} \sqrt{\tfrac{1+g_z}{2}} \\ g_y / \sqrt{2(1+g_z)} \\ -g_x / \sqrt{2(1+g_z)} \\ 0 \end{bmatrix}, \qquad
+\Delta q_{\text{mag}} = f(\ell_x, \ell_y) \text{ — yaw-only, from the horizontal field}
+\]</div>
+<p>where <span class="arithmatex">\(\mathbf{g} = R(\bar{q})(-\hat{\mathbf{f}})\)</span> is the measured gravity direction expressed in nav axes and <span class="arithmatex">\(\boldsymbol{\ell}\)</span> the de-tilted field. A magnetic disturbance can corrupt heading but <strong>cannot touch roll/pitch</strong> — by construction, not by tuning. Each delta is scaled toward identity (LERP for small deltas, SLERP for large) with gains α, β; an optional adaptive gate suspends accelerometer trust when <span class="arithmatex">\(|\,\|\mathbf{f}\| - g\,|\)</span> indicates a maneuver.</p>
+<h2 id="fouratifilter-levenberg-marquardt-observer">FouratiFilter (Levenberg-Marquardt observer)<a class="headerlink" href="#fouratifilter-levenberg-marquardt-observer" title="Permanent link">&para;</a></h2>
+<p>Corrects gyro integration with one damped Gauss-Newton step on the stacked gravity/magnetic alignment residual. The analytic Jacobian of the predicted body-frame directions with respect to a right (body-side) perturbation is <span class="arithmatex">\(2[\hat{\mathbf{y}}]_\times\)</span> per observation, so:</p>
+<div class="arithmatex">\[
+\boldsymbol{\varepsilon} = (\mathbf{X}^\top\mathbf{X} + \lambda\mathbf{I}_3)^{-1}\mathbf{X}^\top(\mathbf{y} - \hat{\mathbf{y}}), \qquad
+q \leftarrow q \otimes [1, k\,dt\,\boldsymbol{\varepsilon}]
+\]</div>
+<p>The LM step scales the correction per error axis by its observability — faster transients than fixed-step gradient methods when one reference vector is nearly parallel to the error.</p>
+<div class="admonition note">
+<p class="admonition-title">Deviation from the circulating transcription</p>
+<p>The widely-copied formulation multiplies the correction into <span class="arithmatex">\(\dot{q}\)</span>, which makes corrections vanish whenever ω ≈ 0 — a stationary platform never corrects. qnav applies the LM step to the state, preserving the published observer's intent at all rates. This is intentional and covered by a static-convergence test.</p>
+</div>
+<h2 id="fastkalmanfilter-linear-quaternion-kf">FastKalmanFilter (linear quaternion KF)<a class="headerlink" href="#fastkalmanfilter-linear-quaternion-kf" title="Permanent link">&para;</a></h2>
+<p>A Kalman filter whose state is the quaternion itself — valid because both models are exactly linear in q: the process is the first-order transition <span class="arithmatex">\(\Phi = \mathbf{I}_4 + \tfrac{1}{2}\Omega(\omega)dt\)</span> with noise mapped through <span class="arithmatex">\(\Xi(q) = \tfrac{1}{2}[q]_L[:, 1{:}]\)</span>, and the measurement is a <strong>full closed-form attitude observation</strong> (qnav uses its SAAM solver) with covariance <span class="arithmatex">\(J\Sigma_{am}J^\top\)</span> from the numerically evaluated measurement Jacobian. The double-cover sign of each measurement is resolved against the prediction. Cheapest covariance-bearing filter; no bias state.</p>
+<h2 id="roleqfilter-recursive-linear-quaternion-estimator">RoleqFilter (recursive linear quaternion estimator)<a class="headerlink" href="#roleqfilter-recursive-linear-quaternion-estimator" title="Permanent link">&para;</a></h2>
+<p>Each observation pair yields a symmetric involution <span class="arithmatex">\(W = -L([0,\mathbf{v}_r])\,R([0,\mathbf{v}_b])\)</span> satisfying <span class="arithmatex">\(Wq = q\)</span> exactly for the true attitude (derivation: right-multiply the alignment constraint by <span class="arithmatex">\([0,\mathbf{v}_b]\)</span>). One fixed-point iteration of the projector average per sample, seeded by gyro propagation:</p>
+<div class="arithmatex">\[
+q \leftarrow \text{normalize}\!\left(\tfrac{1}{2}\bigl(\mathbf{I}_4 + \textstyle\sum_i w_i W_i\bigr)\, q_{\text{gyro}}\right)
+\]</div>
+<p>Converges to the batch OLEQ optimum while tracking. No tuning parameters beyond the observation weights.</p>
+<h2 id="ukfattitude-unscented-filter-on-so3">UkfAttitude (unscented filter on SO(3))<a class="headerlink" href="#ukfattitude-unscented-filter-on-so3" title="Permanent link">&para;</a></h2>
+<p>The textbook UKF cannot be applied to quaternions: additive sigma points leave the unit sphere and their barycentric mean is not a rotation average. qnav's formulation (USQUE-style) runs the unscented transform on the <strong>3D right-tangent error</strong>:</p>
+<ul>
+<li>sigma attitudes <span class="arithmatex">\(q_i = \hat{q} \otimes \text{Exp}(\delta\chi_i)\)</span> from the scaled Cholesky columns of P;</li>
+<li>propagation through the exact gyro exponential map; the predicted mean is the <strong>Markley eigenvector mean</strong> (not a normalized arithmetic mean), covariance rebuilt from <span class="arithmatex">\(\text{Log}(\bar{q}^{-1} \otimes q_i)\)</span>;</li>
+<li>direction measurements mapped through the <strong>exact</strong> measurement function — no Jacobian linearization anywhere.</li>
+</ul>
+<p>P's spectrum is clamped to <span class="arithmatex">\([10^{-14}, (\pi/2)^2]\)</span>: the upper clamp keeps sigma tangents inside the injectivity radius of Exp, the lower keeps Cholesky alive. The honest trade against the ESKF: ~7× per-step cost, no linearization error — decisive when initial uncertainty exceeds ~20° (the test suite verifies recovery from a 115° initial error that breaks ESKF linearization).</p>
+<hr />
+<h2 id="filter-comparison">Filter comparison<a class="headerlink" href="#filter-comparison" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th style="text-align: center;">Complementary</th>
+<th style="text-align: center;">Mahony</th>
+<th style="text-align: center;">Madgwick</th>
+<th style="text-align: center;">AQUA</th>
+<th style="text-align: center;">Fourati</th>
+<th style="text-align: center;">ROLEQ</th>
+<th style="text-align: center;">FKF</th>
+<th style="text-align: center;">QuaternionEkf</th>
+<th style="text-align: center;">ESKF</th>
+<th style="text-align: center;">UKF</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bias estimation</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">Integral</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">✓ statistical</td>
+<td style="text-align: center;">—</td>
+</tr>
+<tr>
+<td>Uncertainty (P)</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">✓ 4×4</td>
+<td style="text-align: center;">✓ total-state</td>
+<td style="text-align: center;">✓ error-state</td>
+<td style="text-align: center;">✓ tangent</td>
+</tr>
+<tr>
+<td>NEES-consistent P</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">✓</td>
+<td style="text-align: center;">—</td>
+</tr>
+<tr>
+<td>Tilt immune to mag</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">✓</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+</tr>
+<tr>
+<td>Large-error recovery</td>
+<td style="text-align: center;">✓</td>
+<td style="text-align: center;">✓</td>
+<td style="text-align: center;">✓</td>
+<td style="text-align: center;">✓</td>
+<td style="text-align: center;">✓</td>
+<td style="text-align: center;">✓</td>
+<td style="text-align: center;">✓</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">✓</td>
+</tr>
+<tr>
+<td>Parameters</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">2–3</td>
+<td style="text-align: center;">1–2</td>
+<td style="text-align: center;">weights</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">2 (σg, σbw)</td>
+<td style="text-align: center;">1–4</td>
+</tr>
+</tbody>
+</table>
+<p>The ESKF parameter count is deceptively low: the noise densities <span class="arithmatex">\(\sigma_g\)</span> and <span class="arithmatex">\(\sigma_{bw}\)</span> are physical parameters that can be read from the IMU datasheet or estimated from Allan variance analysis. They are not tuning knobs — they have correct values.</p>
+<p><em>Source: Solà, ErrorState.tex (ESKF); attitudesurvey.tex (Mahony, Madgwick); Kok/Hol/Schön ch.4 (complementary, EKF smoothing).</em></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../attitude_determination/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Attitude Determination">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Attitude Determination
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../heading/" class="md-footer__link md-footer__link--next" aria-label="Next: Heading and Tilt">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Heading and Tilt
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/armanasq/qnav" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.expand", "navigation.top", "navigation.footer", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.tabs.link", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../javascripts/mathjax.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
