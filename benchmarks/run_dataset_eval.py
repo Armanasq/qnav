@@ -73,11 +73,19 @@ paths are recorded.
 
 from __future__ import annotations
 
+import os
+
+# the workload is per-sample 3x3/6x6 algebra: BLAS threading is pure
+# contention overhead here, in serial and especially across worker processes
+for _v in ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS"):
+    os.environ.setdefault(_v, "1")
+
 import argparse
 import hashlib
 import json
 import sys
 from collections import defaultdict
+from concurrent.futures import ProcessPoolExecutor, as_completed
 from dataclasses import asdict
 from pathlib import Path
 
@@ -236,6 +244,18 @@ def evaluate_trial(path: Path, args) -> tuple[dict, dict]:
     return out, cfg
 
 
+def _worker(payload: tuple) -> tuple[str, str, dict | None, dict | None, str | None]:
+    """Evaluate one trial in a worker process; exceptions become records."""
+    path_str, rel, collection, args = payload
+    try:
+        out, cfg = evaluate_trial(Path(path_str), args)
+        out["path"] = rel
+        out["collection"] = collection
+        return rel, collection, out, cfg, None
+    except Exception as exc:  # noqa: BLE001 - survey run: record, judge at exit
+        return rel, collection, None, None, f"{type(exc).__name__}: {exc}"
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -249,6 +269,8 @@ def main(argv=None) -> int:
     ap.add_argument("--require-collection", action="append", default=[],
                     help="fail unless this collection has >= 1 successful trial")
     ap.add_argument("--output-dir", type=Path, default=Path("benchmarks/results"))
+    ap.add_argument("--workers", type=int, default=os.cpu_count(),
+                    help="parallel trial evaluations (default: all CPUs; 1 = serial)")
     args = ap.parse_args(argv)
 
     root = data_root()
@@ -270,21 +292,33 @@ def main(argv=None) -> int:
 
     reports, failures = [], []
     noise_by_collection: dict = {}
-    for p in paths:
-        rel = str(p.relative_to(root))
-        try:
-            out, cfg = evaluate_trial(p, args)
-            out["path"] = rel
-            out["collection"] = collection_of(p)
-            noise_by_collection[out["collection"]] = cfg
-            reports.append(out)
-            print(f"{out['collection']:15s} {out['dataset'][:36]:36s} "
-                  f"rmse={out['rmse_deg']:6.2f}° tilt={out['tilt_rmse_deg']:5.2f}° "
-                  f"mag={'y' if out['mag_aided'] else 'n'} "
-                  f"rej={out['rejection_rate']:.3f} rtf={out['realtime_factor']:4.0f}x")
-        except Exception as exc:  # noqa: BLE001 - survey run: record, judge at exit
-            failures.append({"path": rel, "error": f"{type(exc).__name__}: {exc}"})
-            print(f"{p.parent.name:15s} {p.stem[:36]:36s} FAILED: {exc}")
+    jobs = [(str(p), str(p.relative_to(root)), collection_of(p), args) for p in paths]
+
+    def consume(rel: str, coll: str, out: dict | None, cfg: dict | None, err: str | None) -> None:
+        if err is not None:
+            failures.append({"path": rel, "error": err})
+            print(f"{coll:15s} {Path(rel).stem[:36]:36s} FAILED: {err}")
+            return
+        assert out is not None and cfg is not None
+        noise_by_collection[coll] = cfg
+        reports.append(out)
+        print(f"{coll:15s} {out['dataset'][:36]:36s} "
+              f"rmse={out['rmse_deg']:6.2f}° tilt={out['tilt_rmse_deg']:5.2f}° "
+              f"mag={'y' if out['mag_aided'] else 'n'} "
+              f"rej={out['rejection_rate']:.3f} rtf={out['realtime_factor']:4.0f}x")
+
+    workers = max(1, int(args.workers or 1))
+    if workers == 1 or len(jobs) <= 1:
+        for job in jobs:
+            consume(*_worker(job))
+    else:
+        # trials are independent; note realtime_factor is measured per worker
+        # under contention, so treat it as a lower bound in parallel runs
+        with ProcessPoolExecutor(max_workers=min(workers, len(jobs))) as pool:
+            futures = [pool.submit(_worker, job) for job in jobs]
+            for fut in as_completed(futures):
+                consume(*fut.result())
+    reports.sort(key=lambda r: (r["collection"], r["dataset"]))
 
     total = len(reports) + len(failures)
     failure_rate = len(failures) / total if total else 1.0

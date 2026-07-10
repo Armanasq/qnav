@@ -26,7 +26,7 @@ dependencies = ["numpy>=1.22"]
 [project.optional-dependencies]
 datasets = ["h5py>=3.8"]
 interop = ["scipy>=1.7", "pandas>=1.3"]
-test = ["pytest>=7", "hypothesis>=6", "pytest-cov"]
+test = ["pytest>=7", "pytest-xdist>=3", "hypothesis>=6", "pytest-cov"]
 docs = [
     "mkdocs>=1.5",
     "mkdocs-material>=9.5",
@@ -67,7 +67,9 @@ ignore_missing_imports = true
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "-q"
+# -n auto: distribute across all cores (pytest-xdist); pass -p no:xdist or
+# -n 0 to debug serially
+addopts = "-q -n auto"
 
 [tool.ruff]
 line-length = 100
@@ -76,3 +78,7 @@ target-version = "py39"
 [tool.ruff.lint]
 select = ["E", "F", "W", "NPY", "B"]
 ignore = ["E501"]
+
+[tool.ruff.lint.per-file-ignores]
+# env vars must be set before numpy import (BLAS thread pinning)
+"benchmarks/run_dataset_eval.py" = ["E402"]

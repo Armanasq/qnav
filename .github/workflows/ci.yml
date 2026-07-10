@@ -43,7 +43,7 @@ jobs:
         run: |
           pip install "numpy==1.22.0"
           pip install -e ".[test]" --no-deps
-          pip install pytest hypothesis
+          pip install pytest pytest-xdist hypothesis
       - name: Verify NumPy version unchanged
         run: python -c "import numpy; assert numpy.__version__ == '1.22.0', numpy.__version__"
       - name: Run tests
