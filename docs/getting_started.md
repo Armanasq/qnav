@@ -305,7 +305,26 @@ print(f"NEES 95% bounds: [{lo:.2f}, {hi:.2f}]")
 
 **Measurement updates** call `update_direction(v_nav, v_body, sigma)` for any unit-direction observation. `update_gravity` and `update_magnetometer` are thin wrappers that normalize their input and call `update_direction`.
 
-**Disturbance gating** is not automatic — gate magnetometer updates upstream using `qnav.heading.disturbance.is_field_trustworthy` before calling the update. This is intentional: the filter doesn't silently ignore measurements.
+**Disturbance gating** is opt-in and never silent. Construct the filter with a `GatePolicy` to chi-square-gate every update on its NIS:
+
+```python
+import numpy as np
+from qnav.filters import Eskf, GatePolicy, SensorMonitor
+
+f = Eskf(
+    gyro_noise_density=0.005,
+    gate=GatePolicy(confidence=0.997, on_gate="reject", loss="huber"),
+)
+# optional: quarantine the magnetometer after 5 straight rejections,
+# release it after 3 consecutive in-gate samples
+f.set_monitor("mag", SensorMonitor(quarantine_after=5, recover_after=3))
+
+f.update_gravity(np.array([0.0, 0.0, -9.81]), sigma=0.02)
+r = f.last_update          # UpdateResult: accepted, nis, gate_threshold, ...
+print(f.health)            # EstimatorHealth.{HEALTHY, DEGRADED, UNOBSERVABLE, ...}
+```
+
+Every decision is reported in `last_update` (`accepted`, `rejection_reason`, `nis`, `gate_threshold`, `robust_weight`) and aggregated per sensor in `innovation_stats` — the filter never silently ignores measurements. Field-level checks (`qnav.heading.disturbance.is_field_trustworthy`) remain available for upstream magnitude/dip screening.
 
 ---
 

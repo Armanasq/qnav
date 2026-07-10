@@ -30,11 +30,15 @@ from __future__ import annotations
 
 import numpy as np
 
+from collections import deque
+from typing import Deque, Dict, Optional
+
 from qnav._validate import ensure_covariance, ensure_nonnegative, ensure_positive, ensure_vector3
 from qnav.attitude import quaternion as quat
 from qnav.attitude import so3
 from qnav.filters.base import AttitudeFilter
-from qnav.filters.contracts import UpdateResult
+from qnav.filters.contracts import EstimatorHealth, UpdateResult
+from qnav.filters.robust import GatePolicy, SensorMonitor
 from qnav.types import ArrayLike
 
 __all__ = ["Eskf"]
@@ -63,6 +67,7 @@ class Eskf(AttitudeFilter):
         q0=None,
         b0: np.ndarray | None = None,
         nav_frame: str = "NED",
+        gate: Optional[GatePolicy] = None,
     ) -> None:
         super().__init__(q0=q0, nav_frame=nav_frame)
         self.bias = np.zeros(3) if b0 is None else ensure_vector3(b0, "b0").copy()
@@ -71,6 +76,18 @@ class Eskf(AttitudeFilter):
         if P0 is None:
             P0 = np.diag([0.1**2] * 3 + [0.01**2] * 3)
         self.P = ensure_covariance(P0, 6, "P0").copy()
+        #: innovation gating / robust-loss policy; None = plain Kalman updates.
+        self.gate = gate
+        #: optional per-sensor quarantine monitors (see :meth:`set_monitor`).
+        self.monitors: Dict[str, SensorMonitor] = {}
+        # unit nav-frame directions of recently *accepted* updates, for
+        # observability assessment (yaw about a single fused direction is
+        # unobservable).
+        self._fused_directions: Deque[np.ndarray] = deque(maxlen=50)
+
+    def set_monitor(self, sensor_id: str, monitor: SensorMonitor) -> None:
+        """Attach a quarantine/timeout monitor to one measurement stream."""
+        self.monitors[sensor_id] = monitor
 
     # -- prediction --------------------------------------------------------
     def _predict(self, omega_body: np.ndarray, dt: float) -> np.ndarray:
@@ -106,6 +123,15 @@ class Eskf(AttitudeFilter):
         full :class:`~qnav.filters.contracts.UpdateResult` (NIS, innovation
         covariance, state correction) is stored in ``self.last_update`` and
         aggregated per ``sensor_id`` in ``self.innovation_stats``.
+
+        When a :class:`~qnav.filters.robust.GatePolicy` is configured, the
+        NIS is tested against its chi-square threshold: hard rejection leaves
+        the state untouched (``last_update.accepted`` is False); soft
+        inflation scales the measurement noise by ``nis/threshold``. Robust
+        losses de-weight accepted measurements by inflating the noise by
+        ``1/w``. A quarantined sensor (see :meth:`set_monitor`) is evaluated
+        but never fused. ``nis`` in the recorded result is always the
+        *pre-inflation* value tested against the gate.
         """
         sigma = ensure_positive(sigma, "sigma")
         vn = ensure_vector3(v_nav, "v_nav")
@@ -126,8 +152,40 @@ class Eskf(AttitudeFilter):
 
         innov = vb - v_hat
         S = H @ self.P @ H.T + R
-        S_inv_innov = np.linalg.solve(S, innov)
-        nis = float(innov @ S_inv_innov)
+        nis = float(innov @ np.linalg.solve(S, innov))
+
+        threshold: float | None = None
+        weight = 1.0
+        rejection: str | None = None
+        if self.gate is not None:
+            threshold = self.gate.threshold(3)
+            if nis > threshold:
+                if self.gate.on_gate == "reject":
+                    rejection = "nis_gate"
+                else:  # soft inflation: keep the update, reduce its trust
+                    weight *= threshold / nis
+            if rejection is None:
+                weight *= self.gate.robust_weight(nis, 3)
+
+        monitor = self.monitors.get(sensor_id)
+        if monitor is not None:
+            allowed = monitor.note_measurement(rejection is None, timestamp)
+            if rejection is None and not allowed:
+                rejection = "quarantine"
+
+        if rejection is not None:
+            self._record_update(UpdateResult(
+                accepted=False, innovation=innov, innovation_covariance=S,
+                nis=nis, gate_threshold=threshold, robust_weight=0.0,
+                rejection_reason=rejection, timestamp=timestamp,
+                sensor_id=sensor_id,
+            ))
+            return innov
+
+        if weight != 1.0:
+            R = R / weight
+            S = H @ self.P @ H.T + R
+
         K = self.P @ H.T @ np.linalg.solve(S, np.eye(3))
         dx = K @ innov
 
@@ -135,8 +193,10 @@ class Eskf(AttitudeFilter):
         self.P = IKH @ self.P @ IKH.T + K @ R @ K.T
 
         self._inject(dx)
+        self._fused_directions.append(vn)
         self._record_update(UpdateResult(
             accepted=True, innovation=innov, innovation_covariance=S, nis=nis,
+            gate_threshold=threshold, robust_weight=weight,
             state_correction=dx, timestamp=timestamp, sensor_id=sensor_id,
         ))
         return innov
@@ -172,3 +232,76 @@ class Eskf(AttitudeFilter):
     def attitude_std(self) -> np.ndarray:
         """Per-axis attitude error std [rad] (sqrt of P diagonal, local frame)."""
         return np.sqrt(np.diag(self.P)[:3])
+
+    # -- recovery actions ----------------------------------------------------
+    def inflate_covariance(self, factor: float, *, attitude_only: bool = False) -> None:
+        """Multiply the error covariance by ``factor`` (> 1 admits more
+        correction from subsequent measurements — the standard soft recovery
+        from suspected divergence). ``attitude_only`` leaves the bias block
+        untouched."""
+        f = ensure_positive(factor, "factor")
+        if attitude_only:
+            self.P[:3, :3] *= f
+            self.P[:3, 3:] *= np.sqrt(f)
+            self.P[3:, :3] *= np.sqrt(f)
+        else:
+            self.P *= f
+
+    def reinitialize_from_vectors(
+        self,
+        f_body: ArrayLike,
+        m_body: ArrayLike | None = None,
+        m_ref: ArrayLike | None = None,
+        *,
+        keep_bias: bool = True,
+        attitude_std0: float = 0.35,
+    ) -> np.ndarray:
+        """Reset the attitude from a deterministic closed-form solve (FQA).
+
+        Uses the accelerometer (tilt) and optionally magnetometer + reference
+        field (yaw). The attitude covariance block is reset to
+        ``attitude_std0²·I`` and its cross-correlations cleared; the bias
+        estimate and bias covariance are preserved when ``keep_bias`` (reset
+        to zero / constructor default variance otherwise). Update history is
+        cleared. Returns the new quaternion.
+        """
+        from qnav.determination.fqa import fqa
+
+        f = ensure_vector3(f_body, "f_body")
+        m = None if m_body is None else ensure_vector3(m_body, "m_body")
+        mr = None if m_ref is None else ensure_vector3(m_ref, "m_ref")
+        q_new = fqa(f, m, mr)
+        if self.nav_frame == "ENU":
+            raise NotImplementedError(
+                "reinitialize_from_vectors currently supports nav_frame='NED' "
+                "(FQA is NED-referenced); convert or reinitialize manually"
+            )
+        self.q = quat.normalize(q_new)
+        std0 = ensure_positive(attitude_std0, "attitude_std0")
+        self.P[:3, :3] = std0**2 * np.eye(3)
+        self.P[:3, 3:] = 0.0
+        self.P[3:, :3] = 0.0
+        if not keep_bias:
+            self.bias = np.zeros(3)
+            self.P[3:, 3:] = 0.01**2 * np.eye(3)
+        self._fused_directions.clear()
+        self.last_update = None
+        self.innovation_stats.clear()
+        return self.q
+
+    # -- health --------------------------------------------------------------
+    @property
+    def health(self) -> EstimatorHealth:
+        """Extends the base checks with attitude observability: when every
+        recently fused nav-frame direction is (near-)collinear, the rotation
+        about that direction is unconstrained and the estimator reports
+        ``UNOBSERVABLE`` instead of ``HEALTHY``."""
+        base = AttitudeFilter.health.fget(self)  # type: ignore[attr-defined]
+        if base is not EstimatorHealth.HEALTHY:
+            return base
+        if len(self._fused_directions) >= 10:
+            d = np.stack(tuple(self._fused_directions))
+            # all directions within ~5° of the first (or its antipode)
+            if np.all(np.abs(d @ d[0]) > np.cos(np.deg2rad(5.0))):
+                return EstimatorHealth.UNOBSERVABLE
+        return base

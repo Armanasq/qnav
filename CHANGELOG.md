@@ -7,6 +7,23 @@ the policy in README.md ("Public API, versioning, and deprecation").
 ## [Unreleased]
 
 ### Added
+- Robust measurement handling (`qnav.filters.robust`): SciPy-free
+  `chi2_quantile` (exact for dof 1–2, Wilson–Hilferty otherwise),
+  Huber/Cauchy/Tukey weights, immutable `GatePolicy` (chi-square NIS gate
+  with hard rejection or soft covariance inflation plus optional robust
+  loss), `SensorMonitor` (quarantine after N consecutive rejections,
+  hysteresis recovery, timeout detection), `detect_saturation`.
+- `Eskf` accepts `gate=GatePolicy(...)` and per-sensor monitors
+  (`set_monitor`); rejected/quarantined measurements leave the state
+  untouched and are reported via `last_update.rejection_reason`.
+  Default behavior (no gate) is unchanged.
+- `Eskf` recovery actions: `inflate_covariance(factor, attitude_only=...)`
+  and `reinitialize_from_vectors(...)` (deterministic FQA reinit, bias
+  preserved or reset, covariance reset, history cleared); rollback via the
+  existing `snapshot()`/`restore()`.
+- Health now detects `DIVERGING` (sustained windowed mean NIS far above its
+  chi-square mean) and, for `Eskf`, `UNOBSERVABLE` (all recently fused
+  directions collinear — yaw about that axis unconstrained).
 - Estimator contracts (`qnav.filters.contracts`): `Measurement`,
   `UpdateResult`, `InnovationStatistics`, `EstimatorHealth`,
   `EstimatorSnapshot` — exported from `qnav.filters`.

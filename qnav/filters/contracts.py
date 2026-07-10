@@ -17,8 +17,9 @@ Conventions
 from __future__ import annotations
 
 import enum
+from collections import deque
 from dataclasses import dataclass, field
-from typing import Any, Mapping, Optional, Tuple
+from typing import Any, Deque, Mapping, Optional, Tuple
 
 import numpy as np
 
@@ -120,11 +121,16 @@ class InnovationStatistics:
     accepted: int = 0
     rejected: int = 0
     consecutive_rejections: int = 0
+    #: innovation dimension of the last recorded update (0 before any).
+    dim: int = 0
     _nis_sum: float = 0.0
     _nis_sq_sum: float = 0.0
+    #: sliding window of the most recent NIS values (divergence detection).
+    recent_nis: Deque[float] = field(default_factory=lambda: deque(maxlen=20))
 
     def record(self, result: UpdateResult) -> None:
         self.count += 1
+        self.dim = int(np.asarray(result.innovation).size)
         if result.accepted:
             self.accepted += 1
             self.consecutive_rejections = 0
@@ -134,6 +140,14 @@ class InnovationStatistics:
         if np.isfinite(result.nis):
             self._nis_sum += result.nis
             self._nis_sq_sum += result.nis**2
+            self.recent_nis.append(float(result.nis))
+
+    @property
+    def mean_recent_nis(self) -> float:
+        """Mean NIS over the sliding window (NaN when empty)."""
+        if not self.recent_nis:
+            return float("nan")
+        return float(np.mean(self.recent_nis))
 
     @property
     def mean_nis(self) -> float:

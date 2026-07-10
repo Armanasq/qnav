@@ -145,6 +145,11 @@ class AttitudeFilter(abc.ABC):
                 return EstimatorHealth.INVALID
         if not self.innovation_stats:
             return EstimatorHealth.INITIALIZING
+        for s in self.innovation_stats.values():
+            # sustained mean NIS far above its chi-square mean (= dim) means
+            # the filter's uncertainty no longer explains its innovations.
+            if len(s.recent_nis) >= 10 and s.mean_recent_nis > 5.0 * max(s.dim, 1):
+                return EstimatorHealth.DIVERGING
         if any(s.consecutive_rejections >= 3 for s in self.innovation_stats.values()):
             return EstimatorHealth.DEGRADED
         return EstimatorHealth.HEALTHY
