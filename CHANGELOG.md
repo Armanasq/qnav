@@ -7,6 +7,15 @@ the policy in README.md ("Public API, versioning, and deprecation").
 ## [Unreleased]
 
 ### Added
+- Timestamped fusion pipeline (`qnav.filters.FusionPipeline`): variable
+  gyro dt, multi-rate sensors, duplicate gyro/measurement detection
+  (sensor_id + sequence_id), gap flagging, clock-discontinuity detection
+  (`ClockDiscontinuityError`), per-sensor time offsets (online-estimation
+  hook), bounded delayed-measurement rollback-and-replay over a fixed-lag
+  snapshot history, and SLERP attitude interpolation (`attitude_at`).
+  Every call returns a `ProcessReport`; nothing is dropped silently.
+  Replay is bit-exact: a delayed measurement yields the same state as
+  in-order processing (tested).
 - Robust measurement handling (`qnav.filters.robust`): SciPy-free
   `chi2_quantile` (exact for dof 1–2, Wilson–Hilferty otherwise),
   Huber/Cauchy/Tukey weights, immutable `GatePolicy` (chi-square NIS gate
