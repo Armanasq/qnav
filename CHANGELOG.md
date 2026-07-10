@@ -7,6 +7,26 @@ the policy in README.md ("Public API, versioning, and deprecation").
 ## [Unreleased]
 
 ### Added
+- Inertial navigation stack (`qnav.nav`): immutable `NavState` (attitude,
+  velocity, position, gyro/accel biases; NED-geodetic or ECEF), strapdown
+  mechanization kernels with Earth rate, transport rate, Coriolis, and
+  WGS-84 Somigliana gravity (`propagate_ned`/`propagate_ecef` — the single
+  source of propagation math), coning/sculling-corrected IMU increments
+  (`accumulate_increments`), and a 15-state error-state Kalman filter
+  (`NavEskf`, error order `[dtheta, dv, dp, dbg, dba]`) with position,
+  velocity, and direction updates.
+- `NavEskf` shares the gated Joseph-form update kernel
+  (`qnav.filters._kalman.gated_joseph_update`) and the estimator lifecycle
+  (snapshot/restore/reset/health) with the attitude filters; the attitude
+  `Eskf` was refactored onto the same kernel (behavior unchanged, tested).
+- Numerical validation: static equilibrium (60 s), free-fall closed form,
+  northward transport rate, ECEF static + NED/ECEF free-fall cross-check,
+  coning drift versus the analytic `-a^2*Omega/2` rate, Monte-Carlo
+  position NEES, long-run covariance symmetry/PSD.
+- Documented approximation: Earth/transport-rate terms are kept in the
+  nominal mechanization but omitted from the error-state Jacobian
+  (O(Omega*dt) per step — below MEMS/tactical noise; not suitable for
+  gyrocompass alignment).
 - Timestamped fusion pipeline (`qnav.filters.FusionPipeline`): variable
   gyro dt, multi-rate sensors, duplicate gyro/measurement detection
   (sensor_id + sequence_id), gap flagging, clock-discontinuity detection

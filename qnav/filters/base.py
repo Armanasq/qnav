@@ -31,21 +31,22 @@ from qnav.filters.contracts import (
 )
 from qnav.types import ArrayLike
 
-__all__ = ["AttitudeFilter"]
+__all__ = ["AttitudeFilter", "EstimatorLifecycle"]
 
 
-class AttitudeFilter(abc.ABC):
-    """Base class for attitude estimators producing ``q_nav_body``.
+class EstimatorLifecycle:
+    """Shared estimator lifecycle: deterministic reset, deep snapshots,
+    update recording, and health inspection.
 
-    Subclasses keep the current estimate in ``self.q`` (scalar-first
-    Hamilton, ``q_nav_body`` for the declared navigation frame) and document
-    their additional state.
+    Requires the estimator to keep its attitude in ``self.q`` (scalar-first
+    unit quaternion) and, when covariance-bearing, its error covariance in
+    ``self.P``. The as-constructed state is captured automatically after the
+    most-derived ``__init__`` completes.
     """
 
-    #: navigation frame of the estimate ("NED" or "ENU"); set by subclass.
-    nav_frame: str
     #: as-constructed state captured automatically after __init__ (for reset).
     _initial_state: Dict[str, object]
+    q: np.ndarray
 
     def __init_subclass__(cls, **kwargs: object) -> None:
         # After the most-derived __init__ completes, record the constructed
@@ -53,37 +54,18 @@ class AttitudeFilter(abc.ABC):
         super().__init_subclass__(**kwargs)
         inner = cls.__init__
 
-        def __init__(self: "AttitudeFilter", *args: object, **kw: object) -> None:
-            inner(self, *args, **kw)  # type: ignore[arg-type]
+        def __init__(self: "EstimatorLifecycle", *args: object, **kw: object) -> None:
+            inner(self, *args, **kw)
             if type(self) is cls:
                 self._initial_state = self._capture_state()
 
         cls.__init__ = __init__  # type: ignore[method-assign]
 
-    def __init__(self, q0: np.ndarray | None = None, nav_frame: str = "NED") -> None:
-        if nav_frame not in ("NED", "ENU"):
-            raise ValueError(f"nav_frame must be 'NED' or 'ENU', got {nav_frame!r}")
-        self.nav_frame = nav_frame
-        self.q = quat.identity() if q0 is None else quat.normalize(np.asarray(q0, dtype=float))
+    def __init__(self) -> None:
         #: result of the most recent measurement update, if any.
         self.last_update: Optional[UpdateResult] = None
         #: running innovation statistics keyed by sensor identifier.
         self.innovation_stats: Dict[str, InnovationStatistics] = {}
-
-    def predict(self, omega_body: ArrayLike, dt: float) -> np.ndarray:
-        """Propagate the attitude with a body-frame rate sample [rad/s]; returns q.
-
-        Validates that ``omega_body`` is a finite 3-vector and ``dt`` a finite
-        positive scalar, then dispatches to the subclass propagation.
-        """
-        omega = ensure_vector3(omega_body, "omega_body")
-        if omega.ndim != 1:
-            raise ValueError(f"omega_body must be a single 3-vector, got shape {omega.shape}")
-        return self._predict(omega, ensure_positive_dt(dt))
-
-    @abc.abstractmethod
-    def _predict(self, omega_body: np.ndarray, dt: float) -> np.ndarray:
-        """Subclass propagation; receives validated inputs."""
 
     # -- lifecycle ----------------------------------------------------------
     def _capture_state(self) -> Dict[str, object]:
@@ -153,6 +135,40 @@ class AttitudeFilter(abc.ABC):
         if any(s.consecutive_rejections >= 3 for s in self.innovation_stats.values()):
             return EstimatorHealth.DEGRADED
         return EstimatorHealth.HEALTHY
+
+
+class AttitudeFilter(EstimatorLifecycle, abc.ABC):
+    """Base class for attitude estimators producing ``q_nav_body``.
+
+    Subclasses keep the current estimate in ``self.q`` (scalar-first
+    Hamilton, ``q_nav_body`` for the declared navigation frame) and document
+    their additional state.
+    """
+
+    #: navigation frame of the estimate ("NED" or "ENU"); set by subclass.
+    nav_frame: str
+
+    def __init__(self, q0: np.ndarray | None = None, nav_frame: str = "NED") -> None:
+        super().__init__()
+        if nav_frame not in ("NED", "ENU"):
+            raise ValueError(f"nav_frame must be 'NED' or 'ENU', got {nav_frame!r}")
+        self.nav_frame = nav_frame
+        self.q = quat.identity() if q0 is None else quat.normalize(np.asarray(q0, dtype=float))
+
+    def predict(self, omega_body: ArrayLike, dt: float) -> np.ndarray:
+        """Propagate the attitude with a body-frame rate sample [rad/s]; returns q.
+
+        Validates that ``omega_body`` is a finite 3-vector and ``dt`` a finite
+        positive scalar, then dispatches to the subclass propagation.
+        """
+        omega = ensure_vector3(omega_body, "omega_body")
+        if omega.ndim != 1:
+            raise ValueError(f"omega_body must be a single 3-vector, got shape {omega.shape}")
+        return self._predict(omega, ensure_positive_dt(dt))
+
+    @abc.abstractmethod
+    def _predict(self, omega_body: np.ndarray, dt: float) -> np.ndarray:
+        """Subclass propagation; receives validated inputs."""
 
     def run(
         self,

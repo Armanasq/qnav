@@ -36,8 +36,9 @@ from typing import Deque, Dict, Optional
 from qnav._validate import ensure_covariance, ensure_nonnegative, ensure_positive, ensure_vector3
 from qnav.attitude import quaternion as quat
 from qnav.attitude import so3
+from qnav.filters._kalman import gated_joseph_update
 from qnav.filters.base import AttitudeFilter
-from qnav.filters.contracts import EstimatorHealth, UpdateResult
+from qnav.filters.contracts import EstimatorHealth
 from qnav.filters.robust import GatePolicy, SensorMonitor
 from qnav.types import ArrayLike
 
@@ -149,56 +150,14 @@ class Eskf(AttitudeFilter):
         H = np.zeros((3, 6))
         H[:, :3] = so3.hat(v_hat)
         R = (sigma**2) * np.eye(3)
-
         innov = vb - v_hat
-        S = H @ self.P @ H.T + R
-        nis = float(innov @ np.linalg.solve(S, innov))
 
-        threshold: float | None = None
-        weight = 1.0
-        rejection: str | None = None
-        if self.gate is not None:
-            threshold = self.gate.threshold(3)
-            if nis > threshold:
-                if self.gate.on_gate == "reject":
-                    rejection = "nis_gate"
-                else:  # soft inflation: keep the update, reduce its trust
-                    weight *= threshold / nis
-            if rejection is None:
-                weight *= self.gate.robust_weight(nis, 3)
-
-        monitor = self.monitors.get(sensor_id)
-        if monitor is not None:
-            allowed = monitor.note_measurement(rejection is None, timestamp)
-            if rejection is None and not allowed:
-                rejection = "quarantine"
-
-        if rejection is not None:
-            self._record_update(UpdateResult(
-                accepted=False, innovation=innov, innovation_covariance=S,
-                nis=nis, gate_threshold=threshold, robust_weight=0.0,
-                rejection_reason=rejection, timestamp=timestamp,
-                sensor_id=sensor_id,
-            ))
-            return innov
-
-        if weight != 1.0:
-            R = R / weight
-            S = H @ self.P @ H.T + R
-
-        K = self.P @ H.T @ np.linalg.solve(S, np.eye(3))
-        dx = K @ innov
-
-        IKH = np.eye(6) - K @ H
-        self.P = IKH @ self.P @ IKH.T + K @ R @ K.T
-
-        self._inject(dx)
-        self._fused_directions.append(vn)
-        self._record_update(UpdateResult(
-            accepted=True, innovation=innov, innovation_covariance=S, nis=nis,
-            gate_threshold=threshold, robust_weight=weight,
-            state_correction=dx, timestamp=timestamp, sensor_id=sensor_id,
-        ))
+        result = gated_joseph_update(
+            self, H, R, innov, inject=self._inject,
+            sensor_id=sensor_id, timestamp=timestamp,
+        )
+        if result.accepted:
+            self._fused_directions.append(vn)
         return innov
 
     def update_gravity(

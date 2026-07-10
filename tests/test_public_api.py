@@ -12,7 +12,7 @@ import qnav
 
 SUBPACKAGES = [
     "attitude", "calibration", "determination", "filters", "frames",
-    "geomag", "heading", "metrics", "sensors", "simulation", "types",
+    "geomag", "heading", "metrics", "nav", "sensors", "simulation", "types",
     "validation",
 ]
 
@@ -28,6 +28,8 @@ MODULES = [
     "qnav.heading.declination", "qnav.heading.disturbance",
     "qnav.geomag.wmm",
     "qnav.filters.base", "qnav.filters.contracts",
+    "qnav.nav.state", "qnav.nav.mechanization", "qnav.nav.increments",
+    "qnav.nav.eskf",
     "qnav.sensors.imu", "qnav.sensors.allan", "qnav.sensors.noise",
     "qnav.calibration.gyro_bias", "qnav.calibration.mag_ellipsoid",
     "qnav.calibration.accel_calibration", "qnav.calibration.frame_alignment",
