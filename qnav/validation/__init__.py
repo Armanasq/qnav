@@ -1,5 +1,16 @@
 """Validation: invariants, reference cases, datasets, benchmark runner."""
 
-from qnav.validation import benchmark_runner, datasets, invariants, reference_cases  # noqa: F401
+from qnav.validation import (  # noqa: F401
+    benchmark_runner,
+    comparison,
+    datasets,
+    invariants,
+    reference_cases,
+)
+from qnav.validation.comparison import ComparisonResult, compare_attitude_estimators  # noqa: F401
 
-__all__ = ["benchmark_runner", "datasets", "invariants", "reference_cases"]
+__all__ = [
+    "ComparisonResult", "compare_attitude_estimators",
+    "benchmark_runner", "comparison", "datasets", "invariants",
+    "reference_cases",
+]

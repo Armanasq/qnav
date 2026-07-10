@@ -7,6 +7,16 @@ the policy in README.md ("Public API, versioning, and deprecation").
 ## [Unreleased]
 
 ### Added
+- Left-invariant attitude EKF (`qnav.filters.LeftInvariantEskf`,
+  imperfect-IEKF form with gyro bias): nav-frame error definition with
+  state-independent measurement Jacobians; same constructor, update
+  contract, gating, and lifecycle as the reference `Eskf`.
+- Fair comparison harness (`qnav.validation.comparison`): identical
+  dataset/init/noise/schedule for every estimator, RMSE/final/max error
+  and per-sensor mean NIS. Verified results: LIEKF matches the reference
+  ESKF at small errors (RMSE ratio within 2x) and converges from 120 deg
+  and 160 deg initial errors on the shared dataset (alongside the UKF);
+  no general superiority claim is made.
 - Observability-aware calibration extensions (`qnav.calibration`):
   `assess_least_squares` (SVD-based OBSERVABLE / WEAKLY_OBSERVABLE /
   UNOBSERVABLE grading with condition number, excitation metric, weakest

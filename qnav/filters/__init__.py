@@ -34,7 +34,7 @@ Complementary/observer filters (no covariance, minimal tuning):
 
 from qnav.filters import (  # noqa: F401
     aqua, base, complementary, contracts, ekf, eskf, fkf, fourati,
-    madgwick_style, mahony_style, pipeline, robust, roleq, ukf,
+    invariant, madgwick_style, mahony_style, pipeline, robust, roleq, ukf,
 )
 from qnav.filters import mahony_style as nonlinear_complementary  # noqa: F401
 from qnav.filters.aqua import AquaFilter  # noqa: F401
@@ -51,6 +51,7 @@ from qnav.filters.ekf import QuaternionEkf  # noqa: F401
 from qnav.filters.eskf import Eskf  # noqa: F401
 from qnav.filters.fkf import FastKalmanFilter  # noqa: F401
 from qnav.filters.fourati import FouratiFilter  # noqa: F401
+from qnav.filters.invariant import LeftInvariantEskf  # noqa: F401
 from qnav.filters.madgwick_style import MadgwickStyleFilter  # noqa: F401
 from qnav.filters.mahony_style import MahonyFilter, NonlinearComplementaryFilter  # noqa: F401
 from qnav.filters.pipeline import (  # noqa: F401
@@ -77,10 +78,10 @@ __all__ = [
     "InnovationStatistics", "Measurement", "SensorMonitor", "UpdateResult",
     "cauchy_weight", "chi2_quantile", "detect_saturation", "huber_weight",
     "tukey_weight",
-    "FastKalmanFilter", "FouratiFilter", "MadgwickStyleFilter",
+    "FastKalmanFilter", "FouratiFilter", "LeftInvariantEskf", "MadgwickStyleFilter",
     "MahonyFilter", "NonlinearComplementaryFilter", "QuaternionEkf",
     "RoleqFilter", "UkfAttitude",
     "aqua", "base", "complementary", "contracts", "ekf", "eskf", "fkf", "fourati",
-    "madgwick_style", "mahony_style", "nonlinear_complementary", "pipeline", "robust", "roleq",
+    "invariant", "madgwick_style", "mahony_style", "nonlinear_complementary", "pipeline", "robust", "roleq",
     "ukf",
 ]
