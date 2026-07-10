@@ -23,6 +23,8 @@ from typing import Any, Deque, Mapping, Optional, Tuple
 
 import numpy as np
 
+from qnav._validate import ensure_covariance
+
 __all__ = [
     "EstimatorHealth",
     "EstimatorSnapshot",
@@ -64,21 +66,25 @@ class Measurement:
     metadata: Mapping[str, Any] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
-        v = np.asarray(self.value, dtype=float)
+        # defensive copy + write protection: a frozen dataclass with mutable
+        # arrays is not immutable; snapshots and replay determinism rely on
+        # measurements never changing after construction.
+        v = np.array(self.value, dtype=float, copy=True)
         if not np.all(np.isfinite(v)):
             raise ValueError("Measurement.value contains non-finite values")
+        v.setflags(write=False)
         object.__setattr__(self, "value", v)
         t = float(self.timestamp)
         if not np.isfinite(t):
             raise ValueError("Measurement.timestamp must be finite")
         object.__setattr__(self, "timestamp", t)
+        if int(self.sequence_id) < 0:
+            raise ValueError(f"Measurement.sequence_id must be >= 0, got {self.sequence_id}")
+        if not isinstance(self.sensor_id, str) or not isinstance(self.frame, str):
+            raise TypeError("Measurement.sensor_id and .frame must be strings")
         if self.covariance is not None:
-            n = v.size
-            P = np.asarray(self.covariance, dtype=float)
-            if P.shape != (n, n):
-                raise ValueError(f"Measurement.covariance must be ({n}, {n}), got {P.shape}")
-            if not np.all(np.isfinite(P)):
-                raise ValueError("Measurement.covariance contains non-finite values")
+            P = ensure_covariance(self.covariance, v.size, "Measurement.covariance").copy()
+            P.setflags(write=False)
             object.__setattr__(self, "covariance", P)
         if self.validity_interval is not None:
             lo, hi = (float(x) for x in self.validity_interval)
