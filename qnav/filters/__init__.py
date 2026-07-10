@@ -33,13 +33,20 @@ Complementary/observer filters (no covariance, minimal tuning):
 """
 
 from qnav.filters import (  # noqa: F401
-    aqua, base, complementary, ekf, eskf, fkf, fourati, madgwick_style,
-    mahony_style, roleq, ukf,
+    aqua, base, complementary, contracts, ekf, eskf, fkf, fourati,
+    madgwick_style, mahony_style, roleq, ukf,
 )
 from qnav.filters import mahony_style as nonlinear_complementary  # noqa: F401
 from qnav.filters.aqua import AquaFilter  # noqa: F401
 from qnav.filters.base import AttitudeFilter  # noqa: F401
 from qnav.filters.complementary import ComplementaryFilter  # noqa: F401
+from qnav.filters.contracts import (  # noqa: F401
+    EstimatorHealth,
+    EstimatorSnapshot,
+    InnovationStatistics,
+    Measurement,
+    UpdateResult,
+)
 from qnav.filters.ekf import QuaternionEkf  # noqa: F401
 from qnav.filters.eskf import Eskf  # noqa: F401
 from qnav.filters.fkf import FastKalmanFilter  # noqa: F401
@@ -51,10 +58,12 @@ from qnav.filters.ukf import UkfAttitude  # noqa: F401
 
 __all__ = [
     "AquaFilter", "AttitudeFilter", "ComplementaryFilter", "Eskf",
+    "EstimatorHealth", "EstimatorSnapshot", "InnovationStatistics",
+    "Measurement", "UpdateResult",
     "FastKalmanFilter", "FouratiFilter", "MadgwickStyleFilter",
     "MahonyFilter", "NonlinearComplementaryFilter", "QuaternionEkf",
     "RoleqFilter", "UkfAttitude",
-    "aqua", "base", "complementary", "ekf", "eskf", "fkf", "fourati",
+    "aqua", "base", "complementary", "contracts", "ekf", "eskf", "fkf", "fourati",
     "madgwick_style", "mahony_style", "nonlinear_complementary", "roleq",
     "ukf",
 ]

@@ -34,6 +34,7 @@ from qnav._validate import ensure_covariance, ensure_nonnegative, ensure_positiv
 from qnav.attitude import quaternion as quat
 from qnav.attitude import so3
 from qnav.filters.base import AttitudeFilter
+from qnav.filters.contracts import UpdateResult
 from qnav.types import ArrayLike
 
 __all__ = ["Eskf"]
@@ -92,7 +93,8 @@ class Eskf(AttitudeFilter):
 
     # -- updates -----------------------------------------------------------
     def update_direction(
-        self, v_nav: ArrayLike, v_body_meas: ArrayLike, sigma: float
+        self, v_nav: ArrayLike, v_body_meas: ArrayLike, sigma: float,
+        *, timestamp: float | None = None, sensor_id: str = "direction",
     ) -> np.ndarray:
         """Fuse a unit-direction measurement (e.g. gravity or magnetic field).
 
@@ -100,7 +102,10 @@ class Eskf(AttitudeFilter):
         unitized); ``v_body_meas``: measured direction in the body frame
         (unitized); ``sigma``: per-axis noise std of the unit measurement.
 
-        Returns the innovation (3-vector) for monitoring.
+        Returns the innovation (3-vector) for backward compatibility; the
+        full :class:`~qnav.filters.contracts.UpdateResult` (NIS, innovation
+        covariance, state correction) is stored in ``self.last_update`` and
+        aggregated per ``sensor_id`` in ``self.innovation_stats``.
         """
         sigma = ensure_positive(sigma, "sigma")
         vn = ensure_vector3(v_nav, "v_nav")
@@ -121,6 +126,8 @@ class Eskf(AttitudeFilter):
 
         innov = vb - v_hat
         S = H @ self.P @ H.T + R
+        S_inv_innov = np.linalg.solve(S, innov)
+        nis = float(innov @ S_inv_innov)
         K = self.P @ H.T @ np.linalg.solve(S, np.eye(3))
         dx = K @ innov
 
@@ -128,19 +135,29 @@ class Eskf(AttitudeFilter):
         self.P = IKH @ self.P @ IKH.T + K @ R @ K.T
 
         self._inject(dx)
+        self._record_update(UpdateResult(
+            accepted=True, innovation=innov, innovation_covariance=S, nis=nis,
+            state_correction=dx, timestamp=timestamp, sensor_id=sensor_id,
+        ))
         return innov
 
-    def update_gravity(self, f_body: ArrayLike, sigma: float) -> np.ndarray:
+    def update_gravity(
+        self, f_body: ArrayLike, sigma: float,
+        *, timestamp: float | None = None, sensor_id: str = "accel",
+    ) -> np.ndarray:
         """Accelerometer update assuming low dynamics: the measured specific
         force direction equals the body-frame "up" direction
         (``−g_nav`` normalized: ``[0,0,−1]`` NED, ``[0,0,+1]`` ENU)."""
         up = np.array([0.0, 0.0, -1.0]) if self.nav_frame == "NED" else np.array([0.0, 0.0, 1.0])
-        return self.update_direction(up, f_body, sigma)
+        return self.update_direction(up, f_body, sigma, timestamp=timestamp, sensor_id=sensor_id)
 
-    def update_magnetometer(self, m_nav: ArrayLike, m_body: ArrayLike, sigma: float) -> np.ndarray:
+    def update_magnetometer(
+        self, m_nav: ArrayLike, m_body: ArrayLike, sigma: float,
+        *, timestamp: float | None = None, sensor_id: str = "mag",
+    ) -> np.ndarray:
         """Magnetometer update against the known local field direction
         ``m_nav`` (gate disturbances upstream — see ``qnav.heading.disturbance``)."""
-        return self.update_direction(m_nav, m_body, sigma)
+        return self.update_direction(m_nav, m_body, sigma, timestamp=timestamp, sensor_id=sensor_id)
 
     # -- internals ----------------------------------------------------------
     def _inject(self, dx: np.ndarray) -> None:

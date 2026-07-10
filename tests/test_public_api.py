@@ -27,6 +27,7 @@ MODULES = [
     "qnav.heading.compass", "qnav.heading.tilt_compensation",
     "qnav.heading.declination", "qnav.heading.disturbance",
     "qnav.geomag.wmm",
+    "qnav.filters.base", "qnav.filters.contracts",
     "qnav.sensors.imu", "qnav.sensors.allan", "qnav.sensors.noise",
     "qnav.calibration.gyro_bias", "qnav.calibration.mag_ellipsoid",
     "qnav.calibration.accel_calibration", "qnav.calibration.frame_alignment",

@@ -7,6 +7,17 @@ the policy in README.md ("Public API, versioning, and deprecation").
 ## [Unreleased]
 
 ### Added
+- Estimator contracts (`qnav.filters.contracts`): `Measurement`,
+  `UpdateResult`, `InnovationStatistics`, `EstimatorHealth`,
+  `EstimatorSnapshot` — exported from `qnav.filters`.
+- Every attitude filter now supports `reset()` (deterministic
+  as-constructed state), `snapshot()`/`restore()` (deep, type-checked),
+  and a `health` property (INITIALIZING / HEALTHY / DEGRADED / INVALID,
+  covering non-finite state and asymmetric/indefinite covariance).
+- `Eskf` updates populate `last_update` (`UpdateResult` with innovation,
+  innovation covariance, NIS, state correction) and per-sensor
+  `innovation_stats`; `update_*` methods accept optional `timestamp` and
+  `sensor_id` keywords. Legacy innovation return values are unchanged.
 - Centralized input validation (`qnav._validate`, internal): finiteness,
   shape, unit-norm, rotation-matrix, positive-dt, monotonic-timestamp, and
   covariance (symmetry + PSD) checks with explicit `ValueError`/`TypeError`.
