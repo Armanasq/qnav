@@ -26,6 +26,7 @@ from qnav import (  # noqa: F401
     frames,
     geomag,
     heading,
+    interop,
     metrics,
     nav,
     sensors,
@@ -50,7 +51,7 @@ from qnav.errors import (  # noqa: F401
 __all__ = [
     "__version__",
     "attitude", "calibration", "determination", "filters", "frames",
-    "geomag", "heading", "metrics", "nav", "sensors", "simulation", "types",
+    "geomag", "heading", "interop", "metrics", "nav", "sensors", "simulation", "types",
     "validation",
     "QnavError", "QnavWarning", "CalibrationError", "ConventionError",
     "FrameGraphError", "FrameMismatchError", "DegenerateGeometryWarning",

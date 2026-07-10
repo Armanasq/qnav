@@ -7,6 +7,13 @@ the policy in README.md ("Public API, versioning, and deprecation").
 ## [Unreleased]
 
 ### Added
+- Optional interop adapters (`qnav.interop`, extras `qnav[interop]`):
+  lossless SciPy `Rotation` bridge (`to_scipy`/`from_scipy`, scalar-first
+  <-> scalar-last, physical-rotation equivalence tested) and dataset
+  loaders (`load_imu_csv` NumPy-only, `imu_from_dataframe` for pandas)
+  producing validated monotonic `ImuData`; bad rows are rejected unless
+  dropping is requested explicitly. ROS 2 and GTSAM adapters are
+  deliberately deferred until they can run against the real packages in CI.
 - IMU preintegration (`qnav.nav.preintegration.ImuPreintegration`,
   Forster-style on-manifold): gravity-free body-frame delta rotation/
   velocity/position, first-order bias Jacobians with `corrected()`
