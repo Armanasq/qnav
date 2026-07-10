@@ -7,6 +7,16 @@ the policy in README.md ("Public API, versioning, and deprecation").
 ## [Unreleased]
 
 ### Added
+- Modular navigation measurement models (`qnav.nav.measurements`):
+  GNSS position/velocity (lever-arm aware), barometric altitude,
+  rangefinder height (tilt-compensated with attitude Jacobian), external
+  attitude/pose/body-velocity, wheel speed, nonholonomic constraint, ZUPT,
+  ZARU, UWB range, magnetometer yaw, dual-antenna heading. Each documents
+  frame/unit contracts, observability, and failure modes; all Jacobians
+  are finite-difference verified against the filter's own error
+  definition. `NavEskf.update_measurement(model, value, sigma)` fuses any
+  model through the shared gated kernel — no sensor branches inside the
+  estimator.
 - Inertial navigation stack (`qnav.nav`): immutable `NavState` (attitude,
   velocity, position, gyro/accel biases; NED-geodetic or ECEF), strapdown
   mechanization kernels with Earth rate, transport rate, Coriolis, and

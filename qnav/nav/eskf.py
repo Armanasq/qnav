@@ -219,6 +219,33 @@ class NavEskf(EstimatorLifecycle):
             self._fused_directions.append(vn)
         return innov
 
+    def update_measurement(
+        self, model: object, value: object, sigma: ArrayLike,
+        *, timestamp: float | None = None, sensor_id: str | None = None,
+        **aux: object,
+    ) -> np.ndarray:
+        """Fuse any :mod:`qnav.nav.measurements` model through the shared
+        gated kernel.
+
+        ``model.residual(state, value, **aux)`` supplies the innovation and
+        Jacobian; ``sigma`` is the scalar or per-component measurement std in
+        the model's units. Returns the innovation. All gating, robust
+        weighting, quarantine, and reporting behave exactly as for the
+        built-in updates.
+        """
+        innov, H = model.residual(self.state, value, **aux)  # type: ignore[attr-defined]
+        innov = np.atleast_1d(np.asarray(innov, dtype=float))
+        m = innov.shape[0]
+        s = np.asarray(sigma, dtype=float)
+        if s.ndim == 0:
+            s = np.full(m, float(s))
+        if s.shape != (m,) or np.any(~np.isfinite(s)) or np.any(s <= 0):
+            raise ValueError(f"sigma must be a positive scalar or length-{m} vector")
+        sid = sensor_id if sensor_id is not None else type(model).__name__
+        gated_joseph_update(self, np.asarray(H, dtype=float), np.diag(s**2), innov,
+                            inject=self._inject, sensor_id=sid, timestamp=timestamp)
+        return innov
+
     # -- internals ---------------------------------------------------------------
     def _inject(self, dx: np.ndarray) -> None:
         dtheta, dv, dp, dbg, dba = (dx[0:3], dx[3:6], dx[6:9], dx[9:12], dx[12:15])
