@@ -987,17 +987,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#measured-baselines" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Measured baselines
-      
-    </span>
-  </a>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -1626,17 +1615,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#measured-baselines" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Measured baselines
-      
-    </span>
-  </a>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -1720,65 +1698,6 @@
 <h2 id="pure-numpy-means-no-jit">Pure NumPy means no JIT<a class="headerlink" href="#pure-numpy-means-no-jit" title="Permanent link">&para;</a></h2>
 <p>qnav has no Numba, Cython, or C extensions. This keeps the installation trivial and the code auditable.</p>
 <p>For applications where the filter runs faster than Python can call NumPy, the recommended path is to use qnav's <strong>tested reference implementations</strong> to validate a Cython or C++ reimplementation, rather than running qnav in the hot loop. The test suite is designed to support this: every algorithm has reference cases that can be used as acceptance criteria.</p>
-<h2 id="measured-baselines">Measured baselines<a class="headerlink" href="#measured-baselines" title="Permanent link">&para;</a></h2>
-<p>Reproducible suite: <code>python benchmarks/run_benchmarks.py</code> (writes
-<code>benchmarks/results.json</code> including the full environment record — CPU,
-architecture, OS, Python, NumPy, BLAS backend, thread count, warm-up and
-repeat counts, commit SHA). Numbers quoted without that context are not
-comparable; do not copy them into marketing text.</p>
-<p>Reference measurement (i9-13980HX, Linux, Python 3.10, NumPy 1.26/OpenBLAS,
-commit <code>709e50b</code>; median of repeats):</p>
-<table>
-<thead>
-<tr>
-<th>benchmark</th>
-<th>median</th>
-<th>per item</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>quaternion multiply, batch 100 k</td>
-<td>6.7 ms</td>
-<td>67 ns</td>
-</tr>
-<tr>
-<td>SO(3) exp, batch 100 k</td>
-<td>20.9 ms</td>
-<td>209 ns</td>
-</tr>
-<tr>
-<td>QUEST solve (2 obs)</td>
-<td>—</td>
-<td>60 µs</td>
-</tr>
-<tr>
-<td>attitude ESKF predict + gravity update</td>
-<td>—</td>
-<td>235 µs/step</td>
-</tr>
-<tr>
-<td>15-state NavEskf predict</td>
-<td>—</td>
-<td>259 µs/step</td>
-</tr>
-<tr>
-<td>IMU preintegration step</td>
-<td>—</td>
-<td>135 µs</td>
-</tr>
-<tr>
-<td>NavEskf 10 s replay @ 1 kHz</td>
-<td>2.60 s</td>
-<td>3.8× real time</td>
-</tr>
-</tbody>
-</table>
-<p>Conclusion recorded for the native-acceleration policy: the pure-NumPy
-15-state ESKF sustains 1 kHz IMU replay at ~3.8× real time on a laptop CPU.
-No measured workload currently fails its latency target, so no C++/Rust
-kernel is justified yet (see the policy above: profile first, accelerate
-only proven bottlenecks).</p>
 
 
 
