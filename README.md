@@ -24,10 +24,46 @@ qnav addresses this at the architecture level:
 
 ---
 
+## Quickstart: sensor arrays in, orientation out
+
+```python
+import numpy as np
+from qnav import estimate_attitude
+
+# Logged (N, 3) arrays: gyro [rad/s], specific force [m/s²], mag (any unit).
+# Simulated here: a static, slightly noisy IMU with NED/FRD axes.
+rng = np.random.default_rng(0)
+n = 2000
+gyro = 0.002 * rng.standard_normal((n, 3))
+accel = np.array([0.0, 0.0, -9.81]) + 0.02 * rng.standard_normal((n, 3))
+mag = np.array([0.4, 0.0, 0.5]) + 0.01 * rng.standard_normal((n, 3))
+
+est = estimate_attitude(gyro, accel, mag, dt=0.01)    # ESKF by default
+
+est.q                              # (N, 4) quaternions, scalar-first Hamilton
+est.euler("ZYX", degrees=True)     # (N, 3) yaw / pitch / roll
+est.heading(degrees=True)          # (N,) compass heading, CW from north
+est.attitude_std                   # (N, 3) 1σ attitude uncertainty [rad]
+est.gyro_bias                      # (3,) final gyro-bias estimate [rad/s]
+est.health.name                    # 'HEALTHY' — covariance + NIS diagnostics
+```
+
+One call gives you: closed-form initialization from the first usable
+accel+mag sample (no identity-attitude transient), a self-consistent
+magnetometer reference (or pass a WMM field for true heading), NaN-dropout
+tolerance with explicit accounting, per-sample timestamps (`t=`) for
+non-uniform logs, and `method=` selection across 11 estimators — from
+`"mahony"` to a NEES-verified error-state Kalman filter. `est.filter` is the
+live stepwise filter, ready to continue online.
+
+---
+
 ## What's inside
 
 ```
 qnav/
+├── highlevel.py       One-call batch estimation: estimate_attitude() →
+│                      AttitudeEstimate (quaternions, Euler, heading, 1σ, bias)
 ├── attitude/          SO(3) math: quaternion, DCM, Euler, rotation vector, MRP,
 │                      SO(3) Lie group (exp/log/Jacobians), kinematics, SLERP, Jacobians, covariance
 ├── frames/            Typed coordinate frames: FrameTransform, FrameGraph, WGS-84 geodesy,

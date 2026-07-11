@@ -85,7 +85,7 @@ def log(R: np.ndarray) -> np.ndarray:
     """
     R = np.asarray(R, dtype=float)
     batch: tuple[int, ...] = R.shape[:-2]
-    Rf = R.reshape((-1, 3, 3))
+    Rf = R.reshape(-1, 3, 3)
     n = int(Rf.shape[0])
     out = np.empty((n, 3))
     tr = np.trace(Rf, axis1=-2, axis2=-1)

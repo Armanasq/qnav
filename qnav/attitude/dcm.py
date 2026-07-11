@@ -59,7 +59,7 @@ def to_quaternion(R: np.ndarray) -> np.ndarray:
     """
     R = np.asarray(R, dtype=float)
     batch: tuple[int, ...] = R.shape[:-2]
-    Rf = R.reshape((-1, 3, 3))
+    Rf = R.reshape(-1, 3, 3)
     n = int(Rf.shape[0])
     q = np.empty((n, 4))
     for i in range(n):
@@ -117,7 +117,7 @@ def to_quaternion_robust(R: np.ndarray) -> np.ndarray:
     """
     R = np.asarray(R, dtype=float)
     batch: tuple[int, ...] = R.shape[:-2]
-    Rf = R.reshape((-1, 3, 3))
+    Rf = R.reshape(-1, 3, 3)
     n = int(Rf.shape[0])
     q = np.empty((n, 4))
     for i in range(n):

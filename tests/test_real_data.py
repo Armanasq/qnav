@@ -171,9 +171,18 @@ class TestLongDuration:
         assert growth < 512 * 1024, f"memory grew by {growth} bytes over 4000 steps"
 
 
+try:
+    import h5py  # noqa: F401
+
+    _HAS_H5PY = True
+except ImportError:
+    _HAS_H5PY = False
+
 needs_full_data = pytest.mark.skipif(
-    not any(p.suffix in (".hdf5", ".h5") for p in available_datasets()),
-    reason="full benchmark collection not present (set QNAV_DATA_DIR)",
+    not _HAS_H5PY
+    or not any(p.suffix in (".hdf5", ".h5") for p in available_datasets()),
+    reason="full benchmark collection not present or h5py not installed "
+    "(set QNAV_DATA_DIR and pip install 'qnav[datasets]')",
 )
 
 

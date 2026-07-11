@@ -16,7 +16,7 @@ Subpackages
 Normative conventions: ``docs/conventions.md``.
 """
 
-__version__ = "0.2.0"
+__version__ = "0.3.0"
 
 from qnav import (  # noqa: F401
     attitude,
@@ -26,6 +26,7 @@ from qnav import (  # noqa: F401
     frames,
     geomag,
     heading,
+    highlevel,
     interop,
     metrics,
     nav,
@@ -34,6 +35,8 @@ from qnav import (  # noqa: F401
     types,
     validation,
 )
+from qnav.highlevel import AttitudeEstimate, estimate_attitude  # noqa: F401
+
 from qnav.errors import (  # noqa: F401
     CalibrationError,
     ConventionError,
@@ -51,8 +54,9 @@ from qnav.errors import (  # noqa: F401
 __all__ = [
     "__version__",
     "attitude", "calibration", "determination", "filters", "frames",
-    "geomag", "heading", "interop", "metrics", "nav", "sensors", "simulation", "types",
-    "validation",
+    "geomag", "heading", "highlevel", "interop", "metrics", "nav", "sensors",
+    "simulation", "types", "validation",
+    "AttitudeEstimate", "estimate_attitude",
     "QnavError", "QnavWarning", "CalibrationError", "ConventionError",
     "FrameGraphError", "FrameMismatchError", "DegenerateGeometryWarning",
     "GimbalLockWarning", "NormalizationWarning",

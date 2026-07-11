@@ -27,6 +27,7 @@ MODULES = [
     "qnav.heading.compass", "qnav.heading.tilt_compensation",
     "qnav.heading.declination", "qnav.heading.disturbance",
     "qnav.geomag.wmm",
+    "qnav.highlevel",
     "qnav.filters.base", "qnav.filters.contracts",
     "qnav.nav.state", "qnav.nav.mechanization", "qnav.nav.increments",
     "qnav.nav.eskf", "qnav.nav.measurements", "qnav.nav.preintegration",
@@ -69,6 +70,7 @@ def test_key_symbols():
         QuaternionEkf, RoleqFilter, UkfAttitude,
     )
     from qnav.frames import Frame, FrameGraph, FrameTransform  # noqa: F401
+    from qnav import AttitudeEstimate, estimate_attitude  # noqa: F401
 
 
 def test_py_typed_shipped():

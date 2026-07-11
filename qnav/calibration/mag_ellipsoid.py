@@ -62,6 +62,17 @@ def fit_ellipsoid(m: np.ndarray, min_points: int = 12) -> MagCalibration:
     D = np.column_stack([x*x, y*y, z*z, x*y, x*z, y*z, x, y, z, np.ones_like(x)])
     # solve D p = 0: smallest right singular vector
     _, s, Vt = np.linalg.svd(D, full_matrices=False)
+    # A unique quadric requires nullity ≤ 1. Degenerate coverage makes the
+    # null space multi-dimensional (planar data satisfies any
+    # x²+y²−r² + λ(z−c)² = 0 exactly), and *which* null vector SVD returns
+    # is then platform-dependent — reject by numerical rank, not by luck of
+    # the returned vector.
+    rank_tol = s[0] * max(D.shape) * np.finfo(float).eps
+    if s[-2] <= rank_tol:
+        raise CalibrationError(
+            "quadric fit is rank-deficient (planar or otherwise degenerate "
+            "orientation coverage); rotate through more attitudes"
+        )
     p = Vt[-1]
     M = np.array([
         [p[0], p[3] / 2, p[4] / 2],

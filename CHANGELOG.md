@@ -4,6 +4,32 @@ All notable changes to qnav are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versioning follows
 the policy in README.md ("Public API, versioning, and deprecation").
 
+## [0.3.0] - 2026-07-11
+
+### Added
+- **One-call batch estimation API** (`qnav.estimate_attitude`,
+  `qnav.AttitudeEstimate`; provisional): logged gyro/accel(/mag) arrays in,
+  orientation time series out. Selects any of the 11 attitude estimators
+  by name (`method=`), initializes the attitude in closed form (FQA) from
+  the first usable accelerometer(+magnetometer) row instead of identity,
+  derives a self-consistent magnetometer reference (or accepts a
+  WMM-derived `mag_ref` for true heading), supports uniform `dt` or
+  per-sample timestamps `t` (non-uniform logs), skips — and counts — NaN
+  dropout rows instead of fusing them, and returns per-sample attitude
+  uncertainty for the tangent-covariance filters, the final gyro-bias
+  estimate, estimator health, Euler/DCM/heading converters, an optional
+  pandas export, and the live stepwise filter for continued online use.
+  The ENU path applies the documented ENU/FLU matched-pair conversion for
+  initialization. Exported at the top level: `from qnav import
+  estimate_attitude`.
+- `docs/api/highlevel.md` reference page; quickstart sections in README
+  and `docs/getting_started.md` (executed in CI like all doc examples).
+
+### Fixed
+- `tests/test_real_data.py` full-collection tests now skip when `h5py` is
+  not installed instead of failing with `ImportError` (the HDF5 datasets
+  can be present without the optional `qnav[datasets]` extra).
+
 ## [0.2.0] - 2026-07-10
 
 Release candidate for the navigation-stack expansion. The `nav`,

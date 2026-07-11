@@ -106,6 +106,7 @@ nav:
     - API Principles: design/api_principles.md
     - Performance: design/performance.md
   - API Reference:
+    - highlevel: api/highlevel.md
     - attitude.quaternion: api/quaternion.md
     - attitude.so3: api/so3.md
     - attitude.dcm: api/dcm.md
