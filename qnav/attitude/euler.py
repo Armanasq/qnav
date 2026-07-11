@@ -95,7 +95,7 @@ def from_dcm(R: np.ndarray, seq: str = "ZYX", gimbal_tol: float = 1e-7) -> np.nd
         return rev[..., ::-1]
 
     batch: tuple[int, ...] = R.shape[:-2]
-    Rf = R.reshape((-1, 3, 3))
+    Rf = R.reshape(-1, 3, 3)
     n_flat = int(Rf.shape[0])
     i, j, k = (_AXES[ch] for ch in up)
     tait_bryan = up[0] != up[2]

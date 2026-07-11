@@ -301,6 +301,10 @@ def estimate_attitude(
     m = None if mag is None else _as_samples("mag", mag, n)
     f_ok = np.zeros(n, bool) if f is None else np.all(np.isfinite(f), axis=1)
     m_ok = np.zeros(n, bool) if m is None else np.all(np.isfinite(m), axis=1)
+    # non-Optional views for indexing; f_ok/m_ok are all-False when the
+    # sensor is absent, so the empty placeholders are never actually read
+    f_data = f if f is not None else np.empty((0, 3))
+    m_data = m if m is not None else np.empty((0, 3))
 
     if (dt is None) == (t is None):
         raise ValueError("provide exactly one of dt (uniform) or t (timestamps)")
@@ -312,10 +316,12 @@ def estimate_attitude(
         if not np.all(np.isfinite(dts)) or np.any(dts <= 0):
             raise ValueError("t must be finite and strictly increasing")
     else:
+        assert dt is not None  # narrowed by the exclusive check above
+        dt = float(dt)
         if not np.isfinite(dt) or dt <= 0:
             raise ValueError(f"dt must be a positive finite scalar, got {dt}")
-        times = np.arange(n) * float(dt)
-        dts = np.full(max(n - 1, 0), float(dt))
+        times = np.arange(n) * dt
+        dts = np.full(max(n - 1, 0), dt)
 
     if method in _NEEDS_ACC_AND_MAG and (f is None or m is None):
         raise ValueError(f"method {method!r} requires both accel and mag")
@@ -336,17 +342,17 @@ def estimate_attitude(
     else:
         # first row where every provided-and-used sensor is finite
         usable = f_ok & m_ok if m is not None else f_ok
-        k0 = int(np.argmax(usable)) if usable.any() else None
-        if k0 is not None:
+        if usable.any():
+            k0 = int(np.argmax(usable))
             q_init = _initial_attitude(
-                nav_frame, f[k0], m[k0] if m is not None else None, m_nav
+                nav_frame, f_data[k0], m_data[k0] if m is not None else None, m_nav
             )
         else:
             q_init = quat.identity()
 
     if m_nav is None and m is not None and m_ok.any():
         km = int(np.argmax(m_ok))
-        m_nav = quat.rotate_vector(q_init, m[km])
+        m_nav = quat.rotate_vector(q_init, m_data[km])
         m_nav = m_nav / np.linalg.norm(m_nav)
 
     # -- construct the filter --------------------------------------------------
@@ -373,7 +379,7 @@ def estimate_attitude(
     # -- run -------------------------------------------------------------------
     q_out = np.empty((n, 4))
     want_std = method in _TANGENT_COVARIANCE
-    std_out = np.empty((n, 3)) if want_std else None
+    std_out = np.empty((n, 3)) if want_std else np.empty((0, 3))
     applied = 0
     skipped = 0
     if f is not None:
@@ -391,27 +397,27 @@ def estimate_attitude(
         c = 0
         if method in ("eskf", "invariant"):
             if f_ok[k]:
-                flt.update_gravity(f[k], sigma=accel_sigma, timestamp=times[k])
+                flt.update_gravity(f_data[k], sigma=accel_sigma, timestamp=times[k])
                 c += 1
             if m_ok[k] and m_nav is not None:
-                flt.update_magnetometer(m_nav, m[k], sigma=mag_sigma,
+                flt.update_magnetometer(m_nav, m_data[k], sigma=mag_sigma,
                                         timestamp=times[k])
                 c += 1
         elif method in ("ukf", "ekf"):
             if f_ok[k]:
-                flt.update_direction(up, f[k], sigma=accel_sigma)
+                flt.update_direction(up, f_data[k], sigma=accel_sigma)
                 c += 1
             if m_ok[k] and m_nav is not None:
-                flt.update_direction(m_nav, m[k], sigma=mag_sigma)
+                flt.update_direction(m_nav, m_data[k], sigma=mag_sigma)
                 c += 1
         elif method in ("mahony", "madgwick"):
             vn, vb = [], []
             if f_ok[k]:
                 vn.append(up)
-                vb.append(f[k])
+                vb.append(f_data[k])
             if m_ok[k] and m_nav is not None:
                 vn.append(m_nav)
-                vb.append(m[k])
+                vb.append(m_data[k])
             if vn:
                 flt.step(w[k], step_dt, np.stack(vn), np.stack(vb))
                 c += len(vn)
@@ -420,16 +426,16 @@ def estimate_attitude(
         elif method == "complementary":
             flt.predict(w[k], step_dt)
             if f_ok[k]:
-                flt.update(f[k], m[k] if m_ok[k] else None)
+                flt.update(f_data[k], m_data[k] if m_ok[k] else None)
                 c += 1 + int(m_ok[k])
         elif method == "aqua":
-            fb = f[k] if f_ok[k] else None
-            mb = m[k] if m_ok[k] else None
+            fb = f_data[k] if f_ok[k] else None
+            mb = m_data[k] if m_ok[k] else None
             flt.step(w[k], step_dt, f_body=fb, m_body=mb)
             c += int(fb is not None) + int(mb is not None)
         else:  # fourati, roleq, fkf — need the full accel+mag pair
             if f_ok[k] and m_ok[k]:
-                flt.step(w[k], step_dt, f[k], m[k])
+                flt.step(w[k], step_dt, f_data[k], m_data[k])
                 c += 2
             else:
                 flt.predict(w[k], step_dt)
@@ -457,7 +463,7 @@ def estimate_attitude(
         method=method,
         nav_frame=nav_frame,
         filter=flt,
-        attitude_std=std_out,
+        attitude_std=std_out if want_std else None,
         gyro_bias=bias,
         n_updates_applied=applied,
         n_updates_skipped=skipped,
