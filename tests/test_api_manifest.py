@@ -31,6 +31,7 @@ PUBLIC_MODULES = {
     "qnav.frames.graph": "stable",
     "qnav.frames.earth": "stable",
     "qnav.determination": "stable",
+    "qnav.highlevel": "provisional",
     "qnav.filters": "provisional",
     "qnav.filters.contracts": "provisional",
     "qnav.filters.robust": "provisional",

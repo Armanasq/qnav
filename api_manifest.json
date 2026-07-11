@@ -2,6 +2,7 @@
   "qnav": {
     "stability": "stable",
     "symbols": [
+      "AttitudeEstimate",
       "CalibrationError",
       "ConventionError",
       "DegenerateGeometryWarning",
@@ -15,10 +16,12 @@
       "attitude",
       "calibration",
       "determination",
+      "estimate_attitude",
       "filters",
       "frames",
       "geomag",
       "heading",
+      "highlevel",
       "interop",
       "metrics",
       "nav",
@@ -170,6 +173,13 @@
       "triad",
       "triad_dcm",
       "wahba"
+    ]
+  },
+  "qnav.highlevel": {
+    "stability": "provisional",
+    "symbols": [
+      "AttitudeEstimate",
+      "estimate_attitude"
     ]
   },
   "qnav.filters": {

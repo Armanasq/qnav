@@ -20,6 +20,52 @@ pytest -q
 
 ---
 
+## Five minutes to orientation: `estimate_attitude`
+
+If you have logged sensor arrays and want orientation over time, you don't
+need to pick a filter class or write the fusion loop — one call does it:
+
+```python
+import numpy as np
+from qnav import estimate_attitude
+
+# Your recorded data: (N, 3) arrays. gyro [rad/s], accel = specific
+# force [m/s²] (reads ≈ +g pointing away from gravity at rest), mag in any
+# consistent unit. Simulated here: a static, slightly noisy IMU in NED/FRD.
+rng = np.random.default_rng(0)
+n = 2000
+gyro = 0.002 * rng.standard_normal((n, 3))
+accel = np.array([0.0, 0.0, -9.81]) + 0.02 * rng.standard_normal((n, 3))
+mag = np.array([0.4, 0.0, 0.5]) + 0.01 * rng.standard_normal((n, 3))
+
+est = estimate_attitude(gyro, accel, mag, dt=0.01)   # ESKF by default
+
+q = est.q                                   # (N, 4) q_nav_body, scalar-first
+ypr = est.euler("ZYX", degrees=True)        # (N, 3) yaw, pitch, roll
+heading = est.heading(degrees=True)         # (N,) clockwise from north
+sigma = est.attitude_std                    # (N, 3) 1σ attitude error [rad]
+print(est.health.name, np.rad2deg(est.gyro_bias) * 3600, "deg/hr")
+```
+
+What happened under the hood — all overridable, nothing silent:
+
+- the initial attitude was solved in closed form (FQA) from the first
+  usable accel+mag row, not assumed to be identity;
+- the magnetometer reference direction was derived self-consistently from
+  that initialization (pass `mag_ref=` a WMM field from `qnav.geomag` for
+  true instead of magnetic heading);
+- every sample ran a predict + gated vector update; NaN rows (dropouts)
+  were counted and skipped (`est.n_updates_skipped`), never fused.
+
+Non-uniform sampling? Pass per-sample timestamps `t=` instead of `dt=`.
+Different estimator? `method="mahony"`, `"madgwick"`, `"ukf"`, `"aqua"`, …
+(11 choices — see the [filter selection guide](#running-an-eskf)). Need
+per-sample control, online use, or out-of-order measurements? Drop down to
+the stepwise filters below and `qnav.filters.FusionPipeline` — `est.filter`
+is the live filter object, ready to continue.
+
+---
+
 ## The naming convention
 
 qnav labels every quaternion and DCM with its frame pair: `q_AB` maps coordinates from frame B to frame A:
